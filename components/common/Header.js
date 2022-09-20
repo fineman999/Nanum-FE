@@ -8,8 +8,9 @@ import {
   useScrollTrigger,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import DrawerMenu from "./DrawerMenu";
 
 function ShowOnScroll({ children }) {
   const trigger = useScrollTrigger();
@@ -25,6 +26,11 @@ ShowOnScroll.propTypes = {
 };
 
 const Header = ({ title }) => {
+  const [onToggle, setOnToggle] = useState(false);
+  const toggleDrawer = () => {
+    setOnToggle(!onToggle);
+  };
+
   return (
     <>
       <Box sc={{ flexGrow: 1 }}>
@@ -43,7 +49,7 @@ const Header = ({ title }) => {
             >
               {title}
             </Typography>
-            <IconButton>
+            <IconButton aria-label="menu" onClick={toggleDrawer}>
               <MenuIcon />
             </IconButton>
           </Toolbar>
@@ -65,12 +71,14 @@ const Header = ({ title }) => {
             >
               {title}
             </Typography>
-            <IconButton aria-label="menu">
+            <IconButton aria-label="menu" onClick={toggleDrawer}>
               <MenuIcon />
             </IconButton>
           </Toolbar>
         </AppBar>
       </ShowOnScroll>
+
+      <DrawerMenu onToggle={onToggle} toggleDrawer={toggleDrawer} />
     </>
   );
 };
