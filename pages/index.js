@@ -1,4 +1,5 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Toolbar, Typography } from "@mui/material";
+import BottomMenu from "../components/common/BottomMenu";
 import Header from "../components/common/Header";
 
 export default function Home() {
@@ -44,6 +45,7 @@ export default function Home() {
           sapiente modi nesciunt.
         </Typography>
       </Box>
+      <BottomMenu />
     </div>
   );
 }
