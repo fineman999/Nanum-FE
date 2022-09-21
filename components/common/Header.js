@@ -13,9 +13,9 @@ import PropTypes from "prop-types";
 import DrawerMenu from "./DrawerMenu";
 
 function ShowOnScroll({ children }) {
-  const trigger = useScrollTrigger();
+  let trigger = useScrollTrigger();
   return (
-    <Slide direction="down" in={trigger}>
+    <Slide appear={false} direction="down" in={trigger}>
       {children}
     </Slide>
   );
@@ -33,10 +33,13 @@ const Header = ({ title }) => {
 
   return (
     <>
-      <Box sc={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, position: "static" }}>
         <AppBar
-          position="static"
           sx={{
+            width: "100%",
+            position: "absolute",
+            top: 0,
+            left: 0,
             background: "transparent",
             boxShadow: "none",
           }}
@@ -45,7 +48,7 @@ const Header = ({ title }) => {
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, color: "black", fontWeight: "bold" }}
+              sx={{ flexGrow: 1, color: "white", fontWeight: "bold" }}
             >
               {title}
             </Typography>
@@ -60,14 +63,14 @@ const Header = ({ title }) => {
         <AppBar
           position="fixed"
           sx={{
-            boxShadow: "none",
+            background: "white",
           }}
         >
           <Toolbar>
             <Typography
               variant="h6"
               component="div"
-              sx={{ flexGrow: 1, color: "white", fontWeight: "bold" }}
+              sx={{ flexGrow: 1, color: "black", fontWeight: "bold" }}
             >
               {title}
             </Typography>
