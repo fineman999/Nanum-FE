@@ -1,11 +1,13 @@
 import { Box, Toolbar, Typography } from "@mui/material";
 import BottomMenu from "../components/common/BottomMenu";
 import Header from "../components/common/Header";
+import MainSwiper from "../components/MainSwiper";
 
 export default function Home() {
   return (
     <div className="wrapper">
       <Header title="NANUM" />
+      <MainSwiper />
       <Box component="main" sx={{ p: 3 }}>
         <Typography>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
