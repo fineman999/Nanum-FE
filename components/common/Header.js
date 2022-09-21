@@ -32,7 +32,7 @@ const Header = ({ title }) => {
   };
 
   return (
-    <>
+    <header>
       <Box sx={{ flexGrow: 1, position: "static" }}>
         <AppBar
           sx={{
@@ -82,7 +82,7 @@ const Header = ({ title }) => {
       </ShowOnScroll>
 
       <DrawerMenu onToggle={onToggle} toggleDrawer={toggleDrawer} />
-    </>
+    </header>
   );
 };
 

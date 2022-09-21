@@ -1,13 +1,16 @@
 import { Box, Toolbar, Typography } from "@mui/material";
 import BottomMenu from "../components/common/BottomMenu";
+import Footer from "../components/common/Footer";
+import GlobalSearch from "../components/common/GlobalSearch";
 import Header from "../components/common/Header";
 import MainSwiper from "../components/MainSwiper";
 
 export default function Home() {
   return (
-    <div className="wrapper">
+    <>
       <Header title="NANUM" />
       <MainSwiper />
+      <GlobalSearch />
       <Box component="main" sx={{ p: 3 }}>
         <Typography>
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
@@ -47,7 +50,8 @@ export default function Home() {
           sapiente modi nesciunt.
         </Typography>
       </Box>
+      <Footer />
       <BottomMenu />
-    </div>
+    </>
   );
 }
