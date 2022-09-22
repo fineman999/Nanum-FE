@@ -3,6 +3,7 @@ import BottomMenu from "../components/common/BottomMenu";
 import Footer from "../components/common/Footer";
 import GlobalSearch from "../components/common/GlobalSearch";
 import Header from "../components/common/Header";
+import HouseList from "../components/HouseList";
 import MainSwiper from "../components/MainSwiper";
 
 export default function Home() {
@@ -50,6 +51,9 @@ export default function Home() {
           sapiente modi nesciunt.
         </Typography>
       </Box>
+      <HouseList title="인기 하우스" />
+      <HouseList title="쉐어 하우스" />
+      <HouseList title="마이룸" />
       <Footer />
       <BottomMenu />
     </>
