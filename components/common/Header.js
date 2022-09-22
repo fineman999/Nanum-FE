@@ -13,7 +13,10 @@ import PropTypes from "prop-types";
 import DrawerMenu from "./DrawerMenu";
 
 function ShowOnScroll({ children }) {
-  let trigger = useScrollTrigger();
+  let trigger = useScrollTrigger({
+    disableHysteresis: true,
+    threshold: 100,
+  });
   return (
     <Slide appear={false} direction="down" in={trigger}>
       {children}
@@ -44,7 +47,7 @@ const Header = ({ title }) => {
             boxShadow: "none",
           }}
         >
-          <Toolbar>
+          <Toolbar id="back-to-top-anchor">
             <Typography
               variant="h6"
               component="div"

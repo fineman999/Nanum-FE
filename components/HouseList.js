@@ -1,13 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-  Box,
-  Container,
-  ImageList,
-  ImageListItem,
-  Typography,
-} from "@mui/material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Container, Typography } from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
+
 const itemData = [
   {
     img: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
@@ -61,41 +57,52 @@ const itemData = [
 
 const HouseList = ({ title }) => {
   return (
-    <Container pl={5} pr={5} mb={3} sx={{ widht: "100%" }}>
+    <Container sx={{ marginBottom: "120px", padding: "0px 30px 0px 30px" }}>
       <Typography
         variant="h5"
-        mb={3}
+        mb={5}
         sx={{ textAlign: "center", fontWeight: "bold" }}
       >
         {title}
       </Typography>
-      <ImageList variant="masonry" cols={1} gap={30}>
-        {itemData.map((item) => (
-          <ImageListItem key={item.img} sx={{ position: "relative" }}>
-            <img
-              src={`${item.img}?fit=crop&auto=format`}
-              srcSet={`${item.img}?fit=crop&auto=format&dpr=2 2x`}
-              alt={item.title}
-              loading="lazy"
-            />
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                background: "white",
-              }}
-            >
-              <Typography variant="h6">나눔 101호(해운대구)</Typography>
-              <FavoriteBorderIcon />
-            </Box>
-          </ImageListItem>
-        ))}
-      </ImageList>
+
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 4,
+            spaceBetween: 30,
+          },
+        }}
+        modules={[Pagination]}
+        className="mySwiper"
+      >
+        {itemData &&
+          itemData.map((item, index) => (
+            <SwiperSlide key={index}>
+              <div className="house_list_item">
+                <img
+                  className="house_image"
+                  src={item.img}
+                  alt={item.title}
+                  style={{
+                    width: "100%",
+                    height: "320px",
+                    borderRadius: "25px",
+                  }}
+                />
+              </div>
+            </SwiperSlide>
+          ))}
+      </Swiper>
     </Container>
   );
 };

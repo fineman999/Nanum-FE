@@ -126,16 +126,14 @@ const DrawerMenu = ({
                   <List component="div" disablePadding>
                     {listItem.sub &&
                       listItem.sub.menuList.map((listItem, index) => (
-                        <>
-                          <ListItem
-                            key={index}
-                            onClick={() => handleClick(listItem, index)}
-                          >
-                            <ListItemButton sx={{ pl: 4 }}>
-                              <ListItemText primary={listItem.name} />
-                            </ListItemButton>
-                          </ListItem>
-                        </>
+                        <ListItem
+                          key={index}
+                          onClick={() => handleClick(listItem, index)}
+                        >
+                          <ListItemButton sx={{ pl: 4 }}>
+                            <ListItemText primary={listItem.name} />
+                          </ListItemButton>
+                        </ListItem>
                       ))}
                   </List>
                 </Collapse>
