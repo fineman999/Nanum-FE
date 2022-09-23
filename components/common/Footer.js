@@ -18,9 +18,9 @@ const Footer = () => {
             </div>
             <div>주소 : 부산광역시 해운대구 우동 1514 센텀리더스마크 401호</div>
             <div>개인정보관리 책임자 : 안대현 (daehyun34@nanum.com)</div>
-            <div>사업자 등록번호 : 211-06-76999</div>
+            <div>사업자 등록번호 : 111-11-11111</div>
             <div>
-              통신판매업 신고 : 제 성동 - 3381호
+              통신판매업 신고 : 제 성동 - 1111호{" "}
               <span style={{ textDecoration: "underline" }}>
                 [사업자 정보 확인]
               </span>
@@ -50,7 +50,7 @@ const Footer = () => {
           .app_info_list {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 30px;
           }
 
           .app_info_list li {
