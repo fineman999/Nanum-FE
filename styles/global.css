@@ -7,3 +7,7 @@ ul {
 ul {
   list-style-type: none;
 }
+
+address {
+  font-style: normal;
+}

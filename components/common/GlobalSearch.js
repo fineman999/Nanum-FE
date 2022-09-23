@@ -1,6 +1,6 @@
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import TuneIcon from "@mui/icons-material/Tune";
-const GlobalSearch = () => {
+const GlobalSearch = ({ handleOpen }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
@@ -21,7 +21,7 @@ const GlobalSearch = () => {
               placeholder="지역명, 대학교, 지하철 역으로 검색..."
             />
           </div>
-          <div className="filter_icon">
+          <div className="filter_icon" onClick={handleOpen}>
             <div className="svg_icon">
               <TuneIcon />
             </div>
@@ -88,6 +88,7 @@ const GlobalSearch = () => {
           }
 
           .search_form_realock .realock_form_placeholder .form_placeholder {
+            box-sizing: border-box;
             width: 100%;
             border: none;
             font-family: lato-semi-bold;
