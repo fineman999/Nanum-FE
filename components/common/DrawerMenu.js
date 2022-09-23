@@ -12,7 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 
@@ -108,11 +108,8 @@ const DrawerMenu = ({
       <List>
         {menuList &&
           menuList.map((listItem, index) => (
-            <>
-              <ListItem
-                key={listItem.id}
-                onClick={() => handleClick(listItem, index)}
-              >
+            <Fragment key={listItem.id}>
+              <ListItem onClick={() => handleClick(listItem, index)}>
                 <ListItemButton>
                   <ListItemText primary={listItem.name} />
                 </ListItemButton>
@@ -138,7 +135,7 @@ const DrawerMenu = ({
                   </List>
                 </Collapse>
               )}
-            </>
+            </Fragment>
           ))}
       </List>
       <Divider />
