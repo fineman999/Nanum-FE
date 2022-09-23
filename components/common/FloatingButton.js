@@ -24,12 +24,7 @@ const ScrollTop = (props) => {
 
   return (
     <Fade in={trigger}>
-      <Box
-        onClick={handleClick}
-        role="presentation"
-        sx={{ display: "flex", justifyContent: "right" }}
-        p={2}
-      >
+      <Box onClick={handleClick} role="presentation" p={2}>
         {children}
       </Box>
     </Fade>
@@ -38,11 +33,13 @@ const ScrollTop = (props) => {
 
 const FloatingButton = () => {
   return (
-    <ScrollTop>
-      <Fab size="small" aria-label="scroll back to top">
-        <KeyboardArrowUpIcon />
-      </Fab>
-    </ScrollTop>
+    <Box sx={{ display: "flex", justifyContent: "right" }}>
+      <ScrollTop>
+        <Fab size="small" aria-label="scroll back to top">
+          <KeyboardArrowUpIcon />
+        </Fab>
+      </ScrollTop>
+    </Box>
   );
 };
 

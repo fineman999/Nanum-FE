@@ -51,6 +51,10 @@ const itemData = [
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
     title: "Coffee table",
   },
+  {
+    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    title: "night",
+  },
 ];
 
 const MainSwiper = () => {
