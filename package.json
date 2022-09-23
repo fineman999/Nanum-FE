@@ -18,8 +18,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "recoil": "^0.7.5",
-    "swiper": "^8.4.2",
-    "typeit-react": "^2.6.0"
+    "swiper": "^8.4.2"
   },
   "devDependencies": {
     "eslint": "8.23.1",
