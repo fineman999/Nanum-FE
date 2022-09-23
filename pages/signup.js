@@ -1,4 +1,3 @@
-import { Container } from "@mui/material";
 import css from "styled-jsx/css";
 
 const style = css`
@@ -54,7 +53,6 @@ const style = css`
     font-weight: initial;
     text-shadow: none;
     letter-spacing: -1px;
-    /* position: absolute; */
   }
   input:focus::placeholder {
     color: transparent;
