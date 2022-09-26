@@ -170,7 +170,7 @@ export default function Login() {
               <Link href="">
                 <a>비밀번호 찾기</a>
               </Link>
-              <Link href="">
+              <Link href="/signup/check">
                 <a>회원가입</a>
               </Link>
             </div>

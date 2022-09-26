@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import css from "styled-jsx/css";
 
@@ -192,6 +193,7 @@ const style = css`
   }
 `;
 export default function Signup() {
+  const router = useRouter();
   const [imageSrc, setImageSrc] = useState("");
 
   //이미지 미리보기
@@ -337,7 +339,9 @@ export default function Signup() {
             </div>
             <article id="btn_container">
               <button id="signup_btn">회원가입</button>
-              <button id="back_to_btn">취소</button>
+              <button id="back_to_btn" onClick={() => router.back()}>
+                취소
+              </button>
             </article>
           </section>
         </div>
