@@ -71,7 +71,7 @@ const HouseListItem = ({ item }) => {
         }
 
         .house_address {
-          font-size: 0.7rem;
+          font-size: 0.7em;
           font-weight: normal;
         }
 
@@ -87,6 +87,7 @@ const HouseListItem = ({ item }) => {
         }
 
         .gender_type {
+          font-size: 1.2rem;
           font-weight: bold;
         }
 
@@ -99,13 +100,14 @@ const HouseListItem = ({ item }) => {
           align-items: center;
         }
         .capacity {
+          font-size: 1.2rem;
+          margin-right: 0.5rem;
           font-weight: bold;
-          margin-right: 10px;
         }
 
         .capacity_number {
           color: red;
-          margin-right: 8px;
+          margin-right: 0.5rem;
           font-weight: bold;
         }
       `}</style>
