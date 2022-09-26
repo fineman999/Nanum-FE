@@ -1,3 +1,4 @@
+import { useState } from "react";
 import css from "styled-jsx/css";
 
 const style = css`
@@ -118,8 +119,93 @@ const style = css`
     margin: 0px;
     width: 50%;
   }
+  .selectBox {
+    position: relative;
+    width: 20vh;
+    height: 4vh;
+    border-radius: 30px;
+    border: 2px solid #76c1b2;
+    margin-bottom: 1rem;
+  }
+  .selectBox .select {
+    width: inherit;
+    height: inherit;
+    background: transparent;
+    border: 0 none;
+    outline: 0 none;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 3;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+  }
+  .selectBox .select option {
+    background: #76c1b2;
+    color: #fff;
+    padding: 3px 0;
+    font-size: 16px;
+  }
+  .selectBox .icoArrow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    width: 35px;
+    height: inherit;
+    border-left: 2px solid #76c1b2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .selectBox .icoArrow img {
+    width: 50%;
+    transition: 0.3s; // 부드럽게 회전
+  }
+
+  .selectBox .select:focus + .icoArrow img {
+    transform: rotate(180deg);
+  }
+  article span {
+    padding: 2px 0.5rem;
+  }
+  .warn {
+    color: rgb(240, 90, 90);
+  }
+  .collect {
+    color: green;
+  }
+  .input-file-button {
+    padding: 0.4rem 1rem;
+    width: 60%;
+    text-align: center;
+    background-color: #76c1b2;
+    border-radius: 30px;
+    color: white;
+    cursor: pointer;
+    margin: 0;
+    font-size: 1rem;
+  }
+  #preview_profile img {
+    width: 100px;
+  }
 `;
 export default function Signup() {
+  const [imageSrc, setImageSrc] = useState("");
+
+  //이미지 미리보기
+  const encodeFileToBase64 = (fileBob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
   return (
     <>
       <div id="signup">
@@ -133,16 +219,26 @@ export default function Signup() {
               <input
                 type="email"
                 id="email"
+                name="email"
                 placeholder="이메일을 입력해주세요."
               />
+              {/* {emailTest ? (
+                <span className="collect">사용가능한 이메일입니다.</span>
+              ) : (
+                <span className="warn">이메일 형식에 맞춰주세요.</span>
+              )} */}
+              {/* <span className="warn">사용중인 이메일이에요.</span> */}
             </article>
             <article id="nickname_htmlForm">
               <label htmlFor="nickname">닉네임</label>
               <input
                 type="text"
                 id="nickname"
-                placeholder="닉네임은 2자 이상,10자 이하입니다."
+                placeholder="닉네임은 2자 이상, 10자 이하입니다."
               />
+              {/* <span className="warn">닉네임은 2자 이상, 10자 이하입니다.</span>
+              <span className="warn">사용중인 닉네임이에요.</span>
+              <span className="collect">사용가능한 닉네임입니다.</span> */}
             </article>
             <article id="pw_htmlForm">
               <label htmlFor="pw">비밀번호</label>
@@ -151,6 +247,10 @@ export default function Signup() {
                 id="pw"
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
               />
+              {/* <span className="warn">
+                8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+              </span>
+              <span className="collect">사용할 수 있는 비밀번호입니다.</span> */}
             </article>
             <article id="pwCheck_htmlForm">
               <label htmlFor="pwCheck">비밀번호 확인</label>
@@ -159,14 +259,15 @@ export default function Signup() {
                 id="passwordConfirmation"
                 placeholder="비밀번호를 다시 입력해주세요."
               />
+              {/* <span className="warn">비밀번호가 맞지 않아요.</span>
+              <span className="collect">비밀번호가 일치합니다.</span> */}
             </article>
             <article id="tel">
               <label htmlFor="tel">휴대전화</label>
-              <input type="text" placeholder="대한민국 +82" />
               <div
                 style={{
                   display: "flex",
-                  margin: "10px 0px",
+                  marginBottom: "10px",
                   justifyContent: "space-around",
                 }}
               >
@@ -184,23 +285,54 @@ export default function Signup() {
                 placeholder="인증번호를 입력하세요."
               />
             </article>
-            <div style={{ display: "flex", alignItems: "center" }}>
-              <div>
-                <article id="sex_htmlForm">
-                  <label htmlFor="sex">성별</label>
-                  <input type="text" placeholder="성별"></input>
-                </article>
-                <article id="profile_htmlForm">
+            <div
+              style={{ display: "flex", alignItems: "center", width: "100%" }}
+            >
+              <div
+                style={{
+                  width: "100%",
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                }}
+              >
+                <div className="selectBox">
+                  <select name="sex" className="select">
+                    <option disabled selected>
+                      성별
+                    </option>
+                    <option value="woman">여자</option>
+                    <option value="man">남자</option>
+                  </select>
+                  <span className="icoArrow">
+                    <img src="/icons/arrow.png" alt="arrow" />
+                  </span>
+                </div>
+                <article id="profile_htmlForm" style={{ marginBottom: "0" }}>
                   <label htmlFor="profileImg">프로필 사진</label>
-                  <button style={{ width: "80%" }}>이미지 업로드</button>
+                  <label className="input-file-button" for="input-file">
+                    이미지 업로드
+                  </label>
+                  <input
+                    type="file"
+                    id="input-file"
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={(e) => {
+                      encodeFileToBase64(e.target.files[0]);
+                    }}
+                  />
                 </article>
               </div>
               <article id="preview_profile">
-                <img
-                  src="/images/default.png"
-                  alt="default IMG"
-                  style={{ alignSelf: "flex-end" }}
-                />
+                {imageSrc ? (
+                  <img src={imageSrc} alt="preview_img" />
+                ) : (
+                  <img
+                    src="/images/default.png"
+                    alt="default IMG"
+                    style={{ alignSelf: "flex-end" }}
+                  />
+                )}
               </article>
             </div>
             <article id="btn_container">
