@@ -1,8 +1,9 @@
 import { useState } from "react";
 import css from "styled-jsx/css";
-import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
-
+import Badge from "@mui/material/Badge";
+import Header from "../../components/common/Header";
+import { Toolbar } from "@mui/material";
 const style = css`
   #mypage {
     background-color: #edf1f1;
@@ -12,7 +13,8 @@ const style = css`
     align-items: center;
     align-self: center;
     min-height: 92.5vh;
-    padding: 2rem 0rem;
+    padding: 5rem 0rem;
+    box-sizing: border-box;
   }
   #user_header {
     display: flex;
@@ -120,6 +122,8 @@ export default function MyPage() {
   const userTime = "14:00";
   return (
     <>
+      <Header title="마이페이지" type="my" />
+
       <div id="mypage">
         <section id="user_header">
           <img src="/images/default.png"></img>
