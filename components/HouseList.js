@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
+import HouseListItem from "./HouseListItem";
 
 const itemData = [
   {
@@ -53,6 +53,10 @@ const itemData = [
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
     title: "Coffee table",
   },
+  {
+    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    title: "night",
+  },
 ];
 
 const HouseList = ({ title }) => {
@@ -69,9 +73,6 @@ const HouseList = ({ title }) => {
       <Swiper
         slidesPerView={1}
         spaceBetween={10}
-        pagination={{
-          clickable: true,
-        }}
         breakpoints={{
           640: {
             slidesPerView: 2,
@@ -82,24 +83,12 @@ const HouseList = ({ title }) => {
             spaceBetween: 30,
           },
         }}
-        modules={[Pagination]}
         className="mySwiper"
       >
         {itemData &&
           itemData.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="house_list_item">
-                <img
-                  className="house_image"
-                  src={item.img}
-                  alt={item.title}
-                  style={{
-                    width: "100%",
-                    height: "320px",
-                    borderRadius: "25px",
-                  }}
-                />
-              </div>
+              <HouseListItem item={item} />
             </SwiperSlide>
           ))}
       </Swiper>

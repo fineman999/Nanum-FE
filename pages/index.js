@@ -1,7 +1,6 @@
-import { Box, Toolbar, Typography } from "@mui/material";
 import { useState } from "react";
-import BottomMenu from "../components/common/BottomMenu";
 import Footer from "../components/common/Footer";
+import BottomMenu from "../components/common/BottomMenu";
 import GlobalSearch from "../components/common/GlobalSearch";
 import Header from "../components/common/Header";
 import SearchModal from "../components/common/modal/SearchModal";

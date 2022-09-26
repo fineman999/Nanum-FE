@@ -39,6 +39,10 @@ const style = {
 };
 
 const SearchModal = ({ open, handleClose }) => {
+  const handleSearch = () => {
+    handleClose();
+  };
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -133,7 +137,7 @@ const SearchModal = ({ open, handleClose }) => {
           </Box>
 
           <Box sx={{ display: "flex", justifyContent: "right" }}>
-            <Button>검색</Button>
+            <Button onClick={handleSearch}>검색</Button>
             <Button onClick={handleClose}>닫기</Button>
           </Box>
         </Box>
