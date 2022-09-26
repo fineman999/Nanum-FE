@@ -67,11 +67,12 @@ const HouseListItem = ({ item }) => {
         }
 
         .house_name {
+          font-size: 1.4em;
           font-weight: bold;
         }
 
         .house_address {
-          font-size: 0.7em;
+          font-size: 1em;
           font-weight: normal;
         }
 
@@ -87,12 +88,12 @@ const HouseListItem = ({ item }) => {
         }
 
         .gender_type {
-          font-size: 1.2rem;
+          font-size: 1.2em;
           font-weight: bold;
         }
 
         .house_type {
-          font-size: 0.9rem;
+          font-size: 0.9em;
         }
 
         .house_state {
@@ -100,14 +101,14 @@ const HouseListItem = ({ item }) => {
           align-items: center;
         }
         .capacity {
-          font-size: 1.2rem;
-          margin-right: 0.5rem;
+          font-size: 1.2em;
+          margin-right: 0.5em;
           font-weight: bold;
         }
 
         .capacity_number {
           color: red;
-          margin-right: 0.5rem;
+          margin-right: 0.5em;
           font-weight: bold;
         }
       `}</style>

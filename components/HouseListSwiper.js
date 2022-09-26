@@ -59,7 +59,7 @@ const itemData = [
   },
 ];
 
-const HouseList = ({ title }) => {
+const HouseListSwiper = ({ title }) => {
   return (
     <Container sx={{ marginBottom: "120px", padding: "0px 30px 0px 30px" }}>
       <Typography
@@ -96,8 +96,8 @@ const HouseList = ({ title }) => {
   );
 };
 
-HouseList.propTypes = {
+HouseListSwiper.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default HouseList;
+export default HouseListSwiper;

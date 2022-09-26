@@ -5,6 +5,7 @@ import Map from "../../components/common/Map";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import HouseListItem from "../../components/HouseListItem";
+import Footer from "../../components/common/Footer";
 
 const itemData = [
   {
@@ -102,6 +103,7 @@ export default function Houses() {
         </div>
       </div>
       <BottomMenu />
+      <Footer />
       <style jsx>{`
         .search_container {
           display: flex;
@@ -133,6 +135,7 @@ export default function Houses() {
           box-sizing: border-box;
           width: 100%;
           padding: 10px;
+          padding-left: 15px;
           border-radius: 50px;
           border: none;
           font-size: 1rem;
@@ -153,9 +156,6 @@ export default function Houses() {
           align-items: center;
         }
 
-        .icon_tune {
-        }
-
         .house_list {
           box-sizing: border-box;
           width: 100%;
@@ -169,6 +169,7 @@ export default function Houses() {
           box-sizing: border-box;
           width: 48%;
           margin-bottom: 12px;
+          font-size: 10px;
         }
       `}</style>
     </>
