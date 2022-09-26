@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
+  env: {
+    KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
+  },
   images: {
     domains: ["images.unsplash.com"],
   },

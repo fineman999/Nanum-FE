@@ -1,8 +1,27 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import TuneIcon from "@mui/icons-material/Tune";
+
 const GlobalSearch = ({ handleOpen }) => {
+  const router = useRouter();
+  const [searchForm, setSearchForm] = useState({
+    searchInput: "",
+  });
+
+  const handleChange = (e) => {
+    setSearchForm({
+      ...searchForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    router.push({
+      pathname: "/house",
+      query: { search: searchForm.searchInput },
+    });
   };
 
   return (
@@ -17,8 +36,11 @@ const GlobalSearch = ({ handleOpen }) => {
           <div className="realock_form_placeholder">
             <input
               className="form_placeholder"
+              name="searchInput"
               type="text"
               placeholder="지역명, 대학교, 지하철 역으로 검색..."
+              onChange={handleChange}
+              required
             />
           </div>
           <div className="filter_icon" onClick={handleOpen}>
@@ -27,12 +49,7 @@ const GlobalSearch = ({ handleOpen }) => {
             </div>
           </div>
           <div className="realock_form_button">
-            <input
-              className="form_submit_button"
-              type="submit"
-              name="submit"
-              value="검색"
-            />
+            <button className="form_submit_button">검색</button>
           </div>
         </form>
       </div>
