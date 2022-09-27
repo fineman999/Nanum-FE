@@ -5,7 +5,8 @@ import { pink } from "@mui/material/colors";
 import { Favorite } from "@mui/icons-material";
 
 const HouseListItem = ({ item }) => {
-  const [like, setLike] = useState(false);
+  const { img, name, isLike, gender, type } = item;
+  const [like, setLike] = useState(isLike);
 
   const handleLike = () => {
     setLike(!like);
@@ -21,12 +22,12 @@ const HouseListItem = ({ item }) => {
           position: "relative",
         }}
       >
-        <Image src={item.img} alt={item.title} layout="fill" />
+        <Image src={img} alt={name} layout="fill" />
       </div>
       <div className="house_info">
         <div className="house_info_header">
           <div className="house_name_wrapper">
-            <div className="house_name">나눔 101호</div>
+            <div className="house_name">{name}</div>
             <span className="house_address">(해운대구)</span>
           </div>
           <div className="favorite_icon" onClick={handleLike}>
@@ -39,8 +40,8 @@ const HouseListItem = ({ item }) => {
         </div>
         <div className="house_info_body">
           <div className="house_type_wrapper">
-            <div className="gender_type">남성전용</div>
-            <span className="house_type">빌라</span>
+            <div className="gender_type">{gender}</div>
+            <span className="house_type">{type}</span>
           </div>
           <div className="house_state">
             <div className="capacity">신청가능</div>

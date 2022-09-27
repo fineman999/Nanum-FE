@@ -1,97 +1,173 @@
-import { Hidden, IconButton } from "@mui/material";
+import { IconButton } from "@mui/material";
 import BottomMenu from "../../components/common/BottomMenu";
-import Header from "../../components/common/Header";
-import Map from "../../components/common/Map";
+import HouseMap from "../../components/common/map/HouseMap";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import HouseListItem from "../../components/HouseListItem";
 import Footer from "../../components/common/Footer";
+import SubHeader from "../../components/common/SubHeader";
+import { useState } from "react";
+import SearchModal from "../../components/common/modal/SearchModal";
+import { useRouter } from "next/router";
 
 const itemData = [
   {
     img: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
-    title: "Bed",
+    name: "Bed",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스],
   },
   {
     img: "https://images.unsplash.com/photo-1525097487452-6278ff080c31",
-    title: "Books",
+    name: "Books",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
-    title: "Sink",
+    name: "Sink",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
-    title: "Kitchen",
+    name: "Kitchen",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1588436706487-9d55d73a39e3",
-    title: "Blinds",
+    name: "Blinds",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622",
-    title: "Chairs",
+    name: "Chairs",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1530731141654-5993c3016c77",
-    title: "Laptop",
+    name: "Laptop",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
-    title: "Doors",
+    name: "Doors",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1517487881594-2787fef5ebf7",
-    title: "Coffee",
+    name: "Coffee",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee",
-    title: "Storage",
+    name: "Storage",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62",
-    title: "Candle",
+    name: "Candle",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
-    title: "Coffee table",
+    name: "Coffee table",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
     img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
-    title: "night",
+    name: "night",
+    isLike: false,
+    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
+    type: "빌라", // [빌라, 아파트, 오피스텔]
   },
 ];
 
 export default function Houses() {
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [searchForm, setSearchForm] = useState({
+    searchInput: "",
+  });
+
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleChange = (e) => {
+    setSearchForm({
+      ...searchForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(searchForm.searchInput);
+    router.push({
+      pathname: "/house",
+      query: { search: searchForm.searchInput },
+    });
+  };
+
   return (
     <>
-      <Header title="하우스 검색" type="search" />
+      <SubHeader title="하우스 검색" type="search" />
       <div className="search_container">
+        {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <Map />
+          <HouseMap />
         </div>
-        <div className="search_wrapper">
-          <div className="search_inp_wrapper">
-            <input
-              className="search_input"
-              type="search"
-              name="searchInput"
-              placeholder="지역명, 대학명, 지하철역으로 검색..."
-            />
+        <div className="house_list_wrapper">
+          <div className="search_wrapper">
+            <div className="search_inp_wrapper">
+              <input
+                className="search_input"
+                name="searchInput"
+                placeholder="지역명, 대학명, 지하철역으로 검색..."
+                onChange={handleChange}
+              />
 
-            <div className="icon_search">
-              <IconButton>
-                <SearchIcon />
+              <div className="icon_search">
+                <IconButton onClick={handleSubmit}>
+                  <SearchIcon />
+                </IconButton>
+              </div>
+            </div>
+            <div className="icon_tune">
+              <IconButton onClick={handleOpen}>
+                <TuneIcon />
               </IconButton>
             </div>
           </div>
-          <div className="icon_tune">
-            <IconButton>
-              <TuneIcon />
-            </IconButton>
+          <div className="filter_wrapper">
+            <ul className="filter_list">
+              <li className="active">전체</li>
+              <li>인기</li>
+              <li>쉐어</li>
+              <li>마이룸</li>
+              <li>기타</li>
+            </ul>
           </div>
-        </div>
-        <div className="house_list_wrapper">
           <ul className="house_list">
             {itemData &&
               itemData.map((item, index) => (
@@ -102,9 +178,11 @@ export default function Houses() {
           </ul>
         </div>
       </div>
+      <SearchModal open={open} handleClose={handleClose} />
       <BottomMenu />
       <Footer />
       <style jsx>{`
+        // mobile first
         .search_container {
           display: flex;
           flex-direction: column;
@@ -112,9 +190,11 @@ export default function Houses() {
 
         .map_wrapper {
           width: 100%;
+          height: 400px;
         }
 
         .house_list_wrapper {
+          position: relative;
           width: 100%;
         }
 
@@ -127,8 +207,10 @@ export default function Houses() {
         }
 
         .search_inp_wrapper {
+          box-sizing: border-box;
           position: relative;
-          width: 85%;
+          width: 90%;
+          padding-left: 15px;
         }
 
         .search_input {
@@ -156,6 +238,28 @@ export default function Houses() {
           align-items: center;
         }
 
+        .filter_wrapper {
+          width: 100%;
+          height: 30px;
+          box-sizing: border-box;
+          padding: 10px;
+        }
+
+        .filter_list {
+          display: flex;
+          align-items: center;
+        }
+
+        .filter_list > li {
+          margin-right: 10px;
+        }
+
+        .filter_list > li.active {
+          text-decoration: underline;
+          box-sizing: border-box;
+          font-weight: bold;
+        }
+
         .house_list {
           box-sizing: border-box;
           width: 100%;
@@ -170,6 +274,36 @@ export default function Houses() {
           width: 48%;
           margin-bottom: 12px;
           font-size: 10px;
+        }
+
+        // media query
+        @media all (min-width: 1024px) {
+          .search_container {
+            flex-direction: row-reverse;
+          }
+
+          .map_wrapper {
+            height: 100vh;
+          }
+
+          .house_list_wrapper {
+            box-sizing: border-box;
+            width: 100%;
+            height: 100vh;
+            overflow: auto;
+          }
+
+          /* Hide scrollbar for Chrome, Safari and Opera */
+          .house_list_wrapper::-webkit-scrollbar {
+            display: none;
+          }
+
+          .house_list_item {
+            box-sizing: border-box;
+            width: 33%;
+            margin-bottom: 12px;
+            font-size: 16px;
+          }
         }
       `}</style>
     </>

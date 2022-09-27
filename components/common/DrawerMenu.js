@@ -15,6 +15,7 @@ import {
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import Link from "next/link";
 
 const DrawerMenu = ({
   userName = "사용자",
@@ -22,7 +23,7 @@ const DrawerMenu = ({
   toggleDrawer,
 }) => {
   const [menuList, setMenuList] = useState([
-    { id: 1, name: "홈" },
+    { id: 1, name: "홈", path: "/" },
     {
       id: 2,
       name: "커뮤니티",
@@ -110,9 +111,11 @@ const DrawerMenu = ({
           menuList.map((listItem, index) => (
             <Fragment key={listItem.id}>
               <ListItem onClick={() => handleClick(listItem, index)}>
-                <ListItemButton>
-                  <ListItemText primary={listItem.name} />
-                </ListItemButton>
+                <Link href={listItem.path || ""}>
+                  <ListItemButton>
+                    <ListItemText primary={listItem.name} />
+                  </ListItemButton>
+                </Link>
                 {/* 하위 메뉴 더보기 */}
                 {listItem.sub &&
                   (listItem.sub.open ? <ExpandLess /> : <ExpandMore />)}
