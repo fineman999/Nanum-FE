@@ -40,7 +40,6 @@ const GlobalSearch = ({ handleOpen }) => {
               type="text"
               placeholder="지역명, 대학교, 지하철 역으로 검색..."
               onChange={handleChange}
-              required
             />
           </div>
           <div className="filter_icon" onClick={handleOpen}>

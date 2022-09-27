@@ -4,7 +4,7 @@ import BottomMenu from "../components/common/BottomMenu";
 import GlobalSearch from "../components/common/GlobalSearch";
 import Header from "../components/common/Header";
 import SearchModal from "../components/common/modal/SearchModal";
-import HouseList from "../components/HouseList";
+import HouseListSwiper from "../components/HouseListSwiper";
 import MainSwiper from "../components/MainSwiper";
 
 export default function Home() {
@@ -18,9 +18,9 @@ export default function Home() {
       <MainSwiper />
       <GlobalSearch handleOpen={handleOpen} />
       <SearchModal open={open} handleClose={handleClose} />
-      <HouseList title="인기 하우스" />
-      <HouseList title="쉐어 하우스" />
-      <HouseList title="마이룸" />
+      <HouseListSwiper title="인기 하우스" />
+      <HouseListSwiper title="쉐어 하우스" />
+      <HouseListSwiper title="마이룸" />
       <Footer />
       <BottomMenu />
     </>
