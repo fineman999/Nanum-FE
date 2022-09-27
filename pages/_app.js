@@ -4,6 +4,7 @@ import "../styles/global.css";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import Head from "next/head";
+import { RecoilRoot } from "recoil";
 
 export default function MyApp({ Component, pageProps }) {
   return (
@@ -11,7 +12,9 @@ export default function MyApp({ Component, pageProps }) {
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <Component {...pageProps} />
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
     </>
   );
 }
