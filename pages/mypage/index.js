@@ -3,7 +3,8 @@ import css from "styled-jsx/css";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Header from "../../components/common/Header";
-import { Toolbar } from "@mui/material";
+import { useRouter } from "next/router";
+
 const style = css`
   #mypage {
     background-color: #edf1f1;
@@ -44,7 +45,6 @@ const style = css`
     height: 4vh;
   }
   #user_content {
-    width: 100%;
     margin-left: 1rem;
   }
   h3 {
@@ -59,13 +59,15 @@ const style = css`
   }
   #user_btn {
     display: flex;
+    width: 100%;
   }
   #user_move {
     display: flex;
     padding: 1rem;
     background-color: #ffff;
-    border-radius: 20px;
+    border-radius: 10px;
     margin: 1rem 0rem;
+    justify-content: space-between;
     width: 39vh;
   }
   #user_move img {
@@ -112,6 +114,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function MyPage() {
+  const router = useRouter();
+
   const [userName, setUserName] = useState("노숙자");
   const [postCnt, setPostCnt] = useState(2);
   const [commentCnt, setCommentCnt] = useState(3);
@@ -123,7 +127,6 @@ export default function MyPage() {
   return (
     <>
       <Header title="마이페이지" type="my" />
-
       <div id="mypage">
         <section id="user_header">
           <img src="/images/default.png"></img>
@@ -133,9 +136,21 @@ export default function MyPage() {
               <button>프로필 수정</button>
             </div>
             <div id="user_activity">
-              <h4>게시글 {postCnt}</h4>
+              <h4
+                onClick={() => {
+                  router.push("/mypage/posts");
+                }}
+              >
+                게시글 {postCnt}
+              </h4>
 
-              <h4>댓글 {commentCnt}</h4>
+              <h4
+                onClick={() => {
+                  router.push("/mypage/comments");
+                }}
+              >
+                댓글 {commentCnt}
+              </h4>
 
               <h4>찜 {likeCnt}</h4>
             </div>
@@ -153,6 +168,15 @@ export default function MyPage() {
                     color: "red",
                     fontWeight: "normal",
                     fontSize: "12px",
+                  }}
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/mypage/contacts",
+                        query: { type: 1 },
+                      },
+                      `/mypage/contacts`
+                    );
                   }}
                 >
                   더보기
@@ -175,6 +199,15 @@ export default function MyPage() {
                     fontWeight: "normal",
                     fontSize: "12px",
                   }}
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: "/mypage/contacts",
+                        query: { type: 2 },
+                      },
+                      `/mypage/contacts`
+                    )
+                  }
                 >
                   더보기
                 </p>
@@ -188,25 +221,25 @@ export default function MyPage() {
           </div>
         </section>
         <section id="user_btn">
-          <div id="user_unit">
+          <div id="user_unit" onClick={() => router.push("/mail")}>
             <StyledBadge badgeContent={2} color="error">
               <img src="/icons/mail.png" />
             </StyledBadge>
             <p>쪽지함</p>
           </div>
-          <div id="user_unit">
+          <div id="user_unit" onClick={() => router.push("/chat")}>
             <StyledBadge badgeContent={100} color="error">
               <img src="/icons/chat.png" style={{ padding: "5px" }} />
             </StyledBadge>
 
             <p>채팅</p>
           </div>
-          <div id="user_unit">
+          <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
             <StyledBadge badgeContent={4} color="error">
               <img src="/icons/alarm.png" />
             </StyledBadge>
 
-            <p>알람</p>
+            <p>알림</p>
           </div>
         </section>
         <section id="user_btn">
