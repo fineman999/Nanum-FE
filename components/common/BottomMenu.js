@@ -4,6 +4,7 @@ import {
   BottomNavigationAction,
   Box,
   Paper,
+  useMediaQuery,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
 import EmailIcon from "@mui/icons-material/Email";
@@ -12,6 +13,11 @@ import ChatIcon from "@mui/icons-material/Chat";
 import FloatingButton from "./FloatingButton";
 
 const BottomMenu = () => {
+  const matches = useMediaQuery("(min-width: 600px");
+
+  if (matches) {
+    return null;
+  }
   return (
     <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}>
       <FloatingButton />

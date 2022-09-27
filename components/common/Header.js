@@ -79,7 +79,7 @@ const Header = ({ title, type = "main" }) => {
               component="div"
               sx={{
                 flexGrow: 1,
-                color: "white",
+                color: "#555555",
                 fontWeight: "bold",
                 textAlign: `${type !== "main" ? "center" : "left"}`,
               }}
