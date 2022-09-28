@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 
-import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Divider,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
