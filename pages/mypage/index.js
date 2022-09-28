@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 
 const style = css`
   #mypage {
-    background-color: #edf1f1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -152,7 +151,13 @@ export default function MyPage() {
                 댓글 {commentCnt}
               </h4>
 
-              <h4>찜 {likeCnt}</h4>
+              <h4
+                onClick={() => {
+                  router.push("/like");
+                }}
+              >
+                좋아요 {likeCnt}
+              </h4>
             </div>
           </div>
         </section>
@@ -220,41 +225,43 @@ export default function MyPage() {
             <img src="/images/house.png" />
           </div>
         </section>
-        <section id="user_btn">
-          <div id="user_unit" onClick={() => router.push("/mail")}>
-            <StyledBadge badgeContent={2} color="error">
-              <img src="/icons/mail.png" />
-            </StyledBadge>
-            <p>쪽지함</p>
-          </div>
-          <div id="user_unit" onClick={() => router.push("/chat")}>
-            <StyledBadge badgeContent={100} color="error">
-              <img src="/icons/chat.png" style={{ padding: "5px" }} />
-            </StyledBadge>
+        <section>
+          <section id="user_btn">
+            <div id="user_unit" onClick={() => router.push("/mail")}>
+              <StyledBadge badgeContent={2} color="error">
+                <img src="/icons/mail.png" />
+              </StyledBadge>
+              <p>쪽지함</p>
+            </div>
+            <div id="user_unit" onClick={() => router.push("/chat")}>
+              <StyledBadge badgeContent={100} color="error">
+                <img src="/icons/chat.png" style={{ padding: "5px" }} />
+              </StyledBadge>
 
-            <p>채팅</p>
-          </div>
-          <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
-            <StyledBadge badgeContent={4} color="error">
-              <img src="/icons/alarm.png" />
-            </StyledBadge>
+              <p>채팅</p>
+            </div>
+            <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
+              <StyledBadge badgeContent={4} color="error">
+                <img src="/icons/alarm.png" />
+              </StyledBadge>
 
-            <p>알림</p>
-          </div>
-        </section>
-        <section id="user_btn">
-          <div id="user_unit">
-            <img src="/icons/heart.png" />
-            <p>찜목록</p>
-          </div>
-          <div id="user_unit">
-            <img src="/icons/review.png" />
-            <p>리뷰</p>
-          </div>
-          <div id="user_unit">
-            <img src="/icons/setting.png" />
-            <p>설정</p>
-          </div>
+              <p>알림</p>
+            </div>
+          </section>
+          <section id="user_btn">
+            <div id="user_unit" onClick={() => router.push("/like")}>
+              <img src="/icons/heart.png" />
+              <p>좋아요</p>
+            </div>
+            <div id="user_unit" onClick={() => router.push("/mypage/review")}>
+              <img src="/icons/review.png" />
+              <p>리뷰</p>
+            </div>
+            <div id="user_unit" onClick={() => router.push("/mypage/setting")}>
+              <img src="/icons/setting.png" />
+              <p>설정</p>
+            </div>
+          </section>
         </section>
       </div>
       <style jsx>{style}</style>
