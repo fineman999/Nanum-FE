@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import css from "styled-jsx/css";
 
 const style = css`
@@ -189,14 +189,106 @@ const style = css`
   }
   #preview_profile img {
     width: 100px;
+    height: 100px;
+    border-radius: 100%;
   }
 `;
 export default function Signup() {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState("");
+  const phoneRef = useRef();
+
+  //유저정보
+  const [userInfo, setUserInfo] = useState({
+    email: "",
+    password: "",
+    pwConfirm: "",
+    nickname: "",
+    phone: "",
+    sex: "",
+    imgFile: {},
+  });
+
+  //유효성 검사
+  const [emailTest, setEmailTest] = useState(false);
+  const [pwTest, setPwTest] = useState(false);
+  const [pwConfirmTest, setPwConfirmTest] = useState(false);
+  const [nameTest, setNameTest] = useState(false);
+
+  //이메일 유효성 검사
+  const checkEmail = (e) => {
+    var regExp =
+      /([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    setEmailTest(regExp.test(e.target.value));
+    setUserInfo(() => ({
+      ...userInfo,
+      email: e.target.value,
+    }));
+  };
+
+  //비밀번호 유효성 검사
+  const checkPw = (e) => {
+    var regExp = /^(?=.*[a-zA-Z])((?=.*\d)(?=.*\W)).{8,20}$/;
+    setPwTest(regExp.test(e.target.value));
+    setUserInfo(() => ({ ...userInfo, password: e.target.value }));
+  };
+
+  //비밀번호 확인 유효성 검사
+  const checkPwConfirm = (e) => {
+    if (e.target.value === userInfo.password) {
+      setPwConfirmTest(true);
+    } else {
+      setPwConfirmTest(false);
+    }
+    setUserInfo(() => ({ ...userInfo, pwConfirm: e.target.value }));
+  };
+
+  //닉네임 유효성 검사
+  const checkName = (e) => {
+    if (e.target.value.length >= 2 && e.target.value.length <= 10) {
+      setNameTest(true);
+    } else {
+      setNameTest(false);
+    }
+    setUserInfo(() => ({ ...userInfo, nickname: e.target.value }));
+  };
+
+  //휴대폰 - 자동 입력
+  const handlePhone = (e) => {
+    const value = phoneRef.current.value.replace(/\D+/g, "");
+    const numberLength = 11;
+
+    let result;
+    result = "";
+
+    for (let i = 0; i < value.length && i < numberLength; i++) {
+      switch (i) {
+        case 3:
+          result += "-";
+          break;
+        case 7:
+          result += "-";
+          break;
+
+        default:
+          break;
+      }
+      result += value[i];
+    }
+    phoneRef.current.value = result;
+    setUserInfo(() => ({ ...userInfo, phone: e.target.value }));
+  };
+
+  //성별 선택
+  const handleSex = (e) => {
+    setUserInfo(() => ({ ...userInfo, sex: e.target.value }));
+  };
 
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
+    console.log(userInfo);
+    console.log(fileBob);
+    setUserInfo(() => ({ ...userInfo, imgFile: fileBob }));
     const reader = new FileReader();
     reader.readAsDataURL(fileBob);
     return new Promise((resolve) => {
@@ -206,6 +298,8 @@ export default function Signup() {
       };
     });
   };
+
+  //
 
   return (
     <>
@@ -222,12 +316,21 @@ export default function Signup() {
                 id="email"
                 name="email"
                 placeholder="이메일을 입력해주세요."
+                maxLength="50"
+                onChange={checkEmail}
               />
-              {/* {emailTest ? (
-                <span className="collect">사용가능한 이메일입니다.</span>
+              {userInfo.email == "" ? (
+                <></>
               ) : (
-                <span className="warn">이메일 형식에 맞춰주세요.</span>
-              )} */}
+                <>
+                  {emailTest ? (
+                    <span className="collect">사용가능한 이메일입니다.</span>
+                  ) : (
+                    <span className="warn">이메일 형식에 맞춰주세요.</span>
+                  )}
+                </>
+              )}
+
               {/* <span className="warn">사용중인 이메일이에요.</span> */}
             </article>
             <article id="nickname_htmlForm">
@@ -236,10 +339,23 @@ export default function Signup() {
                 type="text"
                 id="nickname"
                 placeholder="닉네임은 2자 이상, 10자 이하입니다."
+                onChange={checkName}
               />
-              {/* <span className="warn">닉네임은 2자 이상, 10자 이하입니다.</span>
-              <span className="warn">사용중인 닉네임이에요.</span>
-              <span className="collect">사용가능한 닉네임입니다.</span> */}
+              {userInfo.nickname == "" ? (
+                <></>
+              ) : (
+                <>
+                  {nameTest ? (
+                    <span className="collect">사용가능한 닉네임입니다.</span>
+                  ) : (
+                    <span className="warn">
+                      닉네임은 2자 이상, 10자 이하입니다.
+                    </span>
+                  )}
+                </>
+              )}
+
+              {/* <span className="warn">사용중인 닉네임이에요.</span> */}
             </article>
             <article id="pw_htmlForm">
               <label htmlFor="pw">비밀번호</label>
@@ -247,11 +363,23 @@ export default function Signup() {
                 type="password"
                 id="pw"
                 placeholder="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
+                onChange={checkPw}
               />
-              {/* <span className="warn">
-                8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
-              </span>
-              <span className="collect">사용할 수 있는 비밀번호입니다.</span> */}
+              {userInfo.password == "" ? (
+                <></>
+              ) : (
+                <>
+                  {pwTest ? (
+                    <span className="collect">
+                      사용할 수 있는 비밀번호입니다.
+                    </span>
+                  ) : (
+                    <span className="warn">
+                      8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
+                    </span>
+                  )}
+                </>
+              )}
             </article>
             <article id="pwCheck_htmlForm">
               <label htmlFor="pwCheck">비밀번호 확인</label>
@@ -259,9 +387,19 @@ export default function Signup() {
                 type="password"
                 id="passwordConfirmation"
                 placeholder="비밀번호를 다시 입력해주세요."
+                onChange={checkPwConfirm}
               />
-              {/* <span className="warn">비밀번호가 맞지 않아요.</span>
-              <span className="collect">비밀번호가 일치합니다.</span> */}
+              {userInfo.pwConfirm == "" ? (
+                <></>
+              ) : (
+                <>
+                  {pwConfirmTest ? (
+                    <span className="collect">비밀번호가 일치합니다.</span>
+                  ) : (
+                    <span className="warn">비밀번호가 맞지 않아요.</span>
+                  )}
+                </>
+              )}
             </article>
             <article id="tel">
               <label htmlFor="tel">휴대전화</label>
@@ -273,10 +411,13 @@ export default function Signup() {
                 }}
               >
                 <input
-                  type="text"
+                  type="tel"
                   id="tel"
-                  placeholder="휴대전화 번호를 입력하세요."
+                  placeholder="숫자로만 입력하세요."
+                  ref={phoneRef}
                   style={{ marginRight: "5px" }}
+                  onChange={handlePhone}
+                  value={userInfo.phone}
                 />
                 <button style={{ width: "80%" }}> 인증번호 받기</button>
               </div>
@@ -297,12 +438,12 @@ export default function Signup() {
                 }}
               >
                 <div className="selectBox">
-                  <select name="sex" className="select">
+                  <select name="sex" className="select" onChange={handleSex}>
                     <option disabled selected>
                       성별
                     </option>
-                    <option value="woman">여자</option>
-                    <option value="man">남자</option>
+                    <option value="0">여자</option>
+                    <option value="1">남자</option>
                   </select>
                   <span className="icoArrow">
                     <img src="/icons/arrow.png" alt="arrow" />
