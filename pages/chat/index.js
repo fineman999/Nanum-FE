@@ -40,7 +40,6 @@ const tempChat = [
 ];
 const style = css`
   #chatlist {
-    background-color: #edf1f1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

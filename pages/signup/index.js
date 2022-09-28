@@ -4,7 +4,6 @@ import css from "styled-jsx/css";
 
 const style = css`
   #signup {
-    background-color: #edf1f1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
