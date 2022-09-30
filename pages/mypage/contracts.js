@@ -20,11 +20,11 @@ const style = css`
   .active {
     color: black !important;
   }
-  #contact_body {
+  #contract_body {
     width: 100%;
     height: 100%;
   }
-  #unit_contact {
+  #unit_contract {
     background-color: #ffff;
     display: flex;
     justify-content: space-between;
@@ -49,14 +49,14 @@ const style = css`
     font-size: 24px;
     text-align: center;
   }
-  #contact_header {
+  #contract_header {
     font-weight: bold;
     font-size: 18px;
     display: flex;
     align-items: center;
     margin: 0;
   }
-  #contact_data {
+  #contract_data {
     display: flex;
     color: #acabab;
   }
@@ -79,12 +79,12 @@ const style = css`
     right: 10px;
     bottom: 0;
   }
-  #contact_data {
+  #contract_data {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
   }
-  #contact_text {
+  #contract_text {
     width: 100%;
     height: 100%;
     position: relative;
@@ -131,12 +131,12 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 export default function MailList() {
   const router = useRouter();
   const [isType, setIsType] = useState(router.query.type);
-  const [contactType, setContactType] = useState(moveState);
+  const [contractType, setContractType] = useState(moveState);
 
   return (
     <>
       <div id="maillist">
-        <Header title="계약" type="contacts" />
+        <Header title="계약" type="contracts" />
 
         <div id="mail_header">
           <div id="mail_type">
@@ -144,7 +144,7 @@ export default function MailList() {
               className={isType == 1 ? "active" : ""}
               onClick={() => {
                 setIsType(1);
-                setContactType(moveState);
+                setContractType(moveState);
               }}
             >
               입주 신청
@@ -153,49 +153,49 @@ export default function MailList() {
               className={isType == 2 ? "active" : ""}
               onClick={() => {
                 setIsType(2);
-                setContactType(tourState);
+                setContractType(tourState);
               }}
             >
               투어 신청
             </h2>
           </div>
         </div>
-        <div id="contact_body">
-          {contactType &&
-            contactType.map((contact) => (
-              <div key={contact.id} id="unit_contact">
-                <div id="contact_text">
-                  <p id="contact_header">
+        <div id="contract_body">
+          {contractType &&
+            contractType.map((contract) => (
+              <div key={contract.id} id="unit_contract">
+                <div id="contract_text">
+                  <p id="contract_header">
                     {isType == 1 ? "입주 신청 " : "투어 신청 "}
-                    {contact.state == 0 ? "대기" : "완료"}
+                    {contract.state == 0 ? "대기" : "완료"}
                   </p>
-                  <div id="contact_data">
-                    {contact.date === "" ? (
+                  <div id="contract_data">
+                    {contract.date === "" ? (
                       ""
                     ) : (
                       <p>
-                        {contact.date} {contact.time}
+                        {contract.date} {contract.time}
                       </p>
                     )}
 
-                    <p>{contact.place}</p>
+                    <p>{contract.place}</p>
                   </div>
                   <div>
-                    {contact.state === 0 ? (
+                    {contract.state === 0 ? (
                       <button>
                         {isType === 1 ? "입주 취소" : "투어 취소"}
                       </button>
                     ) : (
                       <></>
                     )}
-                    {isType === 2 && contact.state === 1 ? (
+                    {isType === 2 && contract.state === 1 ? (
                       <button>입주 신청</button>
                     ) : (
                       <></>
                     )}
                   </div>
                 </div>
-                <img src={contact.imgURL} />
+                <img src={contract.imgURL} />
               </div>
             ))}
         </div>
