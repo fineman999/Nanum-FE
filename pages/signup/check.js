@@ -65,7 +65,7 @@ const style = css`
   #btn {
     margin-top: 3rem;
     display: flex;
-    width: 80%;
+    width: 50vh;
   }
   #back_btn {
     background-color: #777777;

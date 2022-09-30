@@ -1,5 +1,8 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import css from "styled-jsx/css";
+import { fireAlert } from "../components/common/Alert";
 
 const style = css`
   #login {
@@ -132,6 +135,21 @@ const style = css`
 `;
 
 export default function Login() {
+  const [userInput, setUserInput] = useState({ email: "", password: "" });
+  const router = useRouter();
+  //로그인 하기
+  const postLoin = () => {
+    if (userInput.email && userInput.password) {
+      const res = false;
+      if (res) {
+        fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+      } else {
+        fireAlert({ icon: "error", title: "로그인에 실패하였습니다." });
+      }
+    } else {
+      fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
+    }
+  };
   return (
     <>
       <div id="login">
@@ -145,7 +163,9 @@ export default function Login() {
           <h1 style={{ top: "75%", left: "5%" }}>살고 싶으세요?</h1>
         </div>
         <div id="login_innercontainer">
-          <h1 id="title">NANUM</h1>
+          <h1 id="title" onClick={() => router.push("/")}>
+            NANUM
+          </h1>
           <form id="login_body">
             <article id="email_form">
               <label htmlFor="email">이메일</label>
@@ -153,6 +173,9 @@ export default function Login() {
                 type="text"
                 id="email"
                 placeholder="이메일을 입력해주세요."
+                onBlur={(e) =>
+                  setUserInput({ ...userInput, email: e.target.value })
+                }
               />
             </article>
             <article id="password_form">
@@ -161,6 +184,9 @@ export default function Login() {
                 type="password"
                 id="pw"
                 placeholder="비밀번호를 입력해주세요."
+                onBlur={(e) => {
+                  setUserInput({ ...userInput, password: e.target.value });
+                }}
               />
             </article>
             <div id="link">
@@ -174,7 +200,7 @@ export default function Login() {
                 <a>회원가입</a>
               </Link>
             </div>
-            <button>로그인</button>
+            <button onClick={postLoin}>로그인</button>
           </form>
           <article id="social_btn">
             <button id="naver">

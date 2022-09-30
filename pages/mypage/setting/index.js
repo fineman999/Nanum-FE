@@ -6,15 +6,19 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import { useState } from "react";
-import { red } from "@mui/material/colors";
 import { useRouter } from "next/router";
-
+import LockIcon from "@mui/icons-material/Lock";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
+import Tooltip from "@mui/material/Tooltip";
+import { inputAlert } from "../../../components/common/Alert";
 const style = css`
   #setting {
     padding: 5rem 2rem;
   }
-  #setting_header h2 {
+  #setting_title {
     margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
   }
   #second_header {
     display: flex;
@@ -53,9 +57,16 @@ const style = css`
   #btn {
     text-align: center;
   }
+  .active {
+    cursor: pointer;
+  }
 `;
 export default function Setting() {
   const router = useRouter();
+
+  const [isLock, setIsLock] = useState(true);
+  const [imageSrc, setImageSrc] = useState("");
+
   const user = {
     userName: "노숙자",
     date: "2022.01.01",
@@ -74,19 +85,76 @@ export default function Setting() {
     setSex(event.target.value);
   };
 
+  //잠금 컨트롤
+  const handleLock = () => {
+    // inputAlert({
+    //   title: "잠금 해제를 위해 비밀번호를 입력해주세요",
+    // });
+    setIsLock(!isLock);
+  };
+  //이미지 미리보기
+  const encodeFileToBase64 = (fileBob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        console.log(reader.result);
+        resolve();
+      };
+    });
+  };
   return (
     <>
       <div id="setting">
         <Header title="마이페이지" type="mypage" />
         <section id="setting_header">
-          <h2>설정</h2>
+          <div id="setting_title">
+            <h2>설정</h2>
+            {isLock ? (
+              <Tooltip title="잠금 해제해서 수정하기">
+                <LockIcon fontSize="small" onClick={handleLock} />
+              </Tooltip>
+            ) : (
+              <Tooltip title="변경사항 저장하기">
+                <LockOpenIcon fontSize="small" onClick={handleLock} />
+              </Tooltip>
+            )}
+          </div>
           <div id="second_header">
             <h4>계정 정보</h4>
             <h4 style={{ color: "red" }}>로그아웃</h4>
           </div>
         </section>
         <section id="setting_profile">
-          <img src="/images/default.png" />
+          <div>
+            <Tooltip
+              title={
+                isLock
+                  ? "잠금을 풀고 프로필 변경해보세요"
+                  : "클릭해서 프로필 변경할 수 있어요"
+              }
+              placement="top"
+            >
+              <label htmlFor="input-file" className={isLock ? "" : "active"}>
+                {imageSrc ? (
+                  <img src={imageSrc} alt="preview_img" />
+                ) : (
+                  <img src="/images/default.png" alt="default IMG" />
+                )}{" "}
+              </label>
+            </Tooltip>
+            <input
+              type="file"
+              id="input-file"
+              style={{ display: "none" }}
+              accept="image/*"
+              disabled={isLock ? true : false}
+              onChange={(e) => {
+                encodeFileToBase64(e.target.files[0]);
+              }}
+            />
+          </div>
           <h2 style={{ marginBottom: "0.5rem" }}>{user.userName}</h2>
           <p style={{ marginBottom: "0.5rem" }}>가입일 {user.date}</p>
           <hr />
@@ -120,8 +188,18 @@ export default function Setting() {
                 marginBottom: "0.5rem",
               }}
             >
-              <FormControlLabel value={0} control={<Radio />} label="여자" />
-              <FormControlLabel value={1} control={<Radio />} label="남자" />
+              <FormControlLabel
+                value={0}
+                control={<Radio />}
+                label="여자"
+                disabled={isLock ? true : false}
+              />
+              <FormControlLabel
+                value={1}
+                control={<Radio />}
+                label="남자"
+                disabled={isLock ? true : false}
+              />
             </RadioGroup>
           </FormControl>
           <FormControl id="mail_accept">
@@ -139,11 +217,17 @@ export default function Setting() {
                 marginBottom: "0.5rem",
               }}
             >
-              <FormControlLabel value={true} control={<Radio />} label="허용" />
+              <FormControlLabel
+                value={true}
+                control={<Radio />}
+                label="허용"
+                disabled={isLock ? true : false}
+              />
               <FormControlLabel
                 value={false}
                 control={<Radio />}
                 label="비허용"
+                disabled={isLock ? true : false}
               />
             </RadioGroup>
           </FormControl>

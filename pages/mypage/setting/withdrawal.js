@@ -45,8 +45,8 @@ const style = css`
     border-radius: 20px;
     padding: 0.4rem 1rem;
     cursor: pointer;
-    width: 12vh;
-    margin: 3rem 0.5rem;
+    width: 14vh;
+    margin: 3rem 0.5rem 0.5rem;
   }
   #btn_list {
     text-align: center;

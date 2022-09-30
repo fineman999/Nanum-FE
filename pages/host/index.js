@@ -20,6 +20,7 @@ const style = css`
     display: flex;
     width: 80%;
     align-items: center;
+    justify-content: center;
   }
   #user_profile {
     display: flex;
@@ -32,17 +33,7 @@ const style = css`
   #user_header img {
     width: 10vh;
     height: 10vh;
-  }
-  button {
-    background-color: #76c1b2;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    width: 20vh;
-    height: 4vh;
+    border-radius: 100%;
   }
   #user_content {
     margin-left: 1rem;
@@ -119,6 +110,18 @@ const style = css`
   #progress span {
     text-align: center;
   }
+  .input-file-button {
+    background-color: #76c1b2;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 20vh;
+    padding: 0.4rem 0.4rem;
+  }
 `;
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -136,6 +139,8 @@ export default function MyPage() {
   const [reviewCnt, setReviewCnt] = useState(3);
   const [contractCnt, setLikeCnt] = useState(1);
 
+  const [imageSrc, setImageSrc] = useState("");
+
   const [moveState, setMovieState] = useState({
     wait: 0,
     go: 0,
@@ -146,16 +151,43 @@ export default function MyPage() {
     go: 0,
     done: 0,
   });
+  //이미지 미리보기
+  const encodeFileToBase64 = (fileBob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        console.log(reader.result);
+        resolve();
+      };
+    });
+  };
   return (
     <>
       <Header title="마이페이지" type="my" />
       <div id="mypage">
         <section id="user_header">
-          <img src="/images/default.png"></img>
+          {imageSrc ? (
+            <img src={imageSrc} alt="preview_img" />
+          ) : (
+            <img src="/images/default.png" alt="default IMG" />
+          )}
           <div id="user_content">
             <div id="user_profile">
               <h3>{userName}</h3>
-              <button>프로필 수정</button>
+              <label className="input-file-button" htmlFor="input-file">
+                프로필 수정
+              </label>
+              <input
+                type="file"
+                id="input-file"
+                style={{ display: "none" }}
+                accept="image/*"
+                onChange={(e) => {
+                  encodeFileToBase64(e.target.files[0]);
+                }}
+              />
             </div>
             <div id="user_activity">
               <h4
