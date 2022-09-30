@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import css from "styled-jsx/css";
+import { fireAlert } from "../../components/common/Alert";
 
 const style = css`
   #signup {
@@ -215,6 +216,15 @@ export default function Signup() {
   const [pwConfirmTest, setPwConfirmTest] = useState(false);
   const [nameTest, setNameTest] = useState(false);
 
+  //이메일 중복 검사
+  const [emailValid, setEmailValid] = useState(false);
+
+  //닉네임 중복 검사
+  const [nameValid, setNameValid] = useState(false);
+
+  //휴대폰 인증 검사
+  const [phoneValid, setPhoneValid] = useState(false);
+
   //이메일 유효성 검사
   const checkEmail = (e) => {
     var regExp =
@@ -286,8 +296,6 @@ export default function Signup() {
 
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
-    console.log(userInfo);
-    console.log(fileBob);
     setUserInfo(() => ({ ...userInfo, imgFile: fileBob }));
     const reader = new FileReader();
     reader.readAsDataURL(fileBob);
@@ -299,7 +307,42 @@ export default function Signup() {
     });
   };
 
-  //
+  //인증번호 발송
+  const postPhoneCheck = () => {
+    fireAlert({
+      icon: "success",
+      title: "입력하신 번호로 인증번호가 발송 되었습니다.",
+    });
+  };
+
+  //회원가입하기
+  const postSign = () => {
+    if (
+      emailTest &&
+      nameTest &&
+      pwTest &&
+      pwConfirmTest &&
+      phoneValid &&
+      nameValid &&
+      emailValid &&
+      userInfo.sex
+    ) {
+      const res = false;
+      if (res) {
+        fireAlert({
+          icon: "success",
+          title: "축하합니다! 회원가입이 성공했습니다.",
+        });
+      } else {
+        fireAlert({
+          icon: "error",
+          title: "회원가입에 실패했습니다.",
+        });
+      }
+    } else {
+      fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
+    }
+  };
 
   return (
     <>
@@ -419,7 +462,10 @@ export default function Signup() {
                   onChange={handlePhone}
                   value={userInfo.phone}
                 />
-                <button style={{ width: "80%" }}> 인증번호 받기</button>
+                <button style={{ width: "80%" }} onClick={postPhoneCheck}>
+                  {" "}
+                  인증번호 받기
+                </button>
               </div>
               <input
                 type="text"
@@ -451,7 +497,7 @@ export default function Signup() {
                 </div>
                 <article id="profile_htmlForm" style={{ marginBottom: "0" }}>
                   <label htmlFor="profileImg">프로필 사진</label>
-                  <label className="input-file-button" for="input-file">
+                  <label className="input-file-button" htmlFor="input-file">
                     이미지 업로드
                   </label>
                   <input
@@ -478,7 +524,9 @@ export default function Signup() {
               </article>
             </div>
             <article id="btn_container">
-              <button id="signup_btn">회원가입</button>
+              <button id="signup_btn" onClick={postSign}>
+                회원가입
+              </button>
               <button id="back_to_btn" onClick={() => router.back()}>
                 취소
               </button>
