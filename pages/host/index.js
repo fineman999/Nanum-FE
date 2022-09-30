@@ -79,13 +79,13 @@ const style = css`
     font-size: 18px;
     display: flex;
     align-items: center;
-    margin: 0;
+    margin: 0 0 0.5rem;
   }
   p {
     margin: 0;
   }
   #move_content {
-    margin-right: 1rem;
+    width: 100%;
   }
   #user_unit {
     background-color: #ffff;
@@ -103,6 +103,22 @@ const style = css`
     width: 50px;
     height: 50px;
   }
+  #progress img {
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+  }
+  #progress {
+    display: flex;
+    justify-content: space-between;
+  }
+  #progress div {
+    display: flex;
+    align-items: center;
+  }
+  #progress span {
+    text-align: center;
+  }
 `;
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -116,13 +132,20 @@ export default function MyPage() {
   const router = useRouter();
 
   const [userName, setUserName] = useState("노숙자");
-  const [postCnt, setPostCnt] = useState(2);
-  const [commentCnt, setCommentCnt] = useState(3);
-  const [likeCnt, setLikeCnt] = useState(1);
+  const [houseCnt, setHouseCnt] = useState(2);
+  const [reviewCnt, setReviewCnt] = useState(3);
+  const [contractCnt, setLikeCnt] = useState(1);
 
-  const userDate = "2022.10.31";
-  const userPlace = "부산해운대구";
-  const userTime = "14:00";
+  const [moveState, setMovieState] = useState({
+    wait: 0,
+    go: 0,
+    done: 0,
+  });
+  const [tourState, setTourState] = useState({
+    wait: 0,
+    go: 0,
+    done: 0,
+  });
   return (
     <>
       <Header title="마이페이지" type="my" />
@@ -137,26 +160,26 @@ export default function MyPage() {
             <div id="user_activity">
               <h4
                 onClick={() => {
-                  router.push("/mypage/posts");
+                  router.push("");
                 }}
               >
-                게시글 {postCnt}
+                하우스 {houseCnt}
               </h4>
 
               <h4
                 onClick={() => {
-                  router.push("/mypage/comments");
+                  router.push("");
                 }}
               >
-                댓글 {commentCnt}
+                리뷰 {reviewCnt}
               </h4>
 
               <h4
                 onClick={() => {
-                  router.push("/like");
+                  router.push("");
                 }}
               >
-                좋아요 {likeCnt}
+                계약완료 {contractCnt}
               </h4>
             </div>
           </div>
@@ -177,21 +200,73 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(
                       {
-                        pathname: "/mypage/contracts",
-                        query: { type: 1 },
+                        pathname: "/host/movestate",
+                        query: { type: 0 },
                       },
-                      `/mypage/contracts`
+                      `/host/movestate`
                     );
                   }}
                 >
                   더보기
                 </p>
               </div>
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
+              <section id="progress">
+                <div
+                  id="wait"
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/host/movestate",
+                        query: { type: 0 },
+                      },
+                      `/host/movestate`
+                    );
+                  }}
+                >
+                  <img src="/icons/wait.png" />
+                  <span>
+                    <p>대기</p>
+                    {moveState.wait}
+                  </span>
+                </div>
+                <div
+                  id="go"
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/host/movestate",
+                        query: { type: 1 },
+                      },
+                      `/host/movestate`
+                    );
+                  }}
+                >
+                  <img src="/icons/going.png" />
+                  <span>
+                    <p>진행</p>
+                    {moveState.go}
+                  </span>
+                </div>
+                <div
+                  id="done"
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/host/movestate",
+                        query: { type: 2 },
+                      },
+                      `/host/movestate`
+                    );
+                  }}
+                >
+                  <img src="/icons/done.png" />
+                  <span>
+                    <p>완료</p>
+                    {moveState.done}
+                  </span>
+                </div>
+              </section>
             </div>
-            <img src="/images/house.png" />
           </div>
           <div id="user_move">
             <div id="move_content">
@@ -207,22 +282,73 @@ export default function MyPage() {
                   onClick={() =>
                     router.push(
                       {
-                        pathname: "/mypage/contracts",
-                        query: { type: 2 },
+                        pathname: "/host/tourstate",
+                        query: { type: 0 },
                       },
-                      `/mypage/contracts`
+                      `/host/tourstate`
                     )
                   }
                 >
                   더보기
                 </p>
               </div>
-
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
+              <section id="progress">
+                <div
+                  id="wait"
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: "/host/tourstate",
+                        query: { type: 0 },
+                      },
+                      `/host/tourstate`
+                    )
+                  }
+                >
+                  <img src="/icons/wait.png" />
+                  <span>
+                    <p>대기</p>
+                    {tourState.wait}
+                  </span>
+                </div>
+                <div
+                  id="go"
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: "/host/tourstate",
+                        query: { type: 1 },
+                      },
+                      `/host/tourstate`
+                    )
+                  }
+                >
+                  <img src="/icons/going.png" />
+                  <span>
+                    <p>진행</p>
+                    {tourState.go}
+                  </span>
+                </div>
+                <div
+                  id="done"
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: "/host/tourstate",
+                        query: { type: 2 },
+                      },
+                      `/host/tourstate`
+                    )
+                  }
+                >
+                  <img src="/icons/done.png" />
+                  <span>
+                    <p>완료</p>
+                    {tourState.done}
+                  </span>
+                </div>
+              </section>
             </div>
-            <img src="/images/house.png" />
           </div>
         </section>
         <section>
@@ -249,13 +375,13 @@ export default function MyPage() {
             </div>
           </section>
           <section id="user_btn">
-            <div id="user_unit" onClick={() => router.push("/like")}>
-              <img src="/icons/heart.png" />
-              <p>좋아요</p>
+            <div id="user_unit" onClick={() => router.push("/host/house")}>
+              <img src="/icons/home.png" />
+              <p>내하우스</p>
             </div>
-            <div id="user_unit" onClick={() => router.push("/mypage/review")}>
-              <img src="/icons/review.png" />
-              <p>리뷰</p>
+            <div id="user_unit" onClick={() => router.push("/host/tenant")}>
+              <img src="/icons/user.png" />
+              <p>세입자</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/mypage/setting")}>
               <img src="/icons/setting.png" />
