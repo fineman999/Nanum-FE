@@ -19,6 +19,7 @@ import HouseNearInfo from "../../components/HouseNearInfo";
 import HouseReviewList from "../../components/HouseReviewList";
 
 const houseData = {
+  name: "나눔101호",
   images: [
     "https://images.unsplash.com/photo-1616046229478-9901c5536a45",
     "https://images.unsplash.com/photo-1616047006789-b7af5afb8c20",
@@ -237,7 +238,8 @@ const House = () => {
             </IconButton>
           </div>
           <div className="toolbar_info_wrapper">
-            <h3>부산광역시 해운대구 우동 1514 센텀리더스마크 401호</h3>
+            <h2 className="house_name">나눔101</h2>
+            <span className="house_address">부산시 해운대구 우동</span>
           </div>
           <div className="house_toolbar_btns">
             <div className="btn_call">
@@ -382,6 +384,7 @@ const House = () => {
           box-sizing: border-box;
           padding: 20px;
         }
+
         .toolbar_ico_like_wrapper {
           text-align: center;
           flex: 1;
@@ -389,6 +392,7 @@ const House = () => {
 
         .toolbar_wrapper {
           display: flex;
+          justify-content: space-between;
           align-items: center;
           height: 100%;
         }
@@ -397,13 +401,23 @@ const House = () => {
           font-size: 0.7em;
           flex: 3;
         }
+
+        .toolbar_info_wrapper .house_name {
+          margin-bottom: 3px;
+        }
+
         .house_toolbar_btns {
           display: flex;
-          flex: 4;
+          flex: 6;
+        }
+
+        .house_toolbar_btns > * {
+          flex: 1;
         }
 
         .btn_text {
           font-size: 0.7em;
+          margin-left: 5px;
         }
 
         // 미디어 쿼리

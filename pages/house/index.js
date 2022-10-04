@@ -9,7 +9,6 @@ import SubHeader from "../../components/common/SubHeader";
 import { useState } from "react";
 import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 const itemData = [
   {
@@ -173,11 +172,7 @@ export default function Houses() {
             {itemData &&
               itemData.map((item, index) => (
                 <li className="house_list_item" key={index}>
-                  <Link href="/house/1">
-                    <a>
-                      <HouseListItem item={item} />
-                    </a>
-                  </Link>
+                  <HouseListItem item={item} />
                 </li>
               ))}
           </ul>

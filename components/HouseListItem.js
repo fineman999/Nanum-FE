@@ -1,19 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { pink } from "@mui/material/colors";
-import { Favorite } from "@mui/icons-material";
+import LikeButton from "./common/LikeButton";
 
 const HouseListItem = ({ item }) => {
   const { img, name, isLike, gender, type } = item;
-  const [like, setLike] = useState(isLike);
 
-  const handleLike = () => {
-    setLike(!like);
+  const handleClick = (e) => {
+    console.log("event reached to house list item!!", e.target);
   };
 
   return (
-    <div className="house_item_wrapper">
+    <div className="house_item_wrapper" onClick={handleClick}>
       <div
         className="house_image"
         style={{
@@ -30,13 +27,8 @@ const HouseListItem = ({ item }) => {
             <div className="house_name">{name}</div>
             <span className="house_address">(해운대구)</span>
           </div>
-          <div className="favorite_icon" onClick={handleLike}>
-            {like ? (
-              <Favorite sx={{ color: pink[500] }} />
-            ) : (
-              <FavoriteBorderIcon sx={{ color: pink[500] }} />
-            )}
-          </div>
+          {/* 좋아요 버튼 */}
+          <LikeButton isLike={isLike} />
         </div>
         <div className="house_info_body">
           <div className="house_type_wrapper">
@@ -55,6 +47,7 @@ const HouseListItem = ({ item }) => {
         }
 
         .house_info {
+          position: relative;
           padding: 15px;
           background: white;
         }
