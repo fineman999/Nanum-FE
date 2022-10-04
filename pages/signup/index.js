@@ -2,6 +2,13 @@ import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import css from "styled-jsx/css";
 import { fireAlert } from "../../components/common/Alert";
+import {
+  postSignup,
+  getEmail,
+  getNickname,
+  postPhone,
+  postPhoneValid,
+} from "../../lib/apis/auth";
 
 const style = css`
   #signup {
@@ -194,6 +201,7 @@ const style = css`
     border-radius: 100%;
   }
 `;
+
 export default function Signup() {
   const router = useRouter();
   const [imageSrc, setImageSrc] = useState("");
@@ -217,13 +225,13 @@ export default function Signup() {
   const [nameTest, setNameTest] = useState(false);
 
   //이메일 중복 검사
-  const [emailValid, setEmailValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(true);
 
   //닉네임 중복 검사
-  const [nameValid, setNameValid] = useState(false);
+  const [nameValid, setNameValid] = useState(true);
 
   //휴대폰 인증 검사
-  const [phoneValid, setPhoneValid] = useState(false);
+  const [phoneValid, setPhoneValid] = useState(true);
 
   //이메일 유효성 검사
   const checkEmail = (e) => {
@@ -234,6 +242,18 @@ export default function Signup() {
       ...userInfo,
       email: e.target.value,
     }));
+  };
+
+  //이메일 중복체크
+  const checkEmailValid = () => {
+    getEmail(userInfo.email)
+      .then((res) => {
+        console.log(res);
+        setEmailValid(true);
+      })
+      .catch((err) => {
+        setEmailValid(false);
+      });
   };
 
   //비밀번호 유효성 검사
@@ -261,6 +281,18 @@ export default function Signup() {
       setNameTest(false);
     }
     setUserInfo(() => ({ ...userInfo, nickname: e.target.value }));
+  };
+
+  //닉네임 중복 체크
+  const checkNameValid = () => {
+    getNickname(userInfo.nickname)
+      .then((res) => {
+        console.log(res);
+        setNameValid(true);
+      })
+      .catch((err) => {
+        setNameValid(false);
+      });
   };
 
   //휴대폰 - 자동 입력
@@ -309,14 +341,29 @@ export default function Signup() {
 
   //인증번호 발송
   const postPhoneCheck = () => {
-    fireAlert({
-      icon: "success",
-      title: "입력하신 번호로 인증번호가 발송 되었습니다.",
-    });
+    postPhone(userInfo.phone)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    // fireAlert({
+    //   icon: "success",
+    //   title: "입력하신 번호로 인증번호가 발송 되었습니다.",
+    // });
   };
 
   //회원가입하기
   const postSign = () => {
+    const userData = {
+      email: userInfo.email,
+      pwd: userInfo.password,
+      nickname: userInfo.nickname,
+      role: "USER",
+      phone: userInfo.phone,
+      gender: userInfo.sex,
+    };
     if (
       emailTest &&
       nameTest &&
@@ -327,18 +374,24 @@ export default function Signup() {
       emailValid &&
       userInfo.sex
     ) {
-      const res = false;
-      if (res) {
-        fireAlert({
-          icon: "success",
-          title: "축하합니다! 회원가입이 성공했습니다.",
-        });
-      } else {
-        fireAlert({
-          icon: "error",
-          title: "회원가입에 실패했습니다.",
-        });
-      }
+      console.log("sss");
+      postSignup(userData)
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+
+      // if (res) {
+      //   fireAlert({
+      //     icon: "success",
+      //     title: "축하합니다! 회원가입이 성공했습니다.",
+      //   });
+      // } else {
+      //   fireAlert({
+      //     icon: "error",
+      //     title: "회원가입에 실패했습니다.",
+      //   });
+      // }
     } else {
       fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
     }
@@ -361,20 +414,28 @@ export default function Signup() {
                 placeholder="이메일을 입력해주세요."
                 maxLength="50"
                 onChange={checkEmail}
+                onBlur={checkEmailValid}
               />
               {userInfo.email == "" ? (
                 <></>
               ) : (
                 <>
                   {emailTest ? (
-                    <span className="collect">사용가능한 이메일입니다.</span>
+                    <>
+                      {" "}
+                      {emailValid ? (
+                        <span className="collect">
+                          사용가능한 이메일입니다.
+                        </span>
+                      ) : (
+                        <span className="warn">사용중인 이메일이에요.</span>
+                      )}
+                    </>
                   ) : (
                     <span className="warn">이메일 형식에 맞춰주세요.</span>
                   )}
                 </>
               )}
-
-              {/* <span className="warn">사용중인 이메일이에요.</span> */}
             </article>
             <article id="nickname_htmlForm">
               <label htmlFor="nickname">닉네임</label>
@@ -383,22 +444,31 @@ export default function Signup() {
                 id="nickname"
                 placeholder="닉네임은 2자 이상, 10자 이하입니다."
                 onChange={checkName}
+                onBlur={checkNameValid}
               />
               {userInfo.nickname == "" ? (
                 <></>
               ) : (
                 <>
                   {nameTest ? (
-                    <span className="collect">사용가능한 닉네임입니다.</span>
+                    <>
+                      {" "}
+                      {nameValid ? (
+                        <span className="collect">
+                          사용가능한 닉네임입니다.
+                        </span>
+                      ) : (
+                        <span className="warn">사용중인 닉네임이에요..</span>
+                      )}
+                    </>
                   ) : (
                     <span className="warn">
+                      {" "}
                       닉네임은 2자 이상, 10자 이하입니다.
                     </span>
                   )}
                 </>
               )}
-
-              {/* <span className="warn">사용중인 닉네임이에요.</span> */}
             </article>
             <article id="pw_htmlForm">
               <label htmlFor="pw">비밀번호</label>
