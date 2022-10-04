@@ -2,6 +2,7 @@ import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
 import { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
+import MailModal from "../../components/common/modal/mailModal";
 
 const style = css`
   #mail_header {
@@ -57,20 +58,96 @@ const style = css`
     font-size: 24px;
     text-align: center;
   }
+  #mail_text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 6rem;
+  }
 `;
 const postMail = [
-  { id: 1, name: "캉민수", text: "배고파", date: "9월20일", active: false },
-  { id: 2, name: "캉민수", text: "배고파", date: "9월20일", active: true },
-  { id: 3, name: "캉민수", text: "배고파", date: "9월20일", active: false },
-  { id: 4, name: "캉민수", text: "배고파", date: "9월20일", active: false },
-  { id: 5, name: "캉민수", text: "배고파", date: "9월20일", active: true },
+  {
+    id: 1,
+    name: "캉민수",
+    text: "배고파",
+    date: "9월20일",
+    active: false,
+    img: ["/images/house.png", "/images/house.png"],
+  },
+  {
+    id: 2,
+    name: "캉민수",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: ["/images/house.png", "/images/house.png"],
+  },
+  {
+    id: 3,
+    name: "캉민수",
+    text: "배고파",
+    date: "9월20일",
+    active: false,
+    img: [],
+  },
+  {
+    id: 4,
+    name: "캉민수",
+    text: "배고파",
+    date: "9월20일",
+    active: false,
+    img: [],
+  },
+  {
+    id: 5,
+    name: "캉민수",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: [],
+  },
 ];
 const getMail = [
-  { id: 1, name: "곽찬영", text: "배고파", date: "9월20일", active: true },
-  { id: 2, name: "곽찬영", text: "배고파", date: "9월20일", active: true },
-  { id: 3, name: "곽찬영", text: "배고파", date: "9월20일", active: true },
-  { id: 4, name: "곽찬영", text: "배고파", date: "9월20일", active: true },
-  { id: 5, name: "곽찬영", text: "배고파", date: "9월20일", active: true },
+  {
+    id: 1,
+    name: "곽찬영",
+    text: " JavaScript (JS)는 가벼운, 인터프리터 혹은 just-in-time 컴파일 프로그래밍 언어로, 일급 함수를 지원합니다. 웹 페이지를 위한 스크립트 언어로 잘 알려져 있지만, Node.js, Apache CouchDB, Adobe Acrobat처럼 많은 비 브라우저 환경에서도 사용하고 있습니다. ",
+    date: "9월20일",
+    active: true,
+    img: ["/images/house.png", "/images/house.png"],
+  },
+  {
+    id: 2,
+    name: "곽찬영",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: [],
+  },
+  {
+    id: 3,
+    name: "곽찬영",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: [],
+  },
+  {
+    id: 4,
+    name: "곽찬영",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: [],
+  },
+  {
+    id: 5,
+    name: "곽찬영",
+    text: "배고파",
+    date: "9월20일",
+    active: true,
+    img: [],
+  },
 ];
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
@@ -78,6 +155,14 @@ export default function MailList() {
   const [isType, setIsType] = useState(1);
   const [mailType, setMailType] = useState(postMail);
   const [isUpdate, setIsUpdate] = useState(false);
+
+  const [currentMail, setCurrentMail] = useState(postMail[0]);
+  //modal 관리
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => setOpen(false);
   return (
     <>
       <div id="maillist">
@@ -121,6 +206,10 @@ export default function MailList() {
                 key={mail.id}
                 id="unit_mail"
                 className={mail.active ? "active" : ""}
+                onClick={() => {
+                  handleOpen();
+                  setCurrentMail(mail);
+                }}
               >
                 {isUpdate && (
                   <>
@@ -139,6 +228,7 @@ export default function MailList() {
               </div>
             ))}
         </div>
+        <MailModal open={open} handleClose={handleClose} mail={currentMail} />
         {isUpdate && (
           <div id="delete">
             <div id="delete_btn" style={{ marginRight: "0.1rem" }}>
