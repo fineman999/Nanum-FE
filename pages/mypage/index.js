@@ -282,7 +282,7 @@ export default function MyPage() {
             </div>
           </section>
           <section id="user_btn">
-            <div id="user_unit" onClick={() => router.push("/like")}>
+            <div id="user_unit" onClick={() => router.push("/mypage/block")}>
               <img src="/icons/user.png" />
               <p>차단관리</p>
             </div>

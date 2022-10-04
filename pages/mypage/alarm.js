@@ -25,7 +25,7 @@ const style = css`
     background-color: #ffff;
     display: flex;
     padding: 2rem 1rem;
-    margin-bottom: 1;
+
     margin-bottom: 0.1rem;
     align-items: center;
     height: 10vh;
