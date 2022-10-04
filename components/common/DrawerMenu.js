@@ -5,14 +5,15 @@ import {
   Collapse,
   Divider,
   Drawer,
+  IconButton,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Typography,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-
 import React, { Fragment, useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
@@ -161,6 +162,12 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
         >
           {username}
         </Typography>
+        <IconButton
+          onClick={toggleDrawer}
+          sx={{ position: "absolute", top: "20px", right: "20px" }}
+        >
+          <CloseIcon />
+        </IconButton>
       </Box>
       <Divider />
 
