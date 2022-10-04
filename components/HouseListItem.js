@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import Image from "next/future/image";
+import Image from "next/image";
 import LikeButton from "./common/LikeButton";
 import { useRouter } from "next/router";
 
@@ -10,8 +10,6 @@ const HouseListItem = ({ item }) => {
   const handleClick = () => {
     router.push(`/house/${id}`);
   };
-
-  const css = { width: "100%", height: "auto" };
   return (
     <div className="house_item_wrapper" onClick={handleClick}>
       <div
@@ -22,7 +20,7 @@ const HouseListItem = ({ item }) => {
           position: "relative",
         }}
       >
-        <Image src={img} alt={name} fill />
+        <Image src={img} alt={name} layout="fill" priority />
       </div>
       <div className="house_info">
         <div className="house_info_header">
