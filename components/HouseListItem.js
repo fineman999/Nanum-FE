@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import LikeButton from "./common/LikeButton";
+import { useRouter } from "next/router";
 
 const HouseListItem = ({ item }) => {
-  const { img, name, isLike, gender, type } = item;
+  const router = useRouter();
+  const { id, img, name, isLike, gender, type } = item;
 
-  const handleClick = (e) => {
-    console.log("event reached to house list item!!", e.target);
+  const handleClick = () => {
+    router.push(`/house/${id}`);
   };
 
   return (

@@ -9,9 +9,12 @@ import SubHeader from "../../components/common/SubHeader";
 import { useState } from "react";
 import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Head from "next/head";
 
 const itemData = [
   {
+    id: 1,
     img: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
     name: "Bed",
     isLike: false,
@@ -19,6 +22,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스],
   },
   {
+    id: 2,
     img: "https://images.unsplash.com/photo-1525097487452-6278ff080c31",
     name: "Books",
     isLike: false,
@@ -26,6 +30,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 3,
     img: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
     name: "Sink",
     isLike: false,
@@ -33,6 +38,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 4,
     img: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
     name: "Kitchen",
     isLike: false,
@@ -40,6 +46,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 5,
     img: "https://images.unsplash.com/photo-1588436706487-9d55d73a39e3",
     name: "Blinds",
     isLike: false,
@@ -47,6 +54,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 6,
     img: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622",
     name: "Chairs",
     isLike: false,
@@ -54,6 +62,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 7,
     img: "https://images.unsplash.com/photo-1530731141654-5993c3016c77",
     name: "Laptop",
     isLike: false,
@@ -61,6 +70,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 8,
     img: "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
     name: "Doors",
     isLike: false,
@@ -68,6 +78,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 9,
     img: "https://images.unsplash.com/photo-1517487881594-2787fef5ebf7",
     name: "Coffee",
     isLike: false,
@@ -75,6 +86,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 10,
     img: "https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee",
     name: "Storage",
     isLike: false,
@@ -82,6 +94,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 11,
     img: "https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62",
     name: "Candle",
     isLike: false,
@@ -89,6 +102,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 12,
     img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
     name: "Coffee table",
     isLike: false,
@@ -96,6 +110,7 @@ const itemData = [
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
+    id: 13,
     img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
     name: "night",
     isLike: false,
@@ -131,6 +146,9 @@ export default function Houses() {
 
   return (
     <>
+      <Head>
+        <title>하우스 검색</title>
+      </Head>
       <SubHeader title="하우스 검색" type="search" />
       <div className="search_container">
         {/* 지도 맵 API */}
