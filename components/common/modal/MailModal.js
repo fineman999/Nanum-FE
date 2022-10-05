@@ -6,31 +6,12 @@ import css from "styled-jsx/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { Pagination, Navigation } from "swiper";
-
+import { TwoButtonOption, OneButton } from "../Button";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useRef } from "react";
+import { useRouter } from "next/router";
 const mystyle = css`
-  #btn_list {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  button {
-    background-color: #76c1b2;
-    color: white;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 20px;
-    padding: 0.4rem 1rem;
-    cursor: pointer;
-    width: 100%;
-    margin: 1rem 0.2rem;
-  }
-  #back_to_btn {
-    background-color: #777777;
-  }
   .house_image_wrapper {
     height: 30vh;
   }
@@ -47,11 +28,20 @@ const style = {
   p: 4,
 };
 
-export default function MailModal({ open, handleClose, mail }) {
+export default function MailModal({ open, handleClose, mail, isType }) {
   const swiperRef = useRef(null);
-
+  const router = useRouter();
   const handleModal = () => {
     handleClose();
+  };
+  const handleSend = () => {
+    router.push(
+      {
+        pathname: "/mail/send",
+        query: { name: mail.name },
+      },
+      "/mail/send"
+    );
   };
   return (
     <div>
@@ -74,7 +64,11 @@ export default function MailModal({ open, handleClose, mail }) {
             </Typography>
             <p>날짜: {mail.date}</p>
           </div>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography
+            id="modal-modal-description"
+            sx={{ mt: 2 }}
+            style={{ marginBottom: "0.5rem" }}
+          >
             {mail.text}
           </Typography>
 
@@ -107,12 +101,16 @@ export default function MailModal({ open, handleClose, mail }) {
           ) : (
             <></>
           )}
-          <div id="btn_list">
-            <button>답장보내기</button>
-            <button id="back_to_btn" onClick={handleModal}>
-              닫기
-            </button>
-          </div>
+          {isType == 1 ? (
+            <TwoButtonOption
+              text1="답장보내기"
+              text2="닫기"
+              handleBtn1={handleSend}
+              handleBtn2={handleModal}
+            />
+          ) : (
+            <OneButton text1="닫기" handleBtn1={handleModal} type="0" />
+          )}
         </Box>
       </Modal>
       <style jsx>{mystyle}</style>
