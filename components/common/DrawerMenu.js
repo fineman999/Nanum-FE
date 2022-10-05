@@ -86,7 +86,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
       sub: {
         open: false,
         menuList: [
-          { name: "내 정보", path: "/my" },
+          { name: "내 정보", path: "/mypage" },
           { name: "회원정보 수정", path: "/my/edit" },
           { name: "회원정보 탈퇴", path: "/my/delete" },
         ],
