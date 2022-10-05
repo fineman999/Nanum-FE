@@ -4,6 +4,7 @@ import { styled } from "@mui/material/styles";
 import css from "styled-jsx/css";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { ProfileImg } from "../../components/common/Profile";
 
 const tempChat = [
   {
@@ -53,10 +54,6 @@ const style = css`
   #chat_ul {
     width: 100%;
   }
-  #chat_profile {
-    width: 8vh;
-    height: 8vh;
-  }
   #unit_chat {
     background-color: #ffff;
     display: flex;
@@ -105,7 +102,6 @@ export default function ChatList() {
   const router = useRouter();
   const goChat = (id) => {
     router.push(`/chat/${id}`);
-    console.log(Date(Today));
   };
   return (
     <>
@@ -123,8 +119,13 @@ export default function ChatList() {
           {tempChat &&
             tempChat.map((item) => (
               <div key={item.id} id="unit_chat">
-                <img id="chat_profile" src={item.img} />
-                <div id="chat_content" onClick={goChat(item.id)}>
+                <ProfileImg
+                  img={item.img}
+                  size={8}
+                  name={item.username}
+                  type={2}
+                />
+                <div id="chat_content" onClick={() => goChat(item.id)}>
                   <div id="chat_user">
                     <h3>{item.username}</h3>
                     <p> {item.date}</p>

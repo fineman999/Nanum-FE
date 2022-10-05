@@ -68,6 +68,7 @@ const style = css`
 const postMail = [
   {
     id: 1,
+    profile: "/images/default.png",
     name: "캉민수",
     text: "배고파",
     date: "9월20일",
@@ -77,6 +78,7 @@ const postMail = [
   {
     id: 2,
     name: "캉민수",
+    profile: "/images/default.png",
     text: "배고파",
     date: "9월20일",
     active: true,
@@ -85,6 +87,7 @@ const postMail = [
   {
     id: 3,
     name: "캉민수",
+    profile: "/images/default.png",
     text: "배고파",
     date: "9월20일",
     active: false,
@@ -93,6 +96,7 @@ const postMail = [
   {
     id: 4,
     name: "캉민수",
+    profile: "/images/default.png",
     text: "배고파",
     date: "9월20일",
     active: false,
@@ -101,6 +105,7 @@ const postMail = [
   {
     id: 5,
     name: "캉민수",
+    profile: "/images/default.png",
     text: "배고파",
     date: "9월20일",
     active: true,
@@ -110,6 +115,7 @@ const postMail = [
 const getMail = [
   {
     id: 1,
+    profile: "/images/default.png",
     name: "곽찬영",
     text: " JavaScript (JS)는 가벼운, 인터프리터 혹은 just-in-time 컴파일 프로그래밍 언어로, 일급 함수를 지원합니다. 웹 페이지를 위한 스크립트 언어로 잘 알려져 있지만, Node.js, Apache CouchDB, Adobe Acrobat처럼 많은 비 브라우저 환경에서도 사용하고 있습니다. ",
     date: "9월20일",
@@ -118,6 +124,7 @@ const getMail = [
   },
   {
     id: 2,
+    profile: "/images/default.png",
     name: "곽찬영",
     text: "배고파",
     date: "9월20일",
@@ -126,6 +133,7 @@ const getMail = [
   },
   {
     id: 3,
+    profile: "/images/default.png",
     name: "곽찬영",
     text: "배고파",
     date: "9월20일",
@@ -134,6 +142,7 @@ const getMail = [
   },
   {
     id: 4,
+    profile: "/images/default.png",
     name: "곽찬영",
     text: "배고파",
     date: "9월20일",
@@ -142,6 +151,7 @@ const getMail = [
   },
   {
     id: 5,
+    profile: "/images/default.png",
     name: "곽찬영",
     text: "배고파",
     date: "9월20일",

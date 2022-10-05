@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import css from "styled-jsx/css";
+import Header from "../../components/common/Header";
 const style = css`
   #process {
     padding: 5rem 1rem 1rem;
@@ -25,6 +26,7 @@ const style = css`
     border-radius: 20px;
     padding: 0.4rem 1rem;
     cursor: pointer;
+    margin-right: 1rem;
   }
   #contract_body {
     width: 100%;
@@ -63,6 +65,7 @@ const style = css`
     width: 5vh;
     height: 5vh;
     border-radius: 100%;
+    margin-top: 1rem;
   }
   #contract_text {
     width: 100%;
@@ -146,11 +149,36 @@ export default function MoveState() {
   return (
     <>
       <div id="process">
+        <Header title="신청현황" type="state" />
         <section id="process_header">
           <h2>입주 신청</h2>
-          <h3 className={isType == 0 ? "active" : ""}>대기</h3>
-          <h3 className={isType == 1 ? "active" : ""}>진행</h3>
-          <h3 className={isType == 2 ? "active" : ""}>완료</h3>
+          <h3
+            className={isType == 0 ? "active" : ""}
+            onClick={() => {
+              setIsType(0);
+              setContractData(waitState);
+            }}
+          >
+            대기
+          </h3>
+          <h3
+            className={isType == 1 ? "active" : ""}
+            onClick={() => {
+              setIsType(1);
+              setContractData(goState);
+            }}
+          >
+            진행
+          </h3>
+          <h3
+            className={isType == 2 ? "active" : ""}
+            onClick={() => {
+              setIsType(2);
+              setContractData(doneState);
+            }}
+          >
+            완료
+          </h3>
         </section>
         <section id="contract_body">
           {contractData &&
