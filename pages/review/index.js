@@ -6,6 +6,7 @@ import { fireAlert } from "../../components/common/Alert";
 import { Rating, styled } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import PreviewImageForm from "../../components/PreviewImageForm";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
@@ -27,9 +28,6 @@ const Review = () => {
     score: 5,
   });
 
-  const [previewImages, setPreviewImages] = useState([]); // 업로드 이미지 미리보기
-  const imgInpRef = useRef(null);
-
   const handleChange = (e) => {
     setReviewForm({
       ...reviewForm,
@@ -37,66 +35,25 @@ const Review = () => {
     });
   };
 
-  // 이미지 파일 유효성 검사
-  const fileValidate = (filePath) => {
-    const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-    if (!allowedExtensions.exec(filePath)) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  const uploadImage = (e) => {
-    if (previewImages.length >= 4) {
-      fireAlert({
-        icon: "warning",
-        title: "이미지는 최대 4개까지 업로드할 수 있습니다.",
-      });
-      return null;
-    }
-
-    if (!fileValidate(e.target.value)) {
-      fireAlert({
-        icon: "warning",
-        title: "유효하지 않은 파일입니다.",
-      });
-      return null;
-    }
-
-    const [file] = e.target.files;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImages([...previewImages, reader.result]);
-    };
-    reader.readAsDataURL(file);
-
+  const addImages = (file) => {
+    console.log("add image");
     setReviewForm({
       ...reviewForm,
-      [e.target.name]: [...reviewForm.reviewImgs, ...e.target.files],
+      reviewImgs: [...reviewForm.reviewImgs, file],
     });
   };
 
-  const deleteImage = (index) => {
-    const nextPreviewImages = [
-      ...previewImages.slice(0, index),
-      ...previewImages.slice(index + 1),
-    ];
-
+  const removeImages = (index) => {
+    console.log("remove image");
     const nextReviewImages = [
       ...reviewForm.reviewImgs.slice(0, index),
       ...reviewForm.reviewImgs.slice(index + 1),
     ];
 
-    setPreviewImages(nextPreviewImages);
     setReviewForm({
       ...reviewForm,
       reviewImgs: nextReviewImages,
     });
-  };
-
-  const handleDialog = () => {
-    imgInpRef.current.click();
   };
 
   const handleSubmit = () => {
@@ -104,6 +61,8 @@ const Review = () => {
       fireAlert({ icon: "warning", title: "리뷰를 작성해주세요." });
       return null;
     }
+
+    console.log(reviewForm);
     fireAlert({ icon: "success", title: "리뷰 작성 완료" });
   };
 
@@ -167,52 +126,11 @@ const Review = () => {
               </span>
             </div>
 
-            <div className="review_form_images">
-              {/* 업로드된 이미지 미리보기 */}
-              <div className="upload_image_preview">
-                <ul className="upload_image_list">
-                  {previewImages &&
-                    previewImages.map((preview, index) => (
-                      <li className="review_image_item" key={index}>
-                        <img
-                          src={preview}
-                          alt="temp"
-                          width="100%"
-                          height="100%"
-                        />
-                        <div
-                          className="review_image_delete_ico"
-                          onClick={() => deleteImage(index)}
-                        >
-                          <Image
-                            src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png"
-                            alt="temp"
-                            layout="fill"
-                          />
-                        </div>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              <div className="image_inp">
-                <input
-                  type="file"
-                  name="reviewImgs"
-                  className="image_input"
-                  accept="image/*"
-                  multiple
-                  onChange={uploadImage}
-                  ref={imgInpRef}
-                />
-                <div className="image_upload_button" onClick={handleDialog}>
-                  <Image
-                    src="https://cdn-icons-png.flaticon.com/512/401/401061.png"
-                    alt="temp"
-                    layout="fill"
-                  />
-                </div>
-              </div>
-            </div>
+            {/* 업로드 이미지 미리보기 */}
+            <PreviewImageForm
+              addImages={addImages}
+              removeImages={removeImages}
+            />
           </div>
           <div className="review_form_bottom">
             <div className="review_form_btns">
@@ -292,61 +210,6 @@ const Review = () => {
             right: 5px;
             padding: 5px;
             color: #76c1b2;
-          }
-
-          .review_form_images {
-            display: flex;
-            width: 100%;
-            height: 72px;
-            margin-bottom: 25px;
-          }
-
-          .upload_image_preview {
-            overflow-x: auto;
-          }
-
-          .upload_image_preview::-webkit-scrollbar {
-            display: none;
-          }
-
-          .upload_image_list {
-            display: inline-flex;
-            flex-wrap: nowrap;
-            height: 100%;
-          }
-
-          .review_image_item {
-            position: relative;
-            width: 74px;
-            height: 100%;
-            margin-right: 3px;
-          }
-
-          .review_image_delete_ico {
-            position: absolute;
-            top: 2px;
-            right: 2px;
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-          }
-
-          .image_inp {
-            position: relative;
-            width: 90px;
-            margin-left: 3px;
-          }
-
-          .image_input {
-            display: none;
-            width: 100%;
-            height: 100%;
-          }
-
-          .image_upload_button {
-            position: relative;
-            width: 74px;
-            height: 100%;
           }
 
           .review_form_bottom {
