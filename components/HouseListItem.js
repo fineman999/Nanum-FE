@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import Image from "next/image";
 import LikeButton from "./common/LikeButton";
 import { useRouter } from "next/router";
@@ -20,7 +20,7 @@ const HouseListItem = ({ item }) => {
           position: "relative",
         }}
       >
-        <Image src={img} alt={name} layout="fill" priority />
+        <Image src="/images/house_image_2.jpg" alt={name} layout="fill" />
       </div>
       <div className="house_info">
         <div className="house_info_header">
