@@ -11,6 +11,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { useRef } from "react";
 import { useRouter } from "next/router";
+import { ProfileImg } from "../Profile";
 const mystyle = css`
   .house_image_wrapper {
     height: 30vh;
@@ -60,9 +61,13 @@ export default function MailModal({ open, handleClose, mail, isType }) {
             }}
           >
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              보낸사람:{mail.name}
+              {isType == 1 ? "보낸 사람" : "받는 사람"}
             </Typography>
             <p>날짜: {mail.date}</p>
+          </div>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <ProfileImg img={mail.profile} size={4} name={mail.name} type={1} />
+            {mail.name}
           </div>
           <Typography
             id="modal-modal-description"
