@@ -30,7 +30,7 @@ const SubHeader = ({ title = "제목", type = "main" }) => {
           position: "static",
         }}
       >
-        <Toolbar />
+        <Toolbar id="back-to-top-anchor" />
         <AppBar
           sx={{
             position: "fixed",
@@ -40,7 +40,7 @@ const SubHeader = ({ title = "제목", type = "main" }) => {
             borderBottom: "1px solid #f5f5f5",
           }}
         >
-          <Toolbar id="back-to-top-anchor">
+          <Toolbar>
             {type !== "main" ? (
               <IconButton
                 sx={{ padding: "0px", marginRight: "10px" }}

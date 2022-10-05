@@ -20,7 +20,7 @@ const HouseListItem = ({ item }) => {
           position: "relative",
         }}
       >
-        <Image src="/images/house_image_2.jpg" alt={name} layout="fill" />
+        <Image src={img} alt={name} layout="fill" priority />
       </div>
       <div className="house_info">
         <div className="house_info_header">

@@ -191,6 +191,7 @@ const House = () => {
                 src="https://images.unsplash.com/photo-1497217968520-7d8d60b7bc25"
                 alt="temp"
                 layout="fill"
+                priority
               />
             </div>
             <div className="room_list">

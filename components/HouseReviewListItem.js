@@ -17,6 +17,7 @@ const HouseReviewListItem = ({ review }) => {
               src="https://images.unsplash.com/photo-1536183638923-a000c24b1645"
               alt="temp"
               layout="fill"
+              priority
             />
           </div>
         </div>
@@ -28,6 +29,7 @@ const HouseReviewListItem = ({ review }) => {
                   src="https://images.unsplash.com/photo-1536183638923-a000c24b1645"
                   alt="temp"
                   layout="fill"
+                  priority
                 />
               </div>
               <div className="side_reivew_imageList">
@@ -36,6 +38,7 @@ const HouseReviewListItem = ({ review }) => {
                     src="https://images.unsplash.com/photo-1510265119258-db115b0e8172"
                     alt="temp"
                     layout="fill"
+                    priority
                   />
                 </div>
                 <div className="side_review_image">
@@ -43,6 +46,7 @@ const HouseReviewListItem = ({ review }) => {
                     src="https://images.unsplash.com/photo-1627232110195-cd9b1cdf5202"
                     alt="temp"
                     layout="fill"
+                    priority
                   />
                 </div>
                 <div className="side_review_image">
@@ -50,6 +54,7 @@ const HouseReviewListItem = ({ review }) => {
                     src="https://images.unsplash.com/photo-1583004575754-b03eeb342328"
                     alt="temp"
                     layout="fill"
+                    priority
                   />
                 </div>
               </div>
