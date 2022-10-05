@@ -6,7 +6,7 @@ const nextConfig = {
     KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
   },
   images: {
-    domains: ["images.unsplash.com"],
+    domains: ["images.unsplash.com", "cdn-icons-png.flaticon.com"],
   },
 };
 

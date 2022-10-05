@@ -74,11 +74,17 @@ const HouseRoomItem = () => {
           width: 30%;
         }
 
+
+        .room_btn_wrapper{
+          display: flex;
+          justify-content: center;  
+        }
+
         .tour_btn{
           box-sizing: border-box;
           padding: 15px;
           border-radius: 15px;
-          font-size: 1.0em;
+          font-size: 0.8em;
           
           border: none;
           background: #76C1B2;
@@ -89,6 +95,7 @@ const HouseRoomItem = () => {
         .tour_btn:hover{
           background: #555555;
         }
+        
         // 미디어 쿼리
         @media all (min-width: 1024px) {
         }

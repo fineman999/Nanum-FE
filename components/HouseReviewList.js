@@ -39,33 +39,17 @@ const reviewData = [
 const HouseReviewList = () => {
   return (
     <>
-      {/* 하우스 리뷰 정보 */}
-      <div id="house_review" className="house_review_wrapper">
-        <div className="house_info_header">
-          <h2>리뷰</h2>
-        </div>
-
-        <div className="house_review_list">
-          <ul>
-            {reviewData &&
-              reviewData.map((review) => (
-                <HouseReviewListItem key={review.id} review={review} />
-              ))}
-          </ul>
-        </div>
+      <div className="house_review_list">
+        <ul>
+          {reviewData &&
+            reviewData.map((review) => (
+              <HouseReviewListItem key={review.id} review={review} />
+            ))}
+        </ul>
       </div>
       <style jsx>{`
-        .house_review_wrapper {
-          background: white;
-          margin-bottom: 20px;
-        }
-
-        .house_info_header {
-          box-sizing: border-box;
-          padding: 20px;
-        }
-
         .house_review_list {
+          background: white;
           box-sizing: border-box;
           padding: 10px;
         }
