@@ -3,6 +3,7 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import css from "styled-jsx/css";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const tempChat = [
   {
@@ -101,7 +102,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 export default function ChatList() {
   const [isUpdate, setIsUpdate] = useState(false);
-
+  const router = useRouter();
+  const goChat = (id) => {
+    router.push(`/chat/${id}`);
+    console.log(Date(Today));
+  };
   return (
     <>
       <div id="chatlist">
@@ -119,7 +124,7 @@ export default function ChatList() {
             tempChat.map((item) => (
               <div key={item.id} id="unit_chat">
                 <img id="chat_profile" src={item.img} />
-                <div id="chat_content">
+                <div id="chat_content" onClick={goChat(item.id)}>
                   <div id="chat_user">
                     <h3>{item.username}</h3>
                     <p> {item.date}</p>

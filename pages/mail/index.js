@@ -228,7 +228,12 @@ export default function MailList() {
               </div>
             ))}
         </div>
-        <MailModal open={open} handleClose={handleClose} mail={currentMail} />
+        <MailModal
+          open={open}
+          handleClose={handleClose}
+          mail={currentMail}
+          isType={isType}
+        />
         {isUpdate && (
           <div id="delete">
             <div id="delete_btn" style={{ marginRight: "0.1rem" }}>
