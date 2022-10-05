@@ -25,6 +25,9 @@ const style = {
   p: 4,
 };
 
+//type:1 쪽지함에서 열리는거
+//type:2 채팅창에서 열리는거
+
 export default function ProfileModal({ open, handleClose, img, name, type }) {
   const goChat = () => {};
   const goBlock = () => {};
