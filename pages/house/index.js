@@ -311,7 +311,6 @@ export default function Houses() {
             overflow: auto;
           }
 
-          /* Hide scrollbar for Chrome, Safari and Opera */
           .house_list_wrapper::-webkit-scrollbar {
             display: none;
           }

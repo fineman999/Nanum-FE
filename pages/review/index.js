@@ -1,13 +1,12 @@
 import React, { useRef, useState } from "react";
-import SubHeader from "../../components/common/SubHeader";
 import Image from "next/image";
+import SubHeader from "../../components/common/SubHeader";
+import Footer from "../../components/common/Footer";
+import { fireAlert } from "../../components/common/Alert";
 import { Rating, styled } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { fireAlert } from "../../components/common/Alert";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Footer from "../../components/common/Footer";
-import BottomMenu from "../../components/common/BottomMenu";
+
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
     color: "#f54336",
@@ -65,7 +64,6 @@ const Review = () => {
       return null;
     }
 
-    console.log(e.target.files);
     const [file] = e.target.files;
     const reader = new FileReader();
     reader.onloadend = () => {
@@ -84,6 +82,7 @@ const Review = () => {
       ...previewImages.slice(0, index),
       ...previewImages.slice(index + 1),
     ];
+
     const nextReviewImages = [
       ...reviewForm.reviewImgs.slice(0, index),
       ...reviewForm.reviewImgs.slice(index + 1),
@@ -101,7 +100,10 @@ const Review = () => {
   };
 
   const handleSubmit = () => {
-    console.log(reviewForm);
+    if (reviewForm.title === "" || reviewForm.content === "") {
+      fireAlert({ icon: "warning", title: "리뷰를 작성해주세요." });
+      return null;
+    }
     fireAlert({ icon: "success", title: "리뷰 작성 완료" });
   };
 
@@ -125,6 +127,7 @@ const Review = () => {
             </div>
           </div>
           <div className="review_form_body">
+            {/* 평점 */}
             <div className="review_rating">
               <StyledRating
                 name="score"
@@ -136,6 +139,8 @@ const Review = () => {
                 onChange={handleChange}
               />
             </div>
+
+            {/* 리뷰 제목 */}
             <div className="review_form_title">
               <input
                 className="review_title"
@@ -298,6 +303,10 @@ const Review = () => {
 
           .upload_image_preview {
             overflow-x: auto;
+          }
+
+          .upload_image_preview::-webkit-scrollbar {
+            display: none;
           }
 
           .upload_image_list {

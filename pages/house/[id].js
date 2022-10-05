@@ -215,11 +215,20 @@ const House = () => {
             </div>
           </div>
 
-          {/* 하우스 상세 정보 */}
-          <HouseNearInfo />
-
+          {/* 하우스 주변 정보 */}
+          <div id="house_detail" className="house_detail_info_wrapper">
+            <div className="house_info_header">
+              <h2>주변 정보</h2>
+            </div>
+            <HouseNearInfo />
+          </div>
           {/* 하우스 리뷰 정보 */}
-          <HouseReviewList />
+          <div id="house_review" className="house_review_wrapper">
+            <div className="house_info_header">
+              <h2>리뷰</h2>
+            </div>
+            <HouseReviewList />
+          </div>
         </div>
       </section>
       <Footer />
@@ -378,6 +387,16 @@ const House = () => {
           height: 70px;
           background: white;
           z-index: 100;
+        }
+
+        .house_detail_info_wrapper {
+          background: white;
+          margin-bottom: 20px;
+        }
+
+        .house_review_wrapper {
+          background: white;
+          margin-bottom: 20px;
         }
 
         .house_info_header {
