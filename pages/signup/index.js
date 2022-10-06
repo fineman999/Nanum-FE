@@ -231,7 +231,10 @@ export default function Signup() {
   const [nameValid, setNameValid] = useState(true);
 
   //휴대폰 인증 검사
-  const [phoneValid, setPhoneValid] = useState(true);
+  const [phoneValid, setPhoneValid] = useState(false);
+
+  //휴대폰 인증 번호 일치 검사
+  const [numValid, setNumValid] = useState(0);
 
   //이메일 유효성 검사
   const checkEmail = (e) => {
@@ -249,7 +252,12 @@ export default function Signup() {
     getEmail(userInfo.email)
       .then((res) => {
         console.log(res);
-        setEmailValid(true);
+        if (res.status == 200) {
+          setEmailValid(true);
+        }
+        if (res.status == 204) {
+          setEmailValid(false);
+        }
       })
       .catch((err) => {
         setEmailValid(false);
@@ -288,7 +296,12 @@ export default function Signup() {
     getNickname(userInfo.nickname)
       .then((res) => {
         console.log(res);
-        setNameValid(true);
+        if (res.status == 200) {
+          setNameValid(true);
+        }
+        if (res.status == 204) {
+          setNameValid(false);
+        }
       })
       .catch((err) => {
         setNameValid(false);
@@ -341,22 +354,46 @@ export default function Signup() {
 
   //인증번호 발송
   const postPhoneCheck = () => {
-    postPhone(userInfo.phone)
+    let phone = userInfo.phone.split("-");
+    phone = phone[0] + phone[1] + phone[2];
+    console.log(phone);
+    postPhone(phone)
       .then((res) => {
         console.log(res);
       })
       .catch((err) => {
         console.log(err);
       });
-    // fireAlert({
-    //   icon: "success",
-    //   title: "입력하신 번호로 인증번호가 발송 되었습니다.",
-    // });
+    fireAlert({
+      icon: "success",
+      title: "입력하신 번호로 인증번호가 발송 되었습니다.",
+    });
+  };
+
+  //인증 번호 일치 확인
+  const checkNum = () => {
+    let phone = userInfo.phone.split("-");
+    phone = phone[0] + phone[1] + phone[2];
+    const number = numValid;
+    console.log(phone, number);
+    postPhoneValid({ phone, number })
+      .then((res) => {
+        console.log(res);
+        setPhoneValid(true);
+      })
+      .catch((err) => {
+        console.log(err);
+        setPhoneValid(false);
+        fireAlert({
+          icon: "error",
+          title: "인증 번호가 틀렸어요. 확인 후 입력해주세요.",
+        });
+      });
   };
 
   //회원가입하기
   const postSign = () => {
-    const userData = {
+    const userRequest = {
       email: userInfo.email,
       pwd: userInfo.password,
       nickname: userInfo.nickname,
@@ -364,18 +401,20 @@ export default function Signup() {
       phone: userInfo.phone,
       gender: userInfo.sex,
     };
+    const profileImg = userInfo.imgFile;
     if (
       emailTest &&
       nameTest &&
       pwTest &&
       pwConfirmTest &&
-      phoneValid &&
+      // phoneValid &&
       nameValid &&
       emailValid &&
       userInfo.sex
     ) {
       console.log("sss");
-      postSignup(userData)
+      console.log({ userRequest, profileImg });
+      postSignup({ userRequest, profileImg })
         .then((res) => {
           console.log(res);
         })
@@ -541,7 +580,21 @@ export default function Signup() {
                 type="text"
                 id="telCheck"
                 placeholder="인증번호를 입력하세요."
+                onChange={(e) => setNumValid(e.target.value)}
+                onBlur={checkNum}
               />
+              {numValid ? (
+                <>
+                  {" "}
+                  {phoneValid ? (
+                    <span className="collect">인증되었습니다.</span>
+                  ) : (
+                    <span className="warn">인증번호가 맞지 않아요.</span>
+                  )}
+                </>
+              ) : (
+                <></>
+              )}
             </article>
             <div
               style={{ display: "flex", alignItems: "center", width: "100%" }}
@@ -554,12 +607,17 @@ export default function Signup() {
                 }}
               >
                 <div className="selectBox">
-                  <select name="sex" className="select" onChange={handleSex}>
-                    <option disabled selected>
+                  <select
+                    name="sex"
+                    className="select"
+                    onChange={handleSex}
+                    defaultValue="default"
+                  >
+                    <option disabled value="default">
                       성별
                     </option>
-                    <option value="0">여자</option>
-                    <option value="1">남자</option>
+                    <option value="F">여자</option>
+                    <option value="M">남자</option>
                   </select>
                   <span className="icoArrow">
                     <img src="/icons/arrow.png" alt="arrow" />

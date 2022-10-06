@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import css from "styled-jsx/css";
 import { fireAlert } from "../components/common/Alert";
+import { postLogin } from "../lib/apis/auth";
 
 const style = css`
   #login {
@@ -135,17 +136,22 @@ const style = css`
 `;
 
 export default function Login() {
-  const [userInput, setUserInput] = useState({ email: "", password: "" });
+  const [userInput, setUserInput] = useState({ email: "", pwd: "" });
   const router = useRouter();
   //로그인 하기
-  const postLoin = () => {
-    if (userInput.email && userInput.password) {
-      const res = false;
-      if (res) {
-        fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
-      } else {
-        fireAlert({ icon: "error", title: "로그인에 실패하였습니다." });
-      }
+  const goLogin = (e) => {
+    e.preventDefault();
+    if (userInput.email && userInput.pwd) {
+      console.log(userInput);
+      postLogin(userInput)
+        .then((res) => {
+          console.log(res);
+          fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+        })
+        .catch((err) => {
+          console.log(err);
+          fireAlert({ icon: "error", title: "로그인에 실패하였습니다." });
+        });
     } else {
       fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
     }
@@ -185,7 +191,7 @@ export default function Login() {
                 id="pw"
                 placeholder="비밀번호를 입력해주세요."
                 onBlur={(e) => {
-                  setUserInput({ ...userInput, password: e.target.value });
+                  setUserInput({ ...userInput, pwd: e.target.value });
                 }}
               />
             </article>
@@ -200,7 +206,7 @@ export default function Login() {
                 <a>회원가입</a>
               </Link>
             </div>
-            <button onClick={postLoin}>로그인</button>
+            <button onClick={goLogin}>로그인</button>
           </form>
           <article id="social_btn">
             <button id="naver">
