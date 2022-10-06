@@ -1,0 +1,34 @@
+.content_header {
+  display: flex;
+}
+
+.icons {
+  display: flex;
+}
+
+.icon_views {
+  display: flex;
+  align-items: center;
+}
+
+.icon_chats {
+  display: flex;
+  align-items: center;
+}
+
+.icon_text {
+  margin-left: 3px;
+  color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  font-size: 0.7em;
+}
+
+.article_date {
+  width: 100%;
+}
+
+.date_text {
+  font-size: 0.7em;
+  color: #76c1b2;
+}

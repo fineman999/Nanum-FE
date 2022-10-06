@@ -1,0 +1,17 @@
+.preview_image_scroll_wrapper {
+  width: 100%;
+}
+
+.image_list {
+  margin-left: 30px;
+  display: inline-flex;
+}
+
+.image_item {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin-right: 5px;
+  border-radius: 10px;
+  overflow: hidden;
+}
