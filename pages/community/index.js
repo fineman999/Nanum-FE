@@ -3,11 +3,11 @@ import SubHeader from "../../components/common/SubHeader";
 import Footer from "../../components/common/Footer";
 import BottomMenu from "../../components/common/BottomMenu";
 import NoticeCategory from "../../components/NoticeCategory";
-
-import styles from "../../styles/Community.module.css";
 import CommunityCategoryMenu from "../../components/CommunityCategoryMenu";
 import AllCategory from "../../components/AllCategory";
 import InfoCategory from "../../components/InfoCategory";
+import styles from "../../styles/Community.module.css";
+
 const Community = () => {
   return (
     <>

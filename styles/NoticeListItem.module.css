@@ -1,8 +1,4 @@
 .article_wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   box-sizing: border-box;
   width: 100%;
   height: 100%;
@@ -19,23 +15,10 @@
   color: #fff;
 }
 
-.category_header {
+.article_content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-sizing: border-box;
-  padding: 10px 20px 10px 20px;
-}
-
-.category_header .title {
-  box-sizing: border-box;
-}
-
-.category_header .more_btn {
-  font-size: 0.8em;
-  color: #76c1b2;
-  margin-right: 10px;
-  cursor: pointer;
 }
 
 .icons {
@@ -58,4 +41,13 @@
   width: 100%;
   height: 100%;
   font-size: 0.7em;
+}
+
+.article_date {
+  width: 100%;
+}
+
+.date_text {
+  font-size: 0.7em;
+  color: #76c1b2;
 }
