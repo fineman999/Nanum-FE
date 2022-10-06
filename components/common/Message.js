@@ -1,4 +1,5 @@
 import css from "styled-jsx/css";
+import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
 //puple:92aaff
@@ -55,7 +56,8 @@ export function GetMessage({ text, time }) {
     <>
       <div id="get" className="message">
         <div>
-          <img src={user.img} />
+          <ProfileImg img={user.img} name={user.name} size={5} type={1} />
+
           <p>{user.name}</p>
         </div>
         <p className="text">{text}</p>
