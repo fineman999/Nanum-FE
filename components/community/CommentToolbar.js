@@ -8,7 +8,11 @@ const CommentToolbar = () => {
   return (
     <div className={styles.comment_toolbar_wrapper}>
       <div className={styles.comment_inp_wrapper}>
-        <input type={styles.comment_input} placeholder="댓글..." />
+        <input
+          className={styles.comment_input}
+          type="text"
+          placeholder="댓글..."
+        />
         <div className={styles.comment_inp_btn}>
           <Button variant="outlined">
             <SendIcon />
