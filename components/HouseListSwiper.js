@@ -6,91 +6,91 @@ import HouseListItem from "./HouseListItem";
 
 const itemData = [
   {
-    img: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
+    img: "/images/house_image_1.jpg",
     name: "Bed",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스],
   },
   {
-    img: "https://images.unsplash.com/photo-1525097487452-6278ff080c31",
+    img: "/images/house_image_2.jpg",
     name: "Books",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
+    img: "/images/house_image_3.jpg",
     name: "Sink",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
+    img: "/images/house_image_4.jpg",
     name: "Kitchen",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1588436706487-9d55d73a39e3",
+    img: "/images/house_image_5.jpg",
     name: "Blinds",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622",
+    img: "/images/house_image_6.jpg",
     name: "Chairs",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1530731141654-5993c3016c77",
+    img: "/images/house_image_7.jpg",
     name: "Laptop",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
+    img: "/images/house_image_8.jpg",
     name: "Doors",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1517487881594-2787fef5ebf7",
+    img: "/images/house_image_9.jpg",
     name: "Coffee",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee",
+    img: "/images/house_image_10.jpg",
     name: "Storage",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62",
+    img: "/images/house_image_11.jpg",
     name: "Candle",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
+    img: "/images/house_image_12.jpg",
     name: "Coffee table",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
     type: "빌라", // [빌라, 아파트, 오피스텔]
   },
   {
-    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
+    img: "/images/house_image_13.jpg",
     name: "night",
     islike: false,
     gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
