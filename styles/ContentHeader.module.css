@@ -1,5 +1,17 @@
 .content_header {
   display: flex;
+  margin-bottom: 25px;
+}
+
+.content_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.article_date {
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .icons {

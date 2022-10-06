@@ -11,11 +11,11 @@ const ContentHeader = () => {
       <Avatar
         alt="Remy Sharp"
         src="/images/default.png"
-        sx={{ width: 96, height: 96 }}
+        sx={{ width: 96, height: 96, marginRight: "10px" }}
       />
-      <div className="content_info">
+      <div className={styles.content_info}>
         <h2 className="author">노숙자</h2>
-        <span className="article_date">2022.10.06 11:28</span>
+        <span className={styles.article_date}>2022.10.06 11:28</span>
         <div className={styles.icons}>
           <span className={styles.icon_views}>
             <VisibilityIcon

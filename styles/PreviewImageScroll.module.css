@@ -1,5 +1,11 @@
 .preview_image_scroll_wrapper {
+  overflow: auto;
   width: 100%;
+  margin-bottom: 25px;
+}
+
+.preview_image_scroll_wrapper::-webkit-scrollbar {
+  display: none;
 }
 
 .image_list {
@@ -11,7 +17,7 @@
   position: relative;
   width: 120px;
   height: 120px;
-  margin-right: 5px;
+  margin-right: 20px;
   border-radius: 10px;
   overflow: hidden;
 }

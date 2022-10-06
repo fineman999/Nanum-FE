@@ -6,6 +6,8 @@ import PreviewImageScroll from "../../components/PreviewImageScroll";
 import ContentHeader from "../../components/community/ContentHeader";
 import ContentBody from "../../components/community/ContentBody";
 import CommentList from "../../components/community/CommentList";
+import { Toolbar } from "@mui/material";
+import CommentToolbar from "../../components/community/CommentToolbar";
 
 const Article = () => {
   return (
@@ -21,15 +23,19 @@ const Article = () => {
           <PreviewImageScroll />
           <CommentList />
         </div>
+        <CommentToolbar />
       </section>
       <style>{`
       .content_section{
+        position: relative;
         box-sizing: border-box;
         width: 100%;
         padding: 20px;
       }
       .content_wrapper {
+        box-sizing: border-box;
         width: 100%;
+        padding: 15px;
         background-color: white;
         border-radius: 15px;
         margin-bottom: 20px;

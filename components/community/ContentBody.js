@@ -1,14 +1,14 @@
 import React from "react";
 
-// import styles from "../../styles/ContentBody.mdoule.css";
+import styles from "../../styles/ContentBody.module.css";
 
 const ContentBody = () => {
   return (
-    <div className="content_body">
-      <div className="title_wrapper">
+    <div className={styles.content_body}>
+      <div className={styles.title_wrapper}>
         <h3>이것 좀 보세요</h3>
       </div>
-      <div className="content_wrapper">
+      <div className={styles.content_wrapper}>
         <p>
           Officia excepteur nisi eu reprehenderit enim et incididunt. Mollit
           cillum consectetur id mollit ipsum cupidatat occaecat irure enim ad
