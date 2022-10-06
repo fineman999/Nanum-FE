@@ -2,6 +2,7 @@ import Image from "next/image";
 import React, { useRef, useState } from "react";
 
 import styles from "../styles/PreviewImageForm.module.css";
+import { fireAlert } from "./common/Alert";
 
 const PreviewImageForm = ({ addImages, removeImages }) => {
   const [previewImages, setPreviewImages] = useState([]); // 업로드 이미지 미리보기
