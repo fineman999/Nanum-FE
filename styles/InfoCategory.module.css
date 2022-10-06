@@ -1,0 +1,24 @@
+.category_container {
+  background-color: white;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.category_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 20px 10px 20px;
+}
+
+.category_header .title {
+  box-sizing: border-box;
+}
+
+.category_header .more_btn {
+  font-size: 0.8em;
+  color: #76c1b2;
+  margin-right: 10px;
+  cursor: pointer;
+}
