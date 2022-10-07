@@ -9,7 +9,8 @@ import {
   postPhone,
   postPhoneValid,
 } from "../../lib/apis/auth";
-
+import * as Api from "../../lib/apis/apiClient";
+import axios from "axios";
 const style = css`
   #signup {
     display: flex;
@@ -392,17 +393,20 @@ export default function Signup() {
   };
 
   //회원가입하기
-  const postSign = () => {
+  const postSign = async () => {
+    let myPhone = userInfo.phone.split("-");
+    myPhone = myPhone[0] + myPhone[1] + myPhone[2];
     const userRequest = {
       email: userInfo.email,
       pwd: userInfo.password,
       nickname: userInfo.nickname,
       role: "USER",
-      phone: userInfo.phone,
+      phone: myPhone,
       gender: userInfo.sex,
     };
-    const profileImg = userInfo.imgFile;
+
     if (
+      // true
       emailTest &&
       nameTest &&
       pwTest &&
@@ -412,25 +416,35 @@ export default function Signup() {
       emailValid &&
       userInfo.sex
     ) {
-      console.log("sss");
-      console.log({ userRequest, profileImg });
-      postSignup({ userRequest, profileImg })
-        .then((res) => {
-          console.log(res);
-        })
-        .catch((err) => console.log(err));
+      const formData = new FormData();
+      await formData.append("profileImg", userInfo.imgFile);
+      const uploaderString = JSON.stringify(userRequest);
+      formData.append(
+        "userRequest",
+        new Blob([uploaderString], { type: "application/json" })
+      );
 
-      // if (res) {
-      //   fireAlert({
-      //     icon: "success",
-      //     title: "축하합니다! 회원가입이 성공했습니다.",
-      //   });
-      // } else {
-      //   fireAlert({
-      //     icon: "error",
-      //     title: "회원가입에 실패했습니다.",
-      //   });
-      // }
+      const res = await axios.post(
+        "http://20.214.170.222:8000/user-service/api/v1/signup",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(res);
+      if (res.status == 201) {
+        fireAlert({
+          icon: "success",
+          title: "축하합니다! 회원가입이 성공했습니다.",
+        });
+      } else {
+        fireAlert({
+          icon: "error",
+          title: "회원가입에 실패했습니다.",
+        });
+      }
     } else {
       fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
     }

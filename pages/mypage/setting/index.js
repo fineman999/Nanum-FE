@@ -87,9 +87,9 @@ export default function Setting() {
 
   //잠금 컨트롤
   const handleLock = () => {
-    // inputAlert({
-    //   title: "잠금 해제를 위해 비밀번호를 입력해주세요",
-    // });
+    inputAlert({
+      title: "잠금 해제를 위해 비밀번호를 입력해주세요",
+    });
     setIsLock(!isLock);
   };
   //이미지 미리보기
