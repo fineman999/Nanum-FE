@@ -9,7 +9,7 @@ const InfoCategory = () => {
       <div className={styles.category_header}>
         <h2 className={styles.title}>정보</h2>
         <span className={styles.more_btn}>
-          <Link href="/community/info">
+          <Link href="/community/board/info">
             <a style={{ color: "#76c1b2" }}>더보기</a>
           </Link>
         </span>

@@ -3,8 +3,10 @@ import React, { useRef, useState } from "react";
 
 import styles from "../styles/PreviewImageForm.module.css";
 import { fireAlert } from "./common/Alert";
+import addIcon from "../public/icons/ico_preview_image_add.png";
+import deleteIcon from "../public/icons/ico_preview_image_delete.png";
 
-const PreviewImageForm = ({ addImages, removeImages }) => {
+const PreviewImageForm = ({ addImages, removeImages, size = 4 }) => {
   const [previewImages, setPreviewImages] = useState([]); // 업로드 이미지 미리보기
   const imgInpRef = useRef(null);
 
@@ -20,10 +22,10 @@ const PreviewImageForm = ({ addImages, removeImages }) => {
 
   // 이미지 업로드
   const uploadImage = (e) => {
-    if (previewImages.length >= 4) {
+    if (previewImages.length >= size) {
       fireAlert({
         icon: "warning",
-        title: "이미지는 최대 4개까지 업로드할 수 있습니다.",
+        title: `이미지는 최대 ${size}개까지 업로드할 수 있습니다.`,
       });
       return null;
     }
@@ -74,11 +76,7 @@ const PreviewImageForm = ({ addImages, removeImages }) => {
                   className={styles.review_image_delete_ico}
                   onClick={() => deleteImage(index)}
                 >
-                  <Image
-                    src="https://cdn-icons-png.flaticon.com/512/1828/1828843.png"
-                    alt="temp"
-                    layout="fill"
-                  />
+                  <Image src={deleteIcon} alt="temp" layout="fill" />
                 </div>
               </li>
             ))}
@@ -95,11 +93,7 @@ const PreviewImageForm = ({ addImages, removeImages }) => {
           ref={imgInpRef}
         />
         <div className={styles.image_upload_button} onClick={handleDialog}>
-          <Image
-            src="https://cdn-icons-png.flaticon.com/512/401/401061.png"
-            alt="temp"
-            layout="fill"
-          />
+          <Image src={addIcon} alt="temp" layout="fill" />
         </div>
       </div>
     </div>

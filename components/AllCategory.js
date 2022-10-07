@@ -8,7 +8,7 @@ const AllCategory = () => {
       <div className={styles.category_header}>
         <h2 className={styles.title}>전체</h2>
         <span className={styles.more_btn}>
-          <Link href="/community/all">
+          <Link href="/community/board/all">
             <a style={{ color: "#76c1b2" }}>더보기</a>
           </Link>
         </span>

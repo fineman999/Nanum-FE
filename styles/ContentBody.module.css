@@ -1,4 +1,6 @@
 .content_body {
+  box-sizing: border-box;
+  padding: 20px;
   margin-bottom: 30px;
 }
 .title_wrapper {
