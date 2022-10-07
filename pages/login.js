@@ -147,6 +147,8 @@ export default function Login() {
         .then((res) => {
           console.log(res);
           fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+          localStorage.setItem("accessToken", res.data.result.accessToken);
+          router.push("/");
         })
         .catch((err) => {
           console.log(err);
@@ -165,7 +167,7 @@ export default function Login() {
             src="/images/default_house.png"
             alt="back_house"
           />
-          <h1 style={{ top: "55%", left: "5%" }}>어느 지역에</h1>
+          <h1 style={{ top: "55%", left: "5%" }}>어떤 집에</h1>
           <h1 style={{ top: "75%", left: "5%" }}>살고 싶으세요?</h1>
         </div>
         <div id="login_innercontainer">

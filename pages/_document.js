@@ -19,6 +19,7 @@ export default function Document() {
           rel="stylesheet"
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
+
         <Script src={loadKakaoMap()} strategy="beforeInteractive"></Script>
       </Head>
       <body>
