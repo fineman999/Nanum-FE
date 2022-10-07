@@ -1,9 +1,9 @@
 import React from "react";
-import SubHeader from "../../components/common/SubHeader";
-import NoticeList from "../../components/NoticeList";
-import WriteButton from "../../components/WriteButton";
+import SubHeader from "../../../components/common/SubHeader";
+import NoticeList from "../../../components/NoticeList";
+import WriteButton from "../../../components/WriteButton";
 
-import styles from "../../styles/Info.module.css";
+import styles from "../../../styles/Info.module.css";
 
 const info = () => {
   return (
