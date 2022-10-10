@@ -3,7 +3,7 @@ import SubHeader from "../../components/common/SubHeader";
 import { TextField } from "@mui/material";
 import PreviewImageForm from "../../components/PreviewImageForm";
 
-const write = () => {
+const Write = () => {
   const [form, setForm] = useState({
     title: "",
     content: "",
@@ -135,4 +135,4 @@ const write = () => {
   );
 };
 
-export default write;
+export default Write;
