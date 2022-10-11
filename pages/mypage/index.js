@@ -58,7 +58,8 @@ const style = css`
     border-radius: 10px;
     margin: 1rem 0rem;
     justify-content: space-between;
-    width: 39vh;
+    min-width: 39vh;
+    max-width: 18rem;
   }
   #user_move img {
     width: 10vh;
@@ -103,7 +104,7 @@ const style = css`
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    width: 20vh;
+    width: 10rem;
     padding: 0.4rem 0.4rem;
   }
 `;
@@ -284,7 +285,7 @@ export default function MyPage() {
           <section id="user_btn">
             <div id="user_unit" onClick={() => router.push("/mypage/block")}>
               <img src="/icons/user.png" />
-              <p>차단관리</p>
+              <p style={{ width: "10vh", textAlign: "center" }}>차단관리</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/mypage/review")}>
               <img src="/icons/review.png" />
