@@ -148,6 +148,7 @@ export default function Login() {
           console.log(res);
           fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
           localStorage.setItem("accessToken", res.data.result.accessToken);
+          sessionStorage.setItem("userId", res.data.result.userId);
           router.push("/");
         })
         .catch((err) => {
