@@ -7,6 +7,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
@@ -32,7 +33,7 @@ const HouseAddForm = () => {
       zipCode: "", // 우편번호
       lat: "", // 위도
       lon: "", // 경도
-      keyword: [], // 검색 키워드
+      keyWord: [], // 검색 키워드
     },
     houseMainImg: "", // 하우스 대표 이미지
     floorPlanImg: "", // 하우스 도면 이미지
@@ -40,7 +41,7 @@ const HouseAddForm = () => {
     houseImgs: [], // 하우스 상세 이미지 리스트
   });
   const [postModal, setPostModal] = useState(false);
-  const [keyword, setKeyword] = useState("");
+  const [keyWord, setKeyword] = useState("");
   const [preview, setPreview] = useState({
     houseMainImg: null,
     floorPlanImg: null,
@@ -105,25 +106,25 @@ const HouseAddForm = () => {
   };
 
   const addKeyword = () => {
-    if (keyword === "") return;
+    if (keyWord === "") return;
     if (isDuplicateKeyword()) {
-      alert(`중복된 키워드(${keyword})입니다.`);
+      alert(`중복된 키워드(${keyWord})입니다.`);
       setKeyword("");
       return;
     }
-    if (form.houseRequest.keyword.length >= 3) {
+    if (form.houseRequest.keyWord.length >= 3) {
       alert("검색 키워드는 최대 3개까지 가능합니다.");
       setKeyword("");
       return;
     }
 
-    const nextKeyword = [...form.houseRequest.keyword, keyword];
+    const nextKeyword = [...form.houseRequest.keyWord, keyWord];
     setForm((prev) => {
       return {
         ...prev,
         houseRequest: {
           ...prev.houseRequest,
-          keyword: nextKeyword,
+          keyWord: nextKeyword,
         },
       };
     });
@@ -131,15 +132,15 @@ const HouseAddForm = () => {
   };
   const removeKeyword = (index) => {
     const nextKeyword = [
-      ...form.houseRequest.keyword.slice(0, index),
-      ...form.houseRequest.keyword.slice(index + 1),
+      ...form.houseRequest.keyWord.slice(0, index),
+      ...form.houseRequest.keyWord.slice(index + 1),
     ];
     setForm((prev) => {
       return {
         ...prev,
         houseRequest: {
           ...prev.houseRequest,
-          keyword: nextKeyword,
+          keyWord: nextKeyword,
         },
       };
     });
@@ -148,7 +149,7 @@ const HouseAddForm = () => {
     setKeyword(e.target.value);
   };
   const isDuplicateKeyword = () => {
-    if (form.houseRequest.keyword.includes(keyword)) {
+    if (form.houseRequest.keyWord.includes(keyWord)) {
       return true;
     } else {
       return false;
@@ -211,7 +212,40 @@ const HouseAddForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(form);
+
+    const formData = new FormData();
+    const uploaderString = JSON.stringify(form.houseRequest);
+    formData.append(
+      "houseRequest",
+      new Blob([uploaderString], { type: "application/json" })
+    );
+    formData.append("houseMainImg", form.houseMainImg);
+    formData.append("floorPlanImg", form.floorPlanImg);
+    formData.append("houseFile", form.houseFile);
+    formData.append("houseImgs", [...form.houseImgs]);
+
+    const requestApi = async () => {
+      try {
+        const response = await axios.post(
+          "http://20.214.170.222:8000/house-service/api/v1/houses",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    requestApi();
+    console.log(formData);
+    for (let entry of formData.entries()) {
+      console.log(entry);
+    }
   };
 
   return (
@@ -381,8 +415,8 @@ const HouseAddForm = () => {
       <div className="keyword_section">
         <TextField
           id="outlined-basic"
-          name="keyword"
-          value={keyword || ""}
+          name="keyWord"
+          value={keyWord || ""}
           label="키워드"
           variant="outlined"
           onChange={changeKeyword}
@@ -391,10 +425,10 @@ const HouseAddForm = () => {
           추가
         </Button>
         <ul className={styles.keyword_list}>
-          {form.houseRequest.keyword &&
-            form.houseRequest.keyword.map((keyword, index) => (
+          {form.houseRequest.keyWord &&
+            form.houseRequest.keyWord.map((keyWord, index) => (
               <li key={index}>
-                <Chip label={keyword} onDelete={() => removeKeyword(index)} />
+                <Chip label={keyWord} onDelete={() => removeKeyword(index)} />
               </li>
             ))}
         </ul>
