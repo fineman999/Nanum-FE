@@ -10,7 +10,8 @@ import { useRouter } from "next/router";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Tooltip from "@mui/material/Tooltip";
-import { inputAlert } from "../../../components/common/Alert";
+import { inputAlert } from "../../../components/common/PasswordAlert";
+import { putPassword } from "../../../lib/apis/auth";
 const style = css`
   #setting {
     padding: 5rem 2rem;
@@ -66,6 +67,7 @@ export default function Setting() {
 
   const [isLock, setIsLock] = useState(true);
   const [imageSrc, setImageSrc] = useState("");
+  const [pwd, setPwd] = useState("");
 
   const user = {
     userName: "노숙자",
@@ -85,12 +87,16 @@ export default function Setting() {
     setSex(event.target.value);
   };
 
+  const handlePwd = (e) => {
+    setPwd(e.target.value);
+  };
   //잠금 컨트롤
   const handleLock = () => {
     inputAlert({
       title: "잠금 해제를 위해 비밀번호를 입력해주세요",
+      userId: 1,
+      setIsLock: setIsLock,
     });
-    setIsLock(!isLock);
   };
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {

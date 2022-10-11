@@ -76,7 +76,7 @@ export default function Password() {
   const [pwd, setPwd] = useState("");
   const [newPwInput, setNewPwInput] = useState("");
 
-  const userId = 0;
+  const userId = 1;
 
   //비밀번호 유효성 검사
   const checkPw = (e) => {
@@ -97,9 +97,16 @@ export default function Password() {
 
   //기존 비밀번호 일치
   const checkOriginPw = () => {
+    console.log(pwd);
     getOriginPw({ userId, pwd })
       .then((res) => {
-        setPwConfirm(true), console.log(res);
+        console.log(res);
+        if (res.status == 204) {
+          setPwConfirm(false);
+        }
+        if (res.status == 200) {
+          setPwConfirm(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -140,8 +147,8 @@ export default function Password() {
               type="password"
               id="pw"
               placeholder="기존 비밀번호를 입력해주세요."
-              onChange={() => setPwd(e.target.value)}
-              // onBlur={checkOriginPw}
+              onChange={(e) => setPwd(e.target.value)}
+              onBlur={checkOriginPw}
             />
             {pwd == "" ? (
               <></>

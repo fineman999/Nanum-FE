@@ -20,6 +20,7 @@ import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import authState from "../../state/atom/authState";
 import { useRouter } from "next/router";
+import { logout } from "../../lib/apis/auth";
 
 const UserMenu = ({ menuList, handleClick }) => {
   return (
@@ -126,6 +127,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   };
 
   const handleLogout = () => {
+    logout();
     toggleDrawer();
   };
 
