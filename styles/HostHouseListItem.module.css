@@ -1,0 +1,15 @@
+.host_houst_list_item {
+  display: flex;
+}
+
+.house_info {
+  flex-grow: 1;
+}
+.house_thumnail {
+  position: relative;
+  flex-grow: 1;
+}
+
+.house_status {
+  display: flex;
+}
