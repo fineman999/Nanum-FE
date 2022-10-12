@@ -1,11 +1,22 @@
 import { atom } from "recoil";
 
-const authState = atom({
-  key: `authState`,
+export const userState = atom({
+  key: "userState",
   default: {
-    isAuth: true,
-    username: "노숙자",
+    id: 0,
+    email: "",
+    nickName: "",
+    phone: "",
+    profileImgUrl: "",
+    gender: "",
+    noteReject: "",
+    createAt: "",
   },
 });
 
-export default authState;
+export const authState = atom({
+  key: "authState",
+  default: {
+    isLogin: false,
+  },
+});
