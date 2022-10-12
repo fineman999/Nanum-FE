@@ -34,6 +34,7 @@ const HouseAddForm = () => {
       lat: "", // 위도
       lon: "", // 경도
       keyWord: [], // 검색 키워드
+      houseOption: [1, 2],
     },
     houseMainImg: "", // 하우스 대표 이미지
     floorPlanImg: "", // 하우스 도면 이미지
@@ -214,26 +215,22 @@ const HouseAddForm = () => {
     e.preventDefault();
 
     const formData = new FormData();
-    const uploaderString = JSON.stringify(form.houseRequest);
     formData.append(
       "houseRequest",
-      new Blob([uploaderString], { type: "application/json" })
+      new Blob([JSON.stringify(form.houseRequest)], {
+        type: "application/json",
+      })
     );
     formData.append("houseMainImg", form.houseMainImg);
     formData.append("floorPlanImg", form.floorPlanImg);
     formData.append("houseFile", form.houseFile);
-    formData.append("houseImgs", [...form.houseImgs]);
+    form.houseImgs.forEach((image) => formData.append("houseImgs", image));
 
     const requestApi = async () => {
       try {
         const response = await axios.post(
           "http://20.214.170.222:8000/house-service/api/v1/houses",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
+          formData
         );
         console.log(response.data);
       } catch (err) {
@@ -313,9 +310,9 @@ const HouseAddForm = () => {
                 onChange={changeForm}
                 required
               >
-                <MenuItem value="common">남녀공용</MenuItem>
-                <MenuItem value="male">남성전용</MenuItem>
-                <MenuItem value="female">여성전용</MenuItem>
+                <MenuItem value="COMMON">남녀공용</MenuItem>
+                <MenuItem value="MALE">남성전용</MenuItem>
+                <MenuItem value="FEMALE">여성전용</MenuItem>
               </Select>
             </FormControl>
           </div>
