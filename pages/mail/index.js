@@ -12,7 +12,7 @@ import {
 import { fireAlert } from "../../components/common/Alert";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
-
+import { mailData } from "./mailData";
 const style = css`
   #mail_header {
     margin: 5rem 1rem 1rem;
@@ -86,7 +86,7 @@ export default function MailList() {
   const userData = useRecoilValue(userState);
   const userId = userData.id;
 
-  const [currentMail, setCurrentMail] = useState({});
+  const [currentMail, setCurrentMail] = useState(mailData);
 
   //삭제 쪽지 리스트
   const [noteList, setNoteList] = useState([]);
@@ -230,7 +230,7 @@ export default function MailList() {
                 id="unit_mail"
                 className={mail.readMark ? "" : "active"}
                 onClick={() => {
-                  // handleCurrentMail(mail.id);
+                  handleCurrentMail(mail.id);
                 }}
               >
                 {isUpdate && (
@@ -259,6 +259,7 @@ export default function MailList() {
               </div>
             ))}
         </div>
+
         <MailModal
           open={open}
           handleClose={handleClose}
