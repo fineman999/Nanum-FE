@@ -10,13 +10,10 @@ const HostHouseListItem = ({ item }) => {
   const router = useRouter();
 
   const handleModify = (item) => {
-    router.push(
-      {
-        pathname: "/host/house/edit",
-        query: { id: item.id },
-      },
-      "/host/house/edit"
-    );
+    router.push({
+      pathname: `/host/house/edit`,
+      query: { id: item.id },
+    });
   };
   return (
     <li className={styles.host_houst_list_item}>

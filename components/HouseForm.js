@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/HouseAddForm.module.css";
@@ -22,6 +23,7 @@ import PreviewImageForm from "./PreviewImageForm";
 const { kakao } = globalThis;
 
 const HouseForm = () => {
+  const router = useRouter();
   const [form, setForm] = useState({
     houseRequest: {
       hostId: 1, // 호스트 아이디
@@ -54,6 +56,20 @@ const HouseForm = () => {
   const mainImageInput = useRef(null);
 
   useEffect(() => {
+    const { id: houseId } = router.query;
+    const requestApi = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1/origin/${houseId}`
+        );
+        console.log(response.data);
+        setForm(response.data.result);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    requestApi();
+
     // 주소 → 좌표(위도, 경도) 검색
     kakao.maps.load(() => {
       const geocoder = new kakao.maps.services.Geocoder();
@@ -293,6 +309,7 @@ const HouseForm = () => {
         <TextField
           id="outlined-basic"
           name="houseName"
+          value={form.houseRequest.houseName || ""}
           label="하우스 이름"
           variant="outlined"
           onChange={changeForm}
@@ -304,6 +321,7 @@ const HouseForm = () => {
         <TextField
           id="outlined-multiline-flexible"
           name="explanation"
+          value={form.houseRequest.explanation || ""}
           label="하우스 소개"
           multiline
           maxRows={4}
@@ -413,6 +431,7 @@ const HouseForm = () => {
             id="outlined-basic"
             name="detailAddress"
             label="상세"
+            value={form.houseRequest.detailAddress || "상세"}
             variant="outlined"
             onChange={changeForm}
             sx={{ width: "100%" }}
