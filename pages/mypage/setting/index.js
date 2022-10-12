@@ -5,13 +5,21 @@ import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import LockIcon from "@mui/icons-material/Lock";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import Tooltip from "@mui/material/Tooltip";
 import { inputAlert } from "../../../components/common/PasswordAlert";
-import { putPassword } from "../../../lib/apis/auth";
+import {
+  getUserDetail,
+  putPassword,
+  putUserDetail,
+} from "../../../lib/apis/auth";
+import { useRecoilState } from "recoil";
+import { userState } from "../../../state/atom/authState";
+import axios from "axios";
+import { fireAlert } from "../../../components/common/Alert";
 const style = css`
   #setting {
     padding: 5rem 2rem;
@@ -64,22 +72,13 @@ const style = css`
 `;
 export default function Setting() {
   const router = useRouter();
-
   const [isLock, setIsLock] = useState(true);
-  const [imageSrc, setImageSrc] = useState("");
-  const [pwd, setPwd] = useState("");
-
-  const user = {
-    userName: "노숙자",
-    date: "2022.01.01",
-    email: "test@test.com",
-    phone: "010-1234-1234",
-    mail: true,
-    sex: 0,
-  };
-
-  const [mailAccept, setMailAccept] = useState(user.mail);
-  const [sex, setSex] = useState(user.sex);
+  const [userData, setUserData] = useRecoilState(userState);
+  const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
+  const [mailAccept, setMailAccept] = useState(userData.noteReject);
+  const [sex, setSex] = useState(userData.gender);
+  const [imgFile, setImgFile] = useState();
+  const userId = userData.id;
   const handleMailAccept = (event) => {
     setMailAccept(event.target.value);
   };
@@ -87,28 +86,98 @@ export default function Setting() {
     setSex(event.target.value);
   };
 
-  const handlePwd = (e) => {
-    setPwd(e.target.value);
-  };
   //잠금 컨트롤
   const handleLock = () => {
-    inputAlert({
-      title: "잠금 해제를 위해 비밀번호를 입력해주세요",
-      userId: 1,
-      setIsLock: setIsLock,
-    });
+    if (isLock) {
+      inputAlert({
+        title: "잠금 해제를 위해 비밀번호를 입력해주세요",
+        userId: userData.id,
+        setIsLock: setIsLock,
+      });
+    } else {
+      setIsLock(true);
+      updateUser();
+    }
   };
+
+  //로그아웃
+  const logOut = () => {
+    sessionStorage.clear();
+    localStorage.clear();
+    setUserData();
+    router.push("/");
+  };
+
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
     const reader = new FileReader();
+    setImgFile(fileBob);
     reader.readAsDataURL(fileBob);
     return new Promise((resolve) => {
       reader.onload = () => {
         setImageSrc(reader.result);
+
         console.log(reader.result);
         resolve();
       };
     });
+  };
+
+  //휴대전화 - 반환
+  const phoneFomatter = (str) => {
+    const formatNum = str.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    return formatNum;
+  };
+
+  //date 형식 변환
+  const handleDate = (str) => {
+    const date = new Date(str);
+    return date.toLocaleDateString();
+  };
+
+  //유저정보 변경하기
+  const updateUser = async () => {
+    const formData = new FormData();
+    await formData.append("profileImg", imgFile);
+    const request = {
+      phone: userData.phone,
+      nickname: userData.nickName,
+      gender: sex,
+      isNoteReject: mailAccept,
+      imgUrl: userData.profileImgUrl,
+    };
+    const uploaderString = JSON.stringify(request);
+    formData.append(
+      "request",
+      new Blob([uploaderString], { type: "application/json" })
+    );
+    const res = await axios.put(
+      `http://20.214.170.222:8000/user-service/api/v1/users/${userData.id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: localStorage.getItem("accessToken"),
+        },
+      }
+    );
+    console.log(res);
+    if (res.status == 200) {
+      console.log(userId);
+      fireAlert({
+        icon: "success",
+        title: "성공적으로 회원정보가 수정되었습니다.",
+      });
+      getUserDetail({ userId }).then((res) => {
+        console.log(res);
+        setUserData(res.data);
+      });
+    } else {
+      fireAlert({
+        icon: "error",
+        title: "회원정보 수정에 실패했어요.",
+      });
+    }
   };
   return (
     <>
@@ -129,7 +198,9 @@ export default function Setting() {
           </div>
           <div id="second_header">
             <h4>계정 정보</h4>
-            <h4 style={{ color: "red" }}>로그아웃</h4>
+            <h4 style={{ color: "red" }} onClick={logOut}>
+              로그아웃
+            </h4>
           </div>
         </section>
         <section id="setting_profile">
@@ -161,13 +232,15 @@ export default function Setting() {
               }}
             />
           </div>
-          <h2 style={{ marginBottom: "0.5rem" }}>{user.userName}</h2>
-          <p style={{ marginBottom: "0.5rem" }}>가입일 {user.date}</p>
+          <h2 style={{ marginBottom: "0.5rem" }}>{userData.nickName}</h2>
+          <p style={{ marginBottom: "0.5rem" }}>
+            가입일 {handleDate(userData.createAt)}
+          </p>
           <hr />
         </section>
         <section id="setting_body">
           <h4>이메일</h4>
-          <p>{user.email}</p>
+          <p>{userData.email}</p>
           <h4>비밀번호</h4>
           <p
             style={{ color: "#415ffc", cursor: "pointer" }}
@@ -178,7 +251,7 @@ export default function Setting() {
             비밀번호 변경하기
           </p>
           <h4>휴대전화</h4>
-          <p>{user.phone}</p>
+          <p>{phoneFomatter(userData.phone)}</p>
           <FormControl id="sex">
             <FormLabel id="demo-controlled-radio-buttons-group">
               <h4 style={{ color: "black", marginBottom: "0" }}>성별</h4>
@@ -195,13 +268,13 @@ export default function Setting() {
               }}
             >
               <FormControlLabel
-                value={0}
+                value="F"
                 control={<Radio />}
                 label="여자"
                 disabled={isLock ? true : false}
               />
               <FormControlLabel
-                value={1}
+                value="M"
                 control={<Radio />}
                 label="남자"
                 disabled={isLock ? true : false}

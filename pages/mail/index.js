@@ -10,6 +10,8 @@ import {
   getSentMail,
 } from "../../lib/apis/mail";
 import { fireAlert } from "../../components/common/Alert";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../state/atom/authState";
 
 const style = css`
   #mail_header {
@@ -78,11 +80,11 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 export default function MailList() {
   const [sentMail, setSenttMail] = useState([]);
   const [receivedMail, setReceivedMail] = useState([]);
-  const [isType, setIsType] = useState(11);
+  const [isType, setIsType] = useState(1);
   const [mailType, setMailType] = useState(receivedMail);
   const [isUpdate, setIsUpdate] = useState(false);
-
-  const userId = 1;
+  const userData = useRecoilValue(userState);
+  const userId = userData.id;
 
   const [currentMail, setCurrentMail] = useState({});
 
@@ -136,6 +138,8 @@ export default function MailList() {
         .then((res) => {
           console.log(res);
           fireAlert({ icon: "success", title: "삭제되었습니다." });
+          getItemList();
+          setNoteList([]);
         })
         .catch((err) => console.log(err));
     });
@@ -146,14 +150,19 @@ export default function MailList() {
       let noteId = mail.id;
       deleteMail({ noteId, userId })
         .then((res) => {
+          if (res.status == 204) {
+            fireAlert({ icon: "error", title: "실패했습니다." });
+          } else {
+            fireAlert({ icon: "success", title: "삭제되었습니다." });
+            getItemList();
+          }
           console.log(res);
-          fireAlert({ icon: "success", title: "삭제되었습니다." });
         })
         .catch((err) => console.log(err));
     });
   };
-  //쪽지목록 가져오기
-  useEffect(() => {
+
+  const getItemList = () => {
     getReceivedMail(userId)
       .then((res) => {
         console.log(res);
@@ -170,6 +179,11 @@ export default function MailList() {
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  //쪽지목록 가져오기
+  useEffect(() => {
+    getItemList();
   }, []);
 
   return (
@@ -214,7 +228,7 @@ export default function MailList() {
               <div
                 key={mail.id}
                 id="unit_mail"
-                className={mail.readMark ? "active" : ""}
+                className={mail.readMark ? "" : "active"}
                 onClick={() => {
                   // handleCurrentMail(mail.id);
                 }}

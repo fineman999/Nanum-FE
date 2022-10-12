@@ -14,13 +14,13 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { useRecoilValue } from "recoil";
-import authState from "../../state/atom/authState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
-import { logout } from "../../lib/apis/auth";
+import { getUserDetail, logout } from "../../lib/apis/auth";
 
 const UserMenu = ({ menuList, handleClick }) => {
   return (
@@ -66,7 +66,9 @@ const UserMenu = ({ menuList, handleClick }) => {
 
 const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const router = useRouter();
-  const { isAuth, username } = useRecoilValue(authState);
+  const [userData, setUserData] = useRecoilState(userState);
+  const [authData, setAuthData] = useRecoilState(authState);
+  const isLogin = authData.isLogin;
   const [menuList, setMenuList] = useState([
     { id: 1, name: "홈", path: "/" },
     {
@@ -87,9 +89,8 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
       sub: {
         open: false,
         menuList: [
-          { name: "내 정보", path: "/mypage" },
-          { name: "회원정보 수정", path: "/my/edit" },
-          { name: "회원정보 탈퇴", path: "/my/delete" },
+          { name: "내 정보", path: isLogin ? "/mypage" : "/login" },
+          { name: "설정", path: isLogin ? "/mypage/setting" : "/login" },
         ],
       },
     },
@@ -128,6 +129,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
 
   const handleLogout = () => {
     logout();
+    setAuthData({ isLogin: false });
     toggleDrawer();
   };
 
@@ -138,10 +140,10 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
       PaperProps={{ sx: { width: "100%" } }}
     >
       <Box p={2}>
-        {isAuth ? (
+        {authData.isLogin && userData.profileImgUrl !== "" ? (
           <Avatar
-            src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-            alt={username}
+            src={userData.profileImgUrl}
+            alt={userData.nickName}
             sx={{
               width: 112,
               height: 112,
@@ -150,7 +152,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
         ) : (
           <Avatar
             src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-            alt={username}
+            alt="default_img"
             sx={{
               width: 112,
               height: 112,
@@ -162,7 +164,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
           mt={1}
           sx={{ width: 112, textAlign: "center", fontWeight: "bold" }}
         >
-          {username}
+          {authData.isLogin ? <>{userData.nickName}</> : <></>}
         </Typography>
         <IconButton
           onClick={toggleDrawer}
@@ -178,7 +180,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
       <Divider />
       {/* 로그아웃 버튼 */}
       <Box p={1} sx={{ display: "flex", justifyContent: "center" }}>
-        {isAuth ? (
+        {authData.isLogin ? (
           <Button
             variant="text"
             color="secondary"

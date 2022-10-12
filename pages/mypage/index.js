@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
 
 const style = css`
   #mypage {
@@ -18,7 +20,7 @@ const style = css`
   }
   #user_header {
     display: flex;
-    width: 80%;
+    width: 40vh
     align-items: center;
     justify-content: center;
   }
@@ -34,6 +36,7 @@ const style = css`
     width: 10vh;
     height: 10vh;
     border-radius: 100%;
+    
   }
   #user_content {
     margin-left: 1rem;
@@ -119,11 +122,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 export default function MyPage() {
   const router = useRouter();
 
-  const [userName, setUserName] = useState("노숙자");
   const [postCnt, setPostCnt] = useState(2);
   const [commentCnt, setCommentCnt] = useState(3);
   const [likeCnt, setLikeCnt] = useState(1);
 
+  const [userData, setUserData] = useRecoilState(userState);
   const [imageSrc, setImageSrc] = useState("");
 
   const userDate = "2022.10.31";
@@ -147,14 +150,14 @@ export default function MyPage() {
       <Header title="마이페이지" type="my" />
       <div id="mypage">
         <section id="user_header">
-          {imageSrc ? (
-            <img src={imageSrc} alt="preview_img" />
+          {userData.profileImgUrl ? (
+            <img src={userData.profileImgUrl} alt="preview_img" />
           ) : (
             <img src="/images/default.png" alt="default IMG" />
           )}
           <div id="user_content">
             <div id="user_profile">
-              <h3>{userName}</h3>
+              <h3>{userData.nickName}</h3>
               <label className="input-file-button" htmlFor="input-file">
                 프로필 수정
               </label>
