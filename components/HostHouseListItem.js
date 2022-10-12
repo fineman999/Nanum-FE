@@ -4,8 +4,20 @@ import React from "react";
 
 import styles from "../styles/HostHouseListItem.module.css";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useRouter } from "next/router";
 
 const HostHouseListItem = ({ item }) => {
+  const router = useRouter();
+
+  const handleModify = (item) => {
+    router.push(
+      {
+        pathname: "/host/house/edit",
+        query: { id: item.id },
+      },
+      "/host/house/edit"
+    );
+  };
   return (
     <li className={styles.host_houst_list_item}>
       <div className={styles.house_info}>
@@ -17,7 +29,14 @@ const HostHouseListItem = ({ item }) => {
           </div>
           <div className="aprv_status">
             {item.status === "BEFORE_APPROVAL" ? (
-              <Chip label="승인대기중" variant="outlined" />
+              <div className="">
+                <Chip label="승인대기중" variant="outlined" />
+                <Chip
+                  label="수정"
+                  variant="outlined"
+                  onClick={() => handleModify(item)}
+                />
+              </div>
             ) : (
               <Chip label="승인완료" />
             )}

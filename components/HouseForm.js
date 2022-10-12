@@ -12,14 +12,16 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/HouseAddForm.module.css";
+import { fireAlert } from "./common/Alert";
 import FloorPlanButton from "./common/FloorPlanButton";
 import HouseFileButton from "./common/HouseFileButton";
 import PostcodeModal from "./common/modal/PostcodeModal";
+import HostHouseOptions from "./HostHouseOptions";
 import PreviewImageForm from "./PreviewImageForm";
 
 const { kakao } = globalThis;
 
-const HouseAddForm = () => {
+const HouseForm = () => {
   const [form, setForm] = useState({
     houseRequest: {
       hostId: 1, // 호스트 아이디
@@ -34,13 +36,14 @@ const HouseAddForm = () => {
       lat: "", // 위도
       lon: "", // 경도
       keyWord: [], // 검색 키워드
-      houseOption: [1, 2],
+      houseOption: [], // 하우스 옵션
     },
     houseMainImg: "", // 하우스 대표 이미지
     floorPlanImg: "", // 하우스 도면 이미지
     houseFile: "", // 하우스 관련 파일
     houseImgs: [], // 하우스 상세 이미지 리스트
   });
+
   const [postModal, setPostModal] = useState(false);
   const [keyWord, setKeyword] = useState("");
   const [preview, setPreview] = useState({
@@ -89,6 +92,18 @@ const HouseAddForm = () => {
           streetAddress: addressForm.roadAddress,
           lotAddress: addressForm.jibunAddress,
           zipCode: addressForm.zonecode,
+        },
+      };
+    });
+  };
+
+  const handleOption = (option) => {
+    setForm((prev) => {
+      return {
+        ...prev,
+        houseRequest: {
+          ...prev.houseRequest,
+          houseOption: [...option],
         },
       };
     });
@@ -229,17 +244,20 @@ const HouseAddForm = () => {
     const requestApi = async () => {
       try {
         const response = await axios.post(
-          "http://20.214.170.222:8000/house-service/api/v1/houses",
+          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses`,
           formData
         );
-        console.log(response.data);
+        const { isSuccess, message, result } = response.data;
+        if (isSuccess) {
+          fireAlert({ icon: "success", title: result });
+        }
       } catch (err) {
         console.error(err);
       }
     };
 
     requestApi();
-    console.log(formData);
+    console.log("form: ", form);
     for (let entry of formData.entries()) {
       console.log(entry);
     }
@@ -270,6 +288,7 @@ const HouseAddForm = () => {
             이미지 등록
           </Button>
         </div>
+
         {/* 하우스 이름 */}
         <TextField
           id="outlined-basic"
@@ -401,6 +420,9 @@ const HouseAddForm = () => {
         )}
       </div>
 
+      {/* 하우스 옵션 */}
+      <HostHouseOptions handleOption={handleOption} />
+
       {/* 주소 좌표 */}
       <div className="geo_section">
         <h1>주소 좌표 정보</h1>
@@ -464,4 +486,4 @@ const HouseAddForm = () => {
   );
 };
 
-export default HouseAddForm;
+export default HouseForm;

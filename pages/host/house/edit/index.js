@@ -4,7 +4,7 @@ import HouseForm from "../../../../components/HouseForm";
 const index = () => {
   return (
     <>
-      <SubHeader title="하우스 등록" type="myHouse" />
+      <SubHeader title="하우스 수정" type="myHouse" />
       <section className="form_section">
         <HouseForm />
       </section>
