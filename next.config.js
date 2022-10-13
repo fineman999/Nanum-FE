@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
   swcMinify: true,
   env: {
     KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,

@@ -10,6 +10,7 @@ const HouseKeywordList = ({ form, removeKeyword }) => {
         form.houseRequest.keyWord.map((keyWord, index) => (
           <HouseKeywordListItem
             key={index}
+            index={index}
             keyword={keyWord}
             removeKeyword={removeKeyword}
           />

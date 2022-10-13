@@ -42,8 +42,6 @@ const HostHouseOptions = ({ houseOption = [], handleOption }) => {
   useEffect(() => {
     // 등록 : 옵션을 선택한다. → 관리자가 선택한 옵션(options)
     // 수정 : 서버로부터 옵션 값을 받아와서 표시한다. → 선택된 옵션(selectedOptions)
-    console.log("houseOption: ", houseOption);
-    console.log("options", options);
     if (houseOption.length > 0) {
       setOptions(houseOption);
     }

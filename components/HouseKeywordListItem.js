@@ -3,7 +3,7 @@ import React from "react";
 
 import styles from "../styles/HouseKeywordListItem.module.css";
 
-const HouseKeywordListItem = ({ keyword, removeKeyword }) => {
+const HouseKeywordListItem = ({ index, keyword, removeKeyword }) => {
   return (
     <li className={styles.keyword_list_item}>
       <Chip label={keyword} onDelete={() => removeKeyword(index)} />

@@ -56,13 +56,13 @@ const HouseForm = () => {
 
   useEffect(() => {
     if (path === "edit") {
-      const { id: houseId } = router.query;
+      const houseId = router.asPath.split("/")[4];
       const requestApi = async () => {
         try {
           const response = await axios.get(
             `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1/origin/${houseId}`
           );
-          console.log("하우스 데이터 읽어오기 ", response.data);
+          console.log(response.data.result);
           const { houseMainImg, floorPlanImg } = response.data.result;
           setForm({ ...response.data.result, houseId: houseId });
           setPreview({
@@ -265,12 +265,36 @@ const HouseForm = () => {
     }
   };
 
+  const handleReset = () => {
+    setForm({
+      houseRequest: {
+        hostId: 1, // 호스트 아이디
+        houseName: "", // 하우스 이름
+        houseType: "", // 주거 타입
+        houseGender: "", // 성별 타입
+        explanation: "", // 하우스 소개
+        streetAddress: "", // 도로명 주소
+        lotAddress: "", // 지번 주소
+        detailAddress: "", // 상세 주소
+        zipCode: "", // 우편번호
+        lat: "", // 위도
+        lon: "", // 경도
+        keyWord: [], // 검색 키워드
+        houseOption: [], // 하우스 옵션
+      },
+      houseMainImg: "", // 하우스 대표 이미지
+      floorPlanImg: "", // 하우스 도면 이미지
+      houseFile: "", // 하우스 관련 파일
+      houseImgs: [], // 하우스 상세 이미지 리스트
+    });
+    setPreview({
+      houseMainImg: null,
+      floorPlanImg: null,
+    });
+  };
+
   // 수정 이벤트 핸들러
   const handleEdit = () => {
-    console.log("하우스 수정 완료");
-    console.log("form: ", form);
-    console.log("editForm: ", editImageForm);
-
     const EDIT_API = `/houses/${form.houseRequest.hostId}/${form.houseId}`;
     const DETAIL_IMAGE_EDIT_API = `/houses/${form.houseRequest.hostId}/${form.houseId}/image`;
 
@@ -325,8 +349,6 @@ const HouseForm = () => {
 
   // 등록 이벤트 핸들러
   const handleAdd = () => {
-    console.log("하우스 등록 완료");
-    console.log(form);
     const formData = new FormData();
     formData.append(
       "houseRequest",
@@ -423,6 +445,18 @@ const HouseForm = () => {
 
       <Divider />
 
+      {/* 주소 좌표 */}
+      <div className={styles.house_position_section}>
+        <div className={styles.house_position_header}>
+          <h3>하우스 위치</h3>
+        </div>
+        <div className={styles.house_position_body}>
+          <HousePositionForm form={form} handlePosition={handlePosition} />
+        </div>
+      </div>
+
+      <Divider />
+
       {/* 하우스 옵션 */}
       <div className={styles.house_option_section}>
         <div className={styles.house_option_header}>
@@ -437,9 +471,6 @@ const HouseForm = () => {
       </div>
 
       <Divider />
-
-      {/* 주소 좌표 */}
-      <HousePositionForm form={form} handlePosition={handlePosition} />
 
       {/* 검색 키워드 추가 */}
       <div className={styles.house_keyword_section}>
@@ -505,12 +536,22 @@ const HouseForm = () => {
       {/* 등록 버튼 */}
       <div className="form_btns">
         {path !== "edit" ? (
-          <>
-            <button onClick={handleAdd}>등록</button>
-            <button type="reset">하우스 리셋</button>
-          </>
+          <div className={styles.house_add_btns}>
+            <button className={styles.house_add_button} onClick={handleAdd}>
+              등록
+            </button>
+            <button
+              className={styles.house_reset_button}
+              type="reset"
+              onClick={handleReset}
+            >
+              리셋
+            </button>
+          </div>
         ) : (
-          <button onClick={handleEdit}>수정</button>
+          <button className={styles.house_edit_button} onClick={handleEdit}>
+            수정
+          </button>
         )}
       </div>
     </form>
