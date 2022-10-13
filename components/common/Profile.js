@@ -14,7 +14,11 @@ export function ProfileImg({ img, size, name, type }) {
         <img
           src={img}
           onClick={() => handleOpen()}
-          style={{ width: `${size}vh`, height: `${size}vh` }}
+          style={{
+            width: `${size}vh`,
+            height: `${size}vh`,
+            borderRadius: "100%",
+          }}
         />
       </div>
       <ProfileModal

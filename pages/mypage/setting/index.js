@@ -125,7 +125,7 @@ export default function Setting() {
 
   //휴대전화 - 반환
   const phoneFomatter = (str) => {
-    const formatNum = str.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    const formatNum = str && str.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
     return formatNum;
   };
 
@@ -146,6 +146,7 @@ export default function Setting() {
       isNoteReject: mailAccept,
       imgUrl: userData.profileImgUrl,
     };
+    console.log(imgFile, "!@@");
     const uploaderString = JSON.stringify(request);
     formData.append(
       "request",
@@ -157,7 +158,7 @@ export default function Setting() {
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: localStorage.getItem("accessToken"),
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }
     );
@@ -170,7 +171,7 @@ export default function Setting() {
       });
       getUserDetail({ userId }).then((res) => {
         console.log(res);
-        setUserData(res.data);
+        setUserData(res.data.result);
       });
     } else {
       fireAlert({

@@ -171,7 +171,7 @@ export default function MyPage() {
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: localStorage.getItem("accessToken"),
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }
     );
@@ -183,7 +183,7 @@ export default function MyPage() {
       });
       getUserDetail({ userId }).then((res) => {
         console.log(res);
-        setUserData(res.data);
+        setUserData(res.data.result);
       });
     } else {
       fireAlert({

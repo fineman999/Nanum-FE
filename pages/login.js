@@ -158,7 +158,7 @@ export default function Login() {
           setAuthData({ isLogin: true });
           getUserDetail({ userId })
             .then((Res) => {
-              setUserData(Res.data);
+              setUserData(Res.data.result);
               console.log(Res);
               router.push("/");
             })

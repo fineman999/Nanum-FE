@@ -18,21 +18,10 @@ const style = css`
     padding: 5rem 1rem;
   }
 `;
-// noteDetails={"senderId":1,
-//   "title": "title",
-//   "content": "SDSD",
-//   "receiverId": 7
-// }
 export default function Send() {
   const router = useRouter();
   const [isName, setIsName] = useState(router.query.name);
   const [text, setText] = useState("");
-  const [noteDetails, setNoteDetails] = useState({
-    title: "title",
-    content: "test",
-    receiverId: 1,
-    senderId: 3,
-  });
   const [images, setImages] = useState([]);
 
   const handleBack = () => {
@@ -41,6 +30,7 @@ export default function Send() {
 
   const addImages = (file) => {
     console.log("add image");
+    console.log(images);
     setImages([...images, file]);
   };
 
@@ -53,8 +43,18 @@ export default function Send() {
 
   //쪽지보내기
   const sendMail = async () => {
+    console.log(images);
+    const noteDetails = {
+      title: "title",
+      content: text,
+      receiverId: router.query.receiverId,
+      senderId: router.query.senderId,
+    };
     const formData = new FormData();
-    await formData.append("images", images);
+
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
     const uploaderString = JSON.stringify(noteDetails);
     formData.append(
       "noteDetails",
@@ -67,6 +67,7 @@ export default function Send() {
       {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
       }
     );
