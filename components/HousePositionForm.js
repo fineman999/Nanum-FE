@@ -20,11 +20,13 @@ const HousePositionForm = ({ form, handlePosition }) => {
     });
   }, [form.houseRequest.streetAddress]);
   return (
-    <div className="geo_section">
-      <h1>주소 좌표 정보</h1>
-      <div>위도: {form.houseRequest.lat}</div>
-      <div>경도: {form.houseRequest.lon}</div>
-    </div>
+    <>
+      <div className="geo_section">
+        <h1>주소 좌표 정보</h1>
+        <div>위도: {form.houseRequest.lat}</div>
+        <div>경도: {form.houseRequest.lon}</div>
+      </div>
+    </>
   );
 };
 
