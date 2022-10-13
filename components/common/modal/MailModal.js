@@ -13,8 +13,7 @@ import { useRef } from "react";
 import { useRouter } from "next/router";
 import { ProfileImg } from "../Profile";
 import { useState } from "react";
-import { useEffect } from "react";
-import { getMailDetail } from "../../../lib/apis/mail";
+
 const mystyle = css`
   .house_image_wrapper {
     height: 30vh;
@@ -33,9 +32,10 @@ const style = {
   p: 4,
 };
 
-export default function MailModal({ open, handleClose, isType, noteId, mail }) {
+export default function MailModal({ open, handleClose, isType, mail }) {
   const swiperRef = useRef(null);
   const router = useRouter();
+
   const handleModal = () => {
     handleClose();
   };
@@ -44,7 +44,11 @@ export default function MailModal({ open, handleClose, isType, noteId, mail }) {
     router.push(
       {
         pathname: "/mail/send",
-        query: { name: mail.note.receiver.nickName },
+        query: {
+          name: mail.note.sender.nickName,
+          receiverId: mail.note.senderId,
+          senderId: mail.note.receiverId,
+        },
       },
       "/mail/send"
     );
@@ -54,15 +58,6 @@ export default function MailModal({ open, handleClose, isType, noteId, mail }) {
     const date = new Date(str);
     return date.toLocaleDateString();
   };
-
-  // useEffect(() => {
-  //   getMailDetail(noteId)
-  //     .then((res) => {
-  //       console.log(res.data.note, "ss");
-  //       setTest(res.data);
-  //     })
-  //     .catch((err) => console.log(err, "mail"));
-  // }, []);
 
   return (
     <div>
@@ -84,11 +79,21 @@ export default function MailModal({ open, handleClose, isType, noteId, mail }) {
               {isType == 1 ? "보낸 사람" : "받는 사람"}
             </Typography>
             <p>날짜: {handleDate(mail.note.createAt)}</p>
-            <p>dkg:{noteId}</p>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            {/* <ProfileImg img={mail.profile} size={4} name={mail.name} type={1} /> */}
-            {mail.note.receiver.nickName}
+            <ProfileImg
+              img={
+                isType == 1
+                  ? mail.note.sender.profileImgUrl
+                  : mail.note.receiver.profileImgUrl
+              }
+              size={4}
+              name="profile"
+              type={1}
+            />
+            {isType == 1
+              ? mail.note.sender.nickName
+              : mail.note.receiver.nickName}
           </div>
           <Typography
             id="modal-modal-description"

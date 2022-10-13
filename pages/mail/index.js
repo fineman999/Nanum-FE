@@ -109,11 +109,10 @@ export default function MailList() {
   const handleCurrentMail = (noteId) => {
     getMailDetail(noteId)
       .then((res) => {
-        console.log(res.data.note, "ss");
+        console.log(res.data, "ss");
         setCurrentMail(res.data);
-        setTimeout(() => {
-          handleOpen();
-        }, 3000);
+
+        handleOpen();
       })
       .catch((err) => console.log(err));
   };
