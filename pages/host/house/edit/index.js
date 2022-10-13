@@ -10,10 +10,8 @@ const index = () => {
       </section>
       <style jsx>{`
         .form_section {
-          width: 1024px;
-          margin: 0 auto;
-          max-width: "1200px";
-          padding: 20px;
+          width: 100%;
+          height: 100%;
           background: white;
         }
       `}</style>

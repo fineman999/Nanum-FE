@@ -17,7 +17,7 @@ const HouseAddressForm = ({ form, changeForm, handleAddress }) => {
         form={form.houseRequest}
         handleAddress={handleAddress}
       />
-      <div className="zonecode_wrapper">
+      <div className={styles.zonecode_wrapper}>
         <TextField
           id="outlined-read-only-input"
           name="zipCode"
@@ -27,48 +27,50 @@ const HouseAddressForm = ({ form, changeForm, handleAddress }) => {
             readOnly: true,
           }}
           required
+          sx={{ flexGrow: 1, mr: 1 }}
         />
         <Button variant="outlined" onClick={onPostModal}>
           주소 검색
         </Button>
       </div>
-
       <br />
-      <div className="address_wrapper">
+      <div className={styles.address_wrapper}>
         <TextField
           id="outlined-read-only-input"
           name="streetAddress"
           label="도로명"
-          value={form.houseRequest.streetAddress || "도로명"}
+          value={form.houseRequest.streetAddress || "도로명 주소"}
           InputProps={{
             readOnly: true,
           }}
-          sx={{ width: "50%" }}
           required
+          sx={{ width: "100%", mb: 3 }}
         />
         <TextField
           id="outlined-read-only-input"
           name="lotAddress"
           label="지번"
-          value={form.houseRequest.lotAddress || "지번"}
+          value={form.houseRequest.lotAddress || "지번 주소"}
           InputProps={{
             readOnly: true,
           }}
-          sx={{ width: "50%" }}
+          sx={{ width: "100%" }}
           required
         />
       </div>
-      <br />
       {form.houseRequest.streetAddress && (
-        <TextField
-          id="outlined-basic"
-          name="detailAddress"
-          label="상세"
-          value={form.houseRequest.detailAddress || "상세"}
-          variant="outlined"
-          onChange={changeForm}
-          sx={{ width: "100%" }}
-        />
+        <>
+          <br />
+          <TextField
+            id="outlined-basic"
+            name="detailAddress"
+            label="상세"
+            value={form.houseRequest.detailAddress || ""}
+            variant="outlined"
+            onChange={changeForm}
+            sx={{ width: "100%" }}
+          />
+        </>
       )}
     </div>
   );

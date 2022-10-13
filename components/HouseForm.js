@@ -1,25 +1,20 @@
-import {
-  Button,
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Divider } from "@mui/material";
 import axios from "axios";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/HouseForm.module.css";
 import { fireAlert } from "./common/Alert";
-import FloorPlanButton from "./common/FloorPlanButton";
 import HouseFileButton from "./common/HouseFileButton";
 import HostHouseOptions from "./HostHouseOptions";
 import HouseAddressForm from "./HouseAddressForm";
-import HousePositionForm from "./HousePositionForm";
+import HouseDescForm from "./HouseDescForm";
+import HouseFloorImage from "./HouseFloorImage";
+import HouseKeywordForm from "./HouseKeywordForm";
+import HouseMainImage from "./HouseMainImage";
+import HouseTypeForm from "./HouseTypeForm";
 import PreviewImageForm from "./PreviewImageForm";
+import HousePositionForm from "./HousePositionForm";
 
 const HouseForm = () => {
   const router = useRouter();
@@ -57,6 +52,7 @@ const HouseForm = () => {
   });
 
   const mainImageInput = useRef(null);
+  const floorImageInput = useRef(null);
 
   useEffect(() => {
     if (path === "edit") {
@@ -210,7 +206,9 @@ const HouseForm = () => {
         };
       });
     };
-    reader.readAsDataURL(file);
+    if (file && file.type.match("image.*")) {
+      reader.readAsDataURL(file);
+    }
 
     setForm((prev) => {
       return {
@@ -328,6 +326,7 @@ const HouseForm = () => {
   // 등록 이벤트 핸들러
   const handleAdd = () => {
     console.log("하우스 등록 완료");
+    console.log(form);
     const formData = new FormData();
     formData.append(
       "houseRequest",
@@ -368,169 +367,141 @@ const HouseForm = () => {
 
   return (
     <form className={styles.house_add_form} onSubmit={handleSubmit}>
-      <div className="house_section">
-        {/* 하우스 대표 이미지 */}
-        <div className={styles.main_image_preview_wrapper}>
-          <div className={styles.main_image_preview}>
-            {preview.houseMainImg && (
-              <Image src={preview.houseMainImg} alt="main_img" layout="fill" />
-            )}
-          </div>
-          <input
-            name="houseMainImg"
-            type="file"
-            style={{ display: "none" }}
-            onChange={uploadImage}
-            ref={mainImageInput}
-          />
-          <Button
-            variant="outlined"
-            sx={{ width: "100%" }}
-            onClick={() => mainImageInput.current.click()}
-          >
-            이미지 등록
-          </Button>
+      {/* 하우스 대표 이미지 */}
+      <div className={styles.house_main_section}>
+        <div className={styles.house_main_header}>
+          <h3>하우스 대표 이미지</h3>
         </div>
-
-        {/* 하우스 이름 */}
-        <TextField
-          id="outlined-basic"
-          name="houseName"
-          value={form.houseRequest.houseName || ""}
-          label="하우스 이름"
-          variant="outlined"
-          onChange={changeForm}
-          sx={{ width: "100%", mb: 3 }}
-          required
-        />
-
-        {/* 하우스 소개 */}
-        <TextField
-          id="outlined-multiline-flexible"
-          name="explanation"
-          value={form.houseRequest.explanation || ""}
-          label="하우스 소개"
-          multiline
-          maxRows={4}
-          onChange={changeForm}
-          sx={{ width: "100%", mb: 3 }}
-          required
-        />
-
-        {/* 하우스 조건 설정 */}
-        <div className={styles.house_type_section}>
-          <div className="gender_type_form">
-            <FormControl fullWidth required>
-              <InputLabel id="demo-simple-select-autowidth-label">
-                성별타입
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={form.houseRequest.houseGender}
-                name="houseGender"
-                autoWidth
-                label="성별타입"
-                onChange={changeForm}
-                required
-              >
-                <MenuItem value="COMMON">남녀공용</MenuItem>
-                <MenuItem value="MALE">남성전용</MenuItem>
-                <MenuItem value="FEMALE">여성전용</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className="live_type_form">
-            <FormControl fullWidth required>
-              <InputLabel id="demo-simple-select-autowidth-label">
-                주거타입
-              </InputLabel>
-              <Select
-                labelId="demo-simple-select-autowidth-label"
-                id="demo-simple-select-autowidth"
-                value={form.houseRequest.houseType}
-                name="houseType"
-                autoWidth
-                label="주거타입"
-                onChange={changeForm}
-                required
-              >
-                <MenuItem value="share">쉐어</MenuItem>
-                <MenuItem value="one">마이룸(원룸)</MenuItem>
-                <MenuItem value="etc">기타</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
+        <div className={styles.house_main_body}>
+          <HouseMainImage
+            preview={preview}
+            uploadImage={uploadImage}
+            mainImageInput={mainImageInput}
+          />
         </div>
       </div>
 
-      {/* 주소 검색 */}
-      <HouseAddressForm
-        form={form}
-        changeForm={changeForm}
-        handleAddress={handleAddress}
-      />
+      <Divider />
+
+      {/* 하우스 텍스트 정보 */}
+      <div className={styles.house_desc_section}>
+        <div className={styles.house_desc_header}>
+          <h3>하우스 소개</h3>
+        </div>
+        <div className={styles.house_desc_body}>
+          <HouseDescForm form={form} changeForm={changeForm} />
+        </div>
+      </div>
+
+      <Divider />
+
+      {/* 하우스 조건 설정 */}
+      <div className={styles.house_type_section}>
+        <div className={styles.house_type_header}>
+          <h3>하우스 타입</h3>
+        </div>
+        <div className={styles.house_type_body}>
+          <HouseTypeForm form={form} changeForm={changeForm} />
+        </div>
+      </div>
+
+      <Divider />
+
+      {/* 하우스 주소 검색 */}
+      <div className={styles.house_address_section}>
+        <div className={styles.house_address_header}>
+          <h3>하우스 주소 검색</h3>
+        </div>
+        <div className={styles.house_address_body}>
+          <HouseAddressForm
+            form={form}
+            changeForm={changeForm}
+            handleAddress={handleAddress}
+          />
+        </div>
+      </div>
+
+      <Divider />
 
       {/* 하우스 옵션 */}
-      <HostHouseOptions
-        houseOption={form.houseOption}
-        handleOption={handleOption}
-      />
+      <div className={styles.house_option_section}>
+        <div className={styles.house_option_header}>
+          <h3>하우스 옵션</h3>
+        </div>
+        <div className={styles.house_option_body}>
+          <HostHouseOptions
+            houseOption={form.houseRequest.houseOption}
+            handleOption={handleOption}
+          />
+        </div>
+      </div>
+
+      <Divider />
 
       {/* 주소 좌표 */}
       <HousePositionForm form={form} handlePosition={handlePosition} />
 
       {/* 검색 키워드 추가 */}
-      <div className="keyword_section">
-        <TextField
-          id="outlined-basic"
-          name="keyWord"
-          value={keyWord || ""}
-          label="키워드"
-          variant="outlined"
-          onChange={changeKeyword}
-        />
-        <Button variant="outlined" onClick={addKeyword}>
-          추가
-        </Button>
-        <ul className={styles.keyword_list}>
-          {form.houseRequest.keyWord &&
-            form.houseRequest.keyWord.map((keyWord, index) => (
-              <li key={index}>
-                <Chip label={keyWord} onDelete={() => removeKeyword(index)} />
-              </li>
-            ))}
-        </ul>
+      <div className={styles.house_keyword_section}>
+        <div className={styles.house_keyword_header}>
+          <h3>하우스 키워드</h3>
+        </div>
+        <div className={styles.house_keyword_body}>
+          <HouseKeywordForm
+            form={form}
+            keyword={keyWord}
+            addKeyword={addKeyword}
+            removeKeyword={removeKeyword}
+            changeKeyword={changeKeyword}
+          />
+        </div>
       </div>
 
-      {/* 하우스 상세, 도면 이미지 추가 */}
-      <div className="detail_image_preview_section">
-        <Suspense fallback={<div>로딩중...</div>}>
+      <Divider />
+
+      {/* 하우스 상세 이미지 */}
+      <div className={styles.house_detail_image_section}>
+        <div className={styles.house_detail_image_header}>
+          <h3>하우스 상세 이미지</h3>
+        </div>
+        <div className={styles.house_detail_image_body}>
           <PreviewImageForm
             defaultImages={form.houseImgs}
             addImages={addImages}
             removeImages={removeImages}
             size={8}
           />
-        </Suspense>
-      </div>
-
-      <div className="floor_image_preview_section">
-        <FloorPlanButton uploadImage={uploadImage} />
-        <div className={styles.main_image_preview}>
-          {preview.floorPlanImg && (
-            <Image
-              src={preview.floorPlanImg}
-              alt="floor_plan_img"
-              layout="fill"
-            />
-          )}
         </div>
       </div>
-      {/* 하우스 관련 파일 추가 */}
-      <div className="file_submit_section">
-        <HouseFileButton uploadFile={uploadFile} />
+
+      <Divider />
+
+      {/* 하우스 도면 이미지 */}
+      <div className={styles.house_floor_section}>
+        <div className={styles.house_floor_header}>
+          <h3>하우스 도면 이미지</h3>
+        </div>
+        <div className={styles.house_floor_body}>
+          <HouseFloorImage
+            preview={preview}
+            uploadImage={uploadImage}
+            floorImageInput={floorImageInput}
+          />
+        </div>
       </div>
+
+      <Divider />
+
+      {/* 하우스 관련 파일 */}
+      <div className={styles.house_file_section}>
+        <div className={styles.house_file_header}>
+          <h3>하우스 관련 서류</h3>
+        </div>
+        <div className={styles.house_file_body}>
+          <HouseFileButton uploadFile={uploadFile} />
+        </div>
+      </div>
+
       {/* 등록 버튼 */}
       <div className="form_btns">
         {path !== "edit" ? (

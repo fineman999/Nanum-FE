@@ -2,9 +2,9 @@ import { Html, Head, Main, NextScript } from "next/document";
 import Script from "next/script";
 
 export default function Document() {
-  // const loadKakaoMap = () => {
-  //   return `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`;
-  // };
+  const loadKakaoMap = () => {
+    return `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.KAKAO_MAP_API_KEY}&libraries=services,clusterer&autoload=false`;
+  };
 
   return (
     <Html>
@@ -20,7 +20,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/icon?family=Material+Icons"
         />
 
-        {/* <Script src={loadKakaoMap()} strategy="beforeInteractive"></Script> */}
+        <Script src={loadKakaoMap()} strategy="beforeInteractive"></Script>
       </Head>
       <body>
         <Main />
