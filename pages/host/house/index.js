@@ -1,5 +1,6 @@
 import Link from "next/link";
 import SubHeader from "../../../components/common/SubHeader";
+import HostHouseList from "../../../components/HostHouseList";
 export default function MyHouse() {
   return (
     <>
@@ -7,6 +8,7 @@ export default function MyHouse() {
       <Link href="/host/house/add">
         <a>등록</a>
       </Link>
+      <HostHouseList />
     </>
   );
 }
