@@ -80,7 +80,9 @@ const label = { inputProps: { "aria-label": "Checkbox demo" } };
 export default function MailList() {
   const [sentMail, setSenttMail] = useState([]);
   const [receivedMail, setReceivedMail] = useState([]);
+  //1: 받은 메일함 , 2: 보낸 메일함
   const [isType, setIsType] = useState(1);
+
   const [mailType, setMailType] = useState(receivedMail);
   const [isUpdate, setIsUpdate] = useState(false);
   const userData = useRecoilValue(userState);
@@ -111,14 +113,15 @@ export default function MailList() {
       .then((res) => {
         console.log(res.data, "ss");
         setCurrentMail(res.data);
-
+        getItemList();
         handleOpen();
       })
       .catch((err) => console.log(err));
   };
 
   //쪽지 리스트 추가하기
-  const addList = (id) => {
+  const addList = (id, e) => {
+    e.stopPropagation();
     if (noteList.includes(id)) {
       const tmp = noteList.filter(function (value, index, arr) {
         return value != id;
@@ -131,7 +134,8 @@ export default function MailList() {
   };
 
   //쪽지 삭제하기
-  const delMail = () => {
+  const delMail = (e) => {
+    e.preventDefault();
     noteList.map((noteId) => {
       deleteMail({ noteId, userId })
         .then((res) => {
@@ -147,21 +151,41 @@ export default function MailList() {
   const delAll = () => {
     mailType.map((mail) => {
       let noteId = mail.id;
+      console.log(isType);
       deleteMail({ noteId, userId })
         .then((res) => {
-          if (res.status == 204) {
-            fireAlert({ icon: "error", title: "실패했습니다." });
-          } else {
-            fireAlert({ icon: "success", title: "삭제되었습니다." });
-            getItemList();
-          }
-          console.log(res);
+          fireAlert({ icon: "success", title: "삭제되었습니다." });
+          getItemList();
         })
         .catch((err) => console.log(err));
     });
   };
 
   const getItemList = () => {
+    if (isType == 1) {
+      getReceivedMail(userId)
+        .then((res) => {
+          console.log(res);
+          setReceivedMail(res.data.result.content);
+          setMailType(res.data.result.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      getSentMail(userId)
+        .then((res) => {
+          setSenttMail(res.data.result.content);
+          setMailType(res.data.result.content);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
+  //쪽지목록 가져오기
+  useEffect(() => {
     getReceivedMail(userId)
       .then((res) => {
         console.log(res);
@@ -178,11 +202,6 @@ export default function MailList() {
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  //쪽지목록 가져오기
-  useEffect(() => {
-    getItemList();
   }, []);
 
   return (
@@ -227,7 +246,7 @@ export default function MailList() {
               <div
                 key={mail.id}
                 id="unit_mail"
-                className={mail.readMark ? "" : "active"}
+                className={!mail.readMark || isType == 2 ? "active" : ""}
                 onClick={() => {
                   handleCurrentMail(mail.id);
                 }}
@@ -237,7 +256,7 @@ export default function MailList() {
                     <Checkbox
                       {...label}
                       color="default"
-                      onClick={() => addList(mail.id)}
+                      onClick={(e) => addList(mail.id, e)}
                     />
                   </>
                 )}

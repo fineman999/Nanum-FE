@@ -91,9 +91,15 @@ export default function MailModal({ open, handleClose, isType, mail }) {
               name="profile"
               type={1}
             />
-            {isType == 1
-              ? mail.note.sender.nickName
-              : mail.note.receiver.nickName}
+            {isType == 1 ? (
+              <p style={{ marginLeft: "0.5rem" }}>
+                {mail.note.sender.nickName}
+              </p>
+            ) : (
+              <p style={{ marginLeft: "0.5rem" }}>
+                {mail.note.receiver.nickName}
+              </p>
+            )}
           </div>
           <Typography
             id="modal-modal-description"
