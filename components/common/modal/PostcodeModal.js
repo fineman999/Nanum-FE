@@ -14,7 +14,7 @@ const style = {
   p: 4,
 };
 
-const PostcodeModal = ({ open, handleClose, setForm }) => {
+const PostcodeModal = ({ open, handleClose, handleAddress }) => {
   const modalRef = useRef(null);
 
   const handleComplete = (data) => {
@@ -23,7 +23,7 @@ const PostcodeModal = ({ open, handleClose, setForm }) => {
       roadAddress: data.roadAddress,
       jibunAddress: data.jibunAddress,
     };
-    setForm(addressForm);
+    handleAddress(addressForm);
     handleClose();
   };
 

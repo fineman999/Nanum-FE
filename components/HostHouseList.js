@@ -11,7 +11,6 @@ const HostHouseList = () => {
           `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1`
         );
 
-        console.log(response.data);
         const data = [...response.data.result.content];
         setHoustList(data);
       } catch (err) {

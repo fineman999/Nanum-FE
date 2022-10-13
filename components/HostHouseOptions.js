@@ -3,37 +3,42 @@ import Chip from "@mui/material/Chip";
 import DoneIcon from "@mui/icons-material/Done";
 import styles from "../styles/HostHouseOptions.module.css";
 
-const HostHouseOptions = ({ handleOption }) => {
+const HostHouseOptions = ({ houseOption, handleOption }) => {
   const [options, setOptions] = useState([
     {
       id: 1,
-      value: 1,
-      name: "옵션1",
+      value: 1, // houseOptionId
+      name: "옵션1", //OptionName
       isChecked: false,
+      iconPath: "",
     },
     {
-      id: 2,
-      value: 2,
+      id: 2, // 프론트
+      value: 2, // 서버
       name: "옵션2",
       isChecked: false,
+      iconPath: "",
     },
     {
       id: 3,
       value: 3,
       name: "옵션3",
       isChecked: false,
+      iconPath: "",
     },
     {
       id: 4,
       value: 4,
       name: "옵션4",
       isChecked: false,
+      iconPath: "",
     },
     {
       id: 5,
       value: 5,
       name: "옵션5",
       isChecked: false,
+      iconPath: "",
     },
   ]);
   const [selectedOptions, setSelectedOptions] = useState([]);

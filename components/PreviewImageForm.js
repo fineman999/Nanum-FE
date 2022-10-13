@@ -1,14 +1,25 @@
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/PreviewImageForm.module.css";
 import { fireAlert } from "./common/Alert";
 import addIcon from "../public/icons/ico_preview_image_add.png";
 import deleteIcon from "../public/icons/ico_preview_image_delete.png";
 
-const PreviewImageForm = ({ addImages, removeImages, size = 4 }) => {
-  const [previewImages, setPreviewImages] = useState([]); // 업로드 이미지 미리보기
+const PreviewImageForm = ({
+  defaultImages = [],
+  addImages,
+  removeImages,
+  size = 4,
+}) => {
+  const [previewImages, setPreviewImages] = useState([]);
   const imgInpRef = useRef(null);
+
+  useEffect(() => {
+    if (defaultImages) {
+      setPreviewImages([...defaultImages.map((image) => image.imgPath)]);
+    }
+  }, [defaultImages]);
 
   // 이미지 파일 유효성 검사
   const fileValidate = (filePath) => {

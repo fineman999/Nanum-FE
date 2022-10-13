@@ -10,20 +10,20 @@ import {
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 
-import styles from "../styles/HouseAddForm.module.css";
+import styles from "../styles/HouseForm.module.css";
 import { fireAlert } from "./common/Alert";
 import FloorPlanButton from "./common/FloorPlanButton";
 import HouseFileButton from "./common/HouseFileButton";
-import PostcodeModal from "./common/modal/PostcodeModal";
 import HostHouseOptions from "./HostHouseOptions";
+import HouseAddressForm from "./HouseAddressForm";
+import HousePositionForm from "./HousePositionForm";
 import PreviewImageForm from "./PreviewImageForm";
-
-const { kakao } = globalThis;
 
 const HouseForm = () => {
   const router = useRouter();
+  const [path, setPath] = useState(router.route.split("/")[3]);
   const [form, setForm] = useState({
     houseRequest: {
       hostId: 1, // 호스트 아이디
@@ -45,8 +45,11 @@ const HouseForm = () => {
     houseFile: "", // 하우스 관련 파일
     houseImgs: [], // 하우스 상세 이미지 리스트
   });
+  const [editImageForm, setEditImageForm] = useState({
+    deleteHouseImgs: [],
+    houseImgs: [],
+  });
 
-  const [postModal, setPostModal] = useState(false);
   const [keyWord, setKeyword] = useState("");
   const [preview, setPreview] = useState({
     houseMainImg: null,
@@ -56,47 +59,27 @@ const HouseForm = () => {
   const mainImageInput = useRef(null);
 
   useEffect(() => {
-    const { id: houseId } = router.query;
-    const requestApi = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1/origin/${houseId}`
-        );
-        console.log(response.data);
-        setForm(response.data.result);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    requestApi();
-
-    // 주소 → 좌표(위도, 경도) 검색
-    kakao.maps.load(() => {
-      const geocoder = new kakao.maps.services.Geocoder();
-      if (form.houseRequest.streetAddress) {
-        geocoder.addressSearch(
-          form.houseRequest.streetAddress,
-          (result, status) => {
-            if (status === kakao.maps.services.Status.OK) {
-              setForm((prev) => {
-                return {
-                  ...prev,
-                  houseRequest: {
-                    ...prev.houseRequest,
-                    lat: result[0].y,
-                    lon: result[0].x,
-                  },
-                };
-              });
-            }
-          }
-        );
-      }
-    });
-  }, [form.houseRequest.streetAddress]);
-
-  const onPostModal = () => setPostModal(true);
-  const offPostModal = () => setPostModal(false);
+    if (path === "edit") {
+      const { id: houseId } = router.query;
+      const requestApi = async () => {
+        try {
+          const response = await axios.get(
+            `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1/origin/${houseId}`
+          );
+          console.log("하우스 데이터 읽어오기 ", response.data);
+          const { houseMainImg, floorPlanImg } = response.data.result;
+          setForm({ ...response.data.result, houseId: houseId });
+          setPreview({
+            houseMainImg: houseMainImg,
+            floorPlanImg: floorPlanImg,
+          });
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      requestApi();
+    }
+  }, []);
 
   // 주소(도로명, 지번, 우편번호) 입력 핸들러
   const handleAddress = (addressForm) => {
@@ -113,6 +96,7 @@ const HouseForm = () => {
     });
   };
 
+  // 하우스의 옵션을 업데이트합니다.
   const handleOption = (option) => {
     setForm((prev) => {
       return {
@@ -120,6 +104,20 @@ const HouseForm = () => {
         houseRequest: {
           ...prev.houseRequest,
           houseOption: [...option],
+        },
+      };
+    });
+  };
+
+  // 하우스의 위치(위도, 경도)를 업데이트합니다.
+  const handlePosition = (position) => {
+    setForm((prev) => {
+      return {
+        ...prev,
+        houseRequest: {
+          ...prev.houseRequest,
+          lat: position[0].y,
+          lon: position[0].x,
         },
       };
     });
@@ -162,6 +160,7 @@ const HouseForm = () => {
     });
     setKeyword("");
   };
+
   const removeKeyword = (index) => {
     const nextKeyword = [
       ...form.houseRequest.keyWord.slice(0, index),
@@ -177,9 +176,11 @@ const HouseForm = () => {
       };
     });
   };
+
   const changeKeyword = (e) => {
     setKeyword(e.target.value);
   };
+
   const isDuplicateKeyword = () => {
     if (form.houseRequest.keyWord.includes(keyWord)) {
       return true;
@@ -220,13 +221,23 @@ const HouseForm = () => {
   };
 
   const addImages = (image) => {
-    const nextImages = [...form.houseImgs, image];
-    setForm((prev) => {
-      return {
-        ...prev,
-        houseImgs: nextImages,
-      };
-    });
+    if (path !== "edit") {
+      const nextImages = [...form.houseImgs, image];
+      setForm((prev) => {
+        return {
+          ...prev,
+          houseImgs: nextImages,
+        };
+      });
+    } else {
+      const nextEditImages = [...editImageForm.houseImgs, image];
+      setEditImageForm((prev) => {
+        return {
+          ...prev,
+          houseImgs: nextEditImages,
+        };
+      });
+    }
   };
 
   const removeImages = (index) => {
@@ -240,11 +251,83 @@ const HouseForm = () => {
         houseImgs: nextImages,
       };
     });
+
+    if (path === "edit") {
+      console.log(form.houseImgs[index]);
+      const nextDeleteImages = [
+        ...editImageForm.deleteHouseImgs,
+        form.houseImgs[index].id,
+      ];
+      setEditImageForm((prev) => {
+        return {
+          ...prev,
+          deleteHouseImgs: nextDeleteImages,
+        };
+      });
+    }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  // 수정 이벤트 핸들러
+  const handleEdit = () => {
+    console.log("하우스 수정 완료");
+    console.log("form: ", form);
+    console.log("editForm: ", editImageForm);
 
+    const EDIT_API = `/houses/${form.houseRequest.hostId}/${form.houseId}`;
+    const DETAIL_IMAGE_EDIT_API = `/houses/${form.houseRequest.hostId}/${form.houseId}/image`;
+
+    const requestEditApi = async () => {
+      const formData = new FormData();
+      formData.append(
+        "houseRequest",
+        new Blob([JSON.stringify(form.houseRequest)], {
+          type: "application/json",
+        })
+      );
+      formData.append("houseMainImg", form.houseMainImg);
+      formData.append("floorPlanImg", form.floorPlanImg);
+      formData.append("houseFile", form.houseFile);
+      form.houseImgs.forEach((image) => formData.append("houseImgs", image));
+      try {
+        const response = await axios.put(
+          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}${EDIT_API}`,
+          formData
+        );
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    const requestImageEditApi = async () => {
+      const formData = new FormData();
+      formData.append(
+        "deleteHouseImgs",
+        new Blob([JSON.stringify(editImageForm.deleteHouseImgs)], {
+          type: "application/json",
+        })
+      );
+      editImageForm.houseImgs.forEach((image) =>
+        formData.append("houseImgs", image)
+      );
+      try {
+        const response = await axios.put(
+          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}${DETAIL_IMAGE_EDIT_API}`,
+          formData
+        );
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    requestEditApi();
+    requestImageEditApi();
+  };
+
+  // 등록 이벤트 핸들러
+  const handleAdd = () => {
+    console.log("하우스 등록 완료");
     const formData = new FormData();
     formData.append(
       "houseRequest",
@@ -277,6 +360,10 @@ const HouseForm = () => {
     for (let entry of formData.entries()) {
       console.log(entry);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
   };
 
   return (
@@ -376,78 +463,22 @@ const HouseForm = () => {
           </div>
         </div>
       </div>
-      {/* 주소 검색 */}
-      <div className={styles.address_section}>
-        <PostcodeModal
-          open={postModal}
-          handleClose={offPostModal}
-          form={form.houseRequest}
-          setForm={handleAddress}
-        />
-        <div className="zonecode_wrapper">
-          <TextField
-            id="outlined-read-only-input"
-            name="zipCode"
-            label="우편번호"
-            value={form.houseRequest.zipCode || "우편번호"}
-            InputProps={{
-              readOnly: true,
-            }}
-            required
-          />
-          <Button variant="outlined" onClick={onPostModal}>
-            주소 검색
-          </Button>
-        </div>
 
-        <br />
-        <div className="address_wrapper">
-          <TextField
-            id="outlined-read-only-input"
-            name="streetAddress"
-            label="도로명"
-            value={form.houseRequest.streetAddress || "도로명"}
-            InputProps={{
-              readOnly: true,
-            }}
-            sx={{ width: "50%" }}
-            required
-          />
-          <TextField
-            id="outlined-read-only-input"
-            name="lotAddress"
-            label="지번"
-            value={form.houseRequest.lotAddress || "지번"}
-            InputProps={{
-              readOnly: true,
-            }}
-            sx={{ width: "50%" }}
-            required
-          />
-        </div>
-        <br />
-        {form.houseRequest.streetAddress && (
-          <TextField
-            id="outlined-basic"
-            name="detailAddress"
-            label="상세"
-            value={form.houseRequest.detailAddress || "상세"}
-            variant="outlined"
-            onChange={changeForm}
-            sx={{ width: "100%" }}
-          />
-        )}
-      </div>
+      {/* 주소 검색 */}
+      <HouseAddressForm
+        form={form}
+        changeForm={changeForm}
+        handleAddress={handleAddress}
+      />
 
       {/* 하우스 옵션 */}
-      <HostHouseOptions handleOption={handleOption} />
+      <HostHouseOptions
+        houseOption={form.houseOption}
+        handleOption={handleOption}
+      />
 
       {/* 주소 좌표 */}
-      <div className="geo_section">
-        <h1>주소 좌표 정보</h1>
-        <div>위도: {form.houseRequest.lat}</div>
-        <div>경도: {form.houseRequest.lon}</div>
-      </div>
+      <HousePositionForm form={form} handlePosition={handlePosition} />
 
       {/* 검색 키워드 추가 */}
       <div className="keyword_section">
@@ -474,12 +505,16 @@ const HouseForm = () => {
 
       {/* 하우스 상세, 도면 이미지 추가 */}
       <div className="detail_image_preview_section">
-        <PreviewImageForm
-          addImages={addImages}
-          removeImages={removeImages}
-          size={8}
-        />
+        <Suspense fallback={<div>로딩중...</div>}>
+          <PreviewImageForm
+            defaultImages={form.houseImgs}
+            addImages={addImages}
+            removeImages={removeImages}
+            size={8}
+          />
+        </Suspense>
       </div>
+
       <div className="floor_image_preview_section">
         <FloorPlanButton uploadImage={uploadImage} />
         <div className={styles.main_image_preview}>
@@ -498,8 +533,14 @@ const HouseForm = () => {
       </div>
       {/* 등록 버튼 */}
       <div className="form_btns">
-        <button>하우스 등록</button>
-        <button type="reset">하우스 리셋</button>
+        {path !== "edit" ? (
+          <>
+            <button onClick={handleAdd}>등록</button>
+            <button type="reset">하우스 리셋</button>
+          </>
+        ) : (
+          <button onClick={handleEdit}>수정</button>
+        )}
       </div>
     </form>
   );
