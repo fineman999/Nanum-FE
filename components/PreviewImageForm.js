@@ -7,7 +7,7 @@ import addIcon from "../public/icons/ico_preview_image_add.png";
 import deleteIcon from "../public/icons/ico_preview_image_delete.png";
 
 const PreviewImageForm = ({
-  defaultImages = [],
+  defaultImages,
   addImages,
   removeImages,
   size = 4,
