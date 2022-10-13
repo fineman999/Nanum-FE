@@ -77,6 +77,7 @@ export default function Send() {
         icon: "success",
         title: "성공적으로 쪽지를 보냈습니다.",
       });
+      router.push("/mail");
     } else {
       fireAlert({
         icon: "error",
