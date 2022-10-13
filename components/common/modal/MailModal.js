@@ -12,6 +12,9 @@ import "swiper/css/navigation";
 import { useRef } from "react";
 import { useRouter } from "next/router";
 import { ProfileImg } from "../Profile";
+import { useState } from "react";
+import { useEffect } from "react";
+import { getMailDetail } from "../../../lib/apis/mail";
 const mystyle = css`
   .house_image_wrapper {
     height: 30vh;
@@ -30,21 +33,37 @@ const style = {
   p: 4,
 };
 
-export default function MailModal({ open, handleClose, mail, isType }) {
+export default function MailModal({ open, handleClose, isType, noteId, mail }) {
   const swiperRef = useRef(null);
   const router = useRouter();
   const handleModal = () => {
     handleClose();
   };
+
   const handleSend = () => {
     router.push(
       {
         pathname: "/mail/send",
-        query: { name: mail.name },
+        query: { name: mail.note.receiver.nickName },
       },
       "/mail/send"
     );
   };
+
+  const handleDate = (str) => {
+    const date = new Date(str);
+    return date.toLocaleDateString();
+  };
+
+  // useEffect(() => {
+  //   getMailDetail(noteId)
+  //     .then((res) => {
+  //       console.log(res.data.note, "ss");
+  //       setTest(res.data);
+  //     })
+  //     .catch((err) => console.log(err, "mail"));
+  // }, []);
+
   return (
     <div>
       <Modal
@@ -64,21 +83,22 @@ export default function MailModal({ open, handleClose, mail, isType }) {
             <Typography id="modal-modal-title" variant="h6" component="h2">
               {isType == 1 ? "보낸 사람" : "받는 사람"}
             </Typography>
-            <p>날짜: {mail.date}</p>
+            <p>날짜: {handleDate(mail.note.createAt)}</p>
+            <p>dkg:{noteId}</p>
           </div>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <ProfileImg img={mail.profile} size={4} name={mail.name} type={1} />
-            {mail.name}
+            {/* <ProfileImg img={mail.profile} size={4} name={mail.name} type={1} /> */}
+            {mail.note.receiver.nickName}
           </div>
           <Typography
             id="modal-modal-description"
             sx={{ mt: 2 }}
             style={{ marginBottom: "0.5rem" }}
           >
-            {mail.text}
+            {mail.note.content}
           </Typography>
 
-          {mail.img.length > 0 ? (
+          {mail.noteImgList.length > 0 ? (
             <Swiper
               slidesPerView={1}
               spaceBetween={30}
@@ -94,12 +114,16 @@ export default function MailModal({ open, handleClose, mail, isType }) {
               }}
               ref={swiperRef}
             >
-              {mail.img &&
-                mail.img.map((image, index) => (
+              {mail.noteImgList &&
+                mail.noteImgList.map((image, index) => (
                   <SwiperSlide key={index}>
                     <div className="house_image_wrapper">
-                      {/* <img src={image} /> */}
-                      <Image src={image} alt="temp" layout="fill" priority />
+                      <Image
+                        src={image.imgPath}
+                        alt="temp"
+                        layout="fill"
+                        priority
+                      />
                     </div>
                   </SwiperSlide>
                 ))}

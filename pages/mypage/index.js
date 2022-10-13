@@ -4,6 +4,11 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
+import { fireAlert } from "../../components/common/Alert";
+import axios from "axios";
+import { getUserDetail } from "../../lib/apis/auth";
 
 const style = css`
   #mypage {
@@ -18,7 +23,7 @@ const style = css`
   }
   #user_header {
     display: flex;
-    width: 80%;
+    width: 40vh
     align-items: center;
     justify-content: center;
   }
@@ -34,6 +39,7 @@ const style = css`
     width: 10vh;
     height: 10vh;
     border-radius: 100%;
+    
   }
   #user_content {
     margin-left: 1rem;
@@ -58,7 +64,8 @@ const style = css`
     border-radius: 10px;
     margin: 1rem 0rem;
     justify-content: space-between;
-    width: 39vh;
+    min-width: 39vh;
+    max-width: 18rem;
   }
   #user_move img {
     width: 10vh;
@@ -103,7 +110,7 @@ const style = css`
     border: none;
     border-radius: 20px;
     cursor: pointer;
-    width: 20vh;
+    width: 10rem;
     padding: 0.4rem 0.4rem;
   }
 `;
@@ -118,21 +125,22 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 export default function MyPage() {
   const router = useRouter();
 
-  const [userName, setUserName] = useState("노숙자");
   const [postCnt, setPostCnt] = useState(2);
   const [commentCnt, setCommentCnt] = useState(3);
   const [likeCnt, setLikeCnt] = useState(1);
 
-  const [imageSrc, setImageSrc] = useState("");
-
+  const [userData, setUserData] = useRecoilState(userState);
+  const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
   const userDate = "2022.10.31";
   const userPlace = "부산해운대구";
   const userTime = "14:00";
+  const userId = userData.id;
 
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
     const reader = new FileReader();
     reader.readAsDataURL(fileBob);
+
     return new Promise((resolve) => {
       reader.onload = () => {
         setImageSrc(reader.result);
@@ -140,6 +148,49 @@ export default function MyPage() {
         resolve();
       };
     });
+  };
+  //프로필 이미지 변경하기
+  const changeProfile = async (fileBob) => {
+    const formData = new FormData();
+    await formData.append("profileImg", fileBob);
+    const request = {
+      phone: userData.phone,
+      nickname: userData.nickName,
+      gender: userData.gender,
+      isNoteReject: userData.noteReject,
+      imgUrl: userData.profileImgUrl,
+    };
+    const uploaderString = JSON.stringify(request);
+    formData.append(
+      "request",
+      new Blob([uploaderString], { type: "application/json" })
+    );
+    const res = await axios.put(
+      `http://20.214.170.222:8000/user-service/api/v1/users/${userData.id}`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: localStorage.getItem("accessToken"),
+        },
+      }
+    );
+    console.log(res);
+    if (res.status == 200) {
+      fireAlert({
+        icon: "success",
+        title: "성공적으로 프로필이미지가 수정되었습니다.",
+      });
+      getUserDetail({ userId }).then((res) => {
+        console.log(res);
+        setUserData(res.data);
+      });
+    } else {
+      fireAlert({
+        icon: "error",
+        title: "회원정보 수정에 실패했어요.",
+      });
+    }
   };
   return (
     <>
@@ -153,7 +204,7 @@ export default function MyPage() {
           )}
           <div id="user_content">
             <div id="user_profile">
-              <h3>{userName}</h3>
+              <h3>{userData.nickName}</h3>
               <label className="input-file-button" htmlFor="input-file">
                 프로필 수정
               </label>
@@ -164,6 +215,7 @@ export default function MyPage() {
                 accept="image/*"
                 onChange={(e) => {
                   encodeFileToBase64(e.target.files[0]);
+                  changeProfile(e.target.files[0]);
                 }}
               />
             </div>
@@ -284,7 +336,7 @@ export default function MyPage() {
           <section id="user_btn">
             <div id="user_unit" onClick={() => router.push("/mypage/block")}>
               <img src="/icons/user.png" />
-              <p>차단관리</p>
+              <p style={{ width: "10vh", textAlign: "center" }}>차단관리</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/mypage/review")}>
               <img src="/icons/review.png" />

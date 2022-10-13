@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
 import { fireAlert } from "../components/common/Alert";
-import { postLogin } from "../lib/apis/auth";
+import { getUserDetail, postLogin } from "../lib/apis/auth";
+import { authState, userState } from "../state/atom/authState";
 
 const style = css`
   #login {
@@ -137,7 +139,10 @@ const style = css`
 
 export default function Login() {
   const [userInput, setUserInput] = useState({ email: "", pwd: "" });
+  const [authData, setAuthData] = useRecoilState(authState);
+  const [userData, setUserData] = useRecoilState(userState);
   const router = useRouter();
+
   //로그인 하기
   const goLogin = (e) => {
     e.preventDefault();
@@ -145,11 +150,23 @@ export default function Login() {
       console.log(userInput);
       postLogin(userInput)
         .then((res) => {
-          console.log(res);
-          fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+          console.log(res, "로그인");
+          const userId = res.data.result.userId;
           localStorage.setItem("accessToken", res.data.result.accessToken);
-          router.push("/");
+          sessionStorage.setItem("userId", res.data.result.userId);
+          fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+          setAuthData({ isLogin: true });
+          getUserDetail({ userId })
+            .then((Res) => {
+              setUserData(Res.data);
+              console.log(Res);
+              router.push("/");
+            })
+            .catch((Err) => {
+              console.log(Err);
+            });
         })
+
         .catch((err) => {
           console.log(err);
           fireAlert({ icon: "error", title: "로그인에 실패하였습니다." });

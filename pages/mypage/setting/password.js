@@ -1,9 +1,11 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
 import { fireAlert } from "../../../components/common/Alert";
 import Header from "../../../components/common/Header";
 import { getOriginPw, putPassword } from "../../../lib/apis/auth";
+import { userState } from "../../../state/atom/authState";
 const style = css`
   #password {
     padding: 12rem 2rem;
@@ -48,7 +50,7 @@ const style = css`
     font-weight: bold;
     border: none;
     border-radius: 20px;
-    padding: 0.4rem 1rem;
+    padding: 0.4rem 0.5rem;
     cursor: pointer;
     width: 12vh;
     margin: 3rem 0.5rem;
@@ -76,7 +78,10 @@ export default function Password() {
   const [pwd, setPwd] = useState("");
   const [newPwInput, setNewPwInput] = useState("");
 
-  const userId = 0;
+  //유저정보
+  const [userData, setUserData] = useRecoilState(userState);
+
+  const userId = userData.id;
 
   //비밀번호 유효성 검사
   const checkPw = (e) => {
@@ -97,9 +102,16 @@ export default function Password() {
 
   //기존 비밀번호 일치
   const checkOriginPw = () => {
+    console.log(pwd);
     getOriginPw({ userId, pwd })
       .then((res) => {
-        setPwConfirm(true), console.log(res);
+        console.log(res);
+        if (res.status == 204) {
+          setPwConfirm(false);
+        }
+        if (res.status == 200) {
+          setPwConfirm(true);
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -107,10 +119,10 @@ export default function Password() {
       });
   };
   const changePw = () => {
-    if (pwd === newPw) {
+    if (newPwConfirm == "" || newPw == "" || pwd == "") {
       fireAlert({
         icon: "warning",
-        title: "기존 비밀번호와 동일해요.",
+        title: "입력을 모두 해주세요.",
       });
     } else {
       putPassword({ userId, newPw })
@@ -140,8 +152,8 @@ export default function Password() {
               type="password"
               id="pw"
               placeholder="기존 비밀번호를 입력해주세요."
-              onChange={() => setPwd(e.target.value)}
-              // onBlur={checkOriginPw}
+              onChange={(e) => setPwd(e.target.value)}
+              onBlur={checkOriginPw}
             />
             {pwd == "" ? (
               <></>
@@ -169,9 +181,17 @@ export default function Password() {
             ) : (
               <>
                 {pwTest ? (
-                  <span className="collect">
-                    사용할 수 있는 비밀번호입니다.
-                  </span>
+                  <>
+                    {newPw == pwd ? (
+                      <span className="warn">
+                        기존 비밀번호를 사용할 수 없습니다.
+                      </span>
+                    ) : (
+                      <span className="collect">
+                        사용할 수 있는 비밀번호입니다.
+                      </span>
+                    )}
+                  </>
                 ) : (
                   <span className="warn">
                     8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요.
@@ -187,7 +207,7 @@ export default function Password() {
               id="pw"
               // placeholder="8~16자 영문 대 소문자, 숫자, 특수문자를 사용하세요."
               onChange={checkPwConfirm}
-              disabled={!pwConfirm}
+              disabled={!pwConfirm || newPw == pwd}
             />
             {newPwInput == "" ? (
               <></>

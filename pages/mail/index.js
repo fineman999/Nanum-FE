@@ -1,9 +1,18 @@
 import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import MailModal from "../../components/common/modal/mailModal";
-
+import {
+  deleteMail,
+  getMailDetail,
+  getReceivedMail,
+  getSentMail,
+} from "../../lib/apis/mail";
+import { fireAlert } from "../../components/common/Alert";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../state/atom/authState";
+import { mailData } from "./mailData";
 const style = css`
   #mail_header {
     margin: 5rem 1rem 1rem;
@@ -65,114 +74,118 @@ const style = css`
     padding-right: 6rem;
   }
 `;
-const postMail = [
-  {
-    id: 1,
-    profile: "/images/default.png",
-    name: "캉민수",
-    text: "배고파",
-    date: "9월20일",
-    active: false,
-    img: ["/images/house.png", "/images/house.png"],
-  },
-  {
-    id: 2,
-    name: "캉민수",
-    profile: "/images/default.png",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: ["/images/house.png", "/images/house.png"],
-  },
-  {
-    id: 3,
-    name: "캉민수",
-    profile: "/images/default.png",
-    text: "배고파",
-    date: "9월20일",
-    active: false,
-    img: [],
-  },
-  {
-    id: 4,
-    name: "캉민수",
-    profile: "/images/default.png",
-    text: "배고파",
-    date: "9월20일",
-    active: false,
-    img: [],
-  },
-  {
-    id: 5,
-    name: "캉민수",
-    profile: "/images/default.png",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: [],
-  },
-];
-const getMail = [
-  {
-    id: 1,
-    profile: "/images/default.png",
-    name: "곽찬영",
-    text: " JavaScript (JS)는 가벼운, 인터프리터 혹은 just-in-time 컴파일 프로그래밍 언어로, 일급 함수를 지원합니다. 웹 페이지를 위한 스크립트 언어로 잘 알려져 있지만, Node.js, Apache CouchDB, Adobe Acrobat처럼 많은 비 브라우저 환경에서도 사용하고 있습니다. ",
-    date: "9월20일",
-    active: true,
-    img: ["/images/house.png", "/images/house.png"],
-  },
-  {
-    id: 2,
-    profile: "/images/default.png",
-    name: "곽찬영",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: [],
-  },
-  {
-    id: 3,
-    profile: "/images/default.png",
-    name: "곽찬영",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: [],
-  },
-  {
-    id: 4,
-    profile: "/images/default.png",
-    name: "곽찬영",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: [],
-  },
-  {
-    id: 5,
-    profile: "/images/default.png",
-    name: "곽찬영",
-    text: "배고파",
-    date: "9월20일",
-    active: true,
-    img: [],
-  },
-];
 
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
-export default function MailList() {
-  const [isType, setIsType] = useState(1);
-  const [mailType, setMailType] = useState(postMail);
-  const [isUpdate, setIsUpdate] = useState(false);
 
-  const [currentMail, setCurrentMail] = useState(postMail[0]);
+export default function MailList() {
+  const [sentMail, setSenttMail] = useState([]);
+  const [receivedMail, setReceivedMail] = useState([]);
+  const [isType, setIsType] = useState(1);
+  const [mailType, setMailType] = useState(receivedMail);
+  const [isUpdate, setIsUpdate] = useState(false);
+  const userData = useRecoilValue(userState);
+  const userId = userData.id;
+
+  const [currentMail, setCurrentMail] = useState(mailData);
+
+  //삭제 쪽지 리스트
+  const [noteList, setNoteList] = useState([]);
   //modal 관리
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => setOpen(false);
+
+  //date 형식 변환
+  const handleDate = (str) => {
+    const date = new Date(str);
+    return date.toLocaleDateString();
+  };
+
+  //현재 쪽지
+  const handleCurrentMail = (noteId) => {
+    getMailDetail(noteId)
+      .then((res) => {
+        console.log(res.data.note, "ss");
+        setCurrentMail(res.data);
+        setTimeout(() => {
+          handleOpen();
+        }, 3000);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  //쪽지 리스트 추가하기
+  const addList = (id) => {
+    if (noteList.includes(id)) {
+      const tmp = noteList.filter(function (value, index, arr) {
+        return value != id;
+      });
+      setNoteList(tmp);
+    } else {
+      setNoteList([...noteList, id]);
+    }
+    console.log(noteList);
+  };
+
+  //쪽지 삭제하기
+  const delMail = () => {
+    noteList.map((noteId) => {
+      deleteMail({ noteId, userId })
+        .then((res) => {
+          console.log(res);
+          fireAlert({ icon: "success", title: "삭제되었습니다." });
+          getItemList();
+          setNoteList([]);
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+  //쪽지 전체 삭제하기
+  const delAll = () => {
+    mailType.map((mail) => {
+      let noteId = mail.id;
+      deleteMail({ noteId, userId })
+        .then((res) => {
+          if (res.status == 204) {
+            fireAlert({ icon: "error", title: "실패했습니다." });
+          } else {
+            fireAlert({ icon: "success", title: "삭제되었습니다." });
+            getItemList();
+          }
+          console.log(res);
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
+  const getItemList = () => {
+    getReceivedMail(userId)
+      .then((res) => {
+        console.log(res);
+        setReceivedMail(res.data.result.content);
+        setMailType(res.data.result.content);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    getSentMail(userId)
+      .then((res) => {
+        setSenttMail(res.data.result.content);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //쪽지목록 가져오기
+  useEffect(() => {
+    getItemList();
+  }, []);
+
   return (
     <>
       <div id="maillist">
@@ -184,7 +197,7 @@ export default function MailList() {
               className={isType == 1 ? "active" : ""}
               onClick={() => {
                 setIsType(1);
-                setMailType(postMail);
+                setMailType(receivedMail);
                 setIsUpdate(false);
               }}
             >
@@ -194,7 +207,7 @@ export default function MailList() {
               className={isType == 2 ? "active" : ""}
               onClick={() => {
                 setIsType(2);
-                setMailType(getMail);
+                setMailType(sentMail);
                 setIsUpdate(false);
               }}
             >
@@ -215,41 +228,56 @@ export default function MailList() {
               <div
                 key={mail.id}
                 id="unit_mail"
-                className={mail.active ? "active" : ""}
+                className={mail.readMark ? "" : "active"}
                 onClick={() => {
-                  handleOpen();
-                  setCurrentMail(mail);
+                  handleCurrentMail(mail.id);
                 }}
               >
                 {isUpdate && (
                   <>
-                    <Checkbox {...label} color="default" />
+                    <Checkbox
+                      {...label}
+                      color="default"
+                      onClick={() => addList(mail.id)}
+                    />
                   </>
                 )}
                 <div style={{ width: "100%" }}>
                   <div id="mail_user">
-                    <h3>{mail.name}</h3>
-                    <p>{mail.date}</p>
+                    {isType == 2 ? (
+                      <h3>{mail.receiver.nickName}</h3>
+                    ) : (
+                      <h3>{mail.sender.nickName}</h3>
+                    )}
+
+                    <p>{handleDate(mail.createAt)}</p>
                   </div>
                   <div>
-                    <p id="mail_text">{mail.text}</p>
+                    <p id="mail_text">{mail.content}</p>
                   </div>
                 </div>
               </div>
             ))}
         </div>
+
         <MailModal
           open={open}
           handleClose={handleClose}
-          mail={currentMail}
           isType={isType}
+          mail={currentMail}
         />
         {isUpdate && (
           <div id="delete">
-            <div id="delete_btn" style={{ marginRight: "0.1rem" }}>
+            <div
+              id="delete_btn"
+              style={{ marginRight: "0.1rem" }}
+              onClick={delMail}
+            >
               선택 삭제
             </div>
-            <div id="delete_btn">전체 삭제</div>
+            <div id="delete_btn" onClick={delAll}>
+              전체 삭제
+            </div>
           </div>
         )}
       </div>
