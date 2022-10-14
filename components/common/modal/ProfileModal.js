@@ -11,6 +11,7 @@ import { postBlock } from "../../../lib/apis/block";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/atom/authState";
 import { fireAlert } from "../Alert";
+import { useRouter } from "next/router";
 
 const mystyle = css`
   .house_image_wrapper {
@@ -47,6 +48,7 @@ export default function ProfileModal({
   id,
 }) {
   const userData = useRecoilValue(userState);
+  const router = useRouter();
   const blockerId = userData.id;
   const blockedUserId = id;
   const goChat = () => {};
@@ -54,7 +56,18 @@ export default function ProfileModal({
     postBlock({ blockerId, blockedUserId })
       .then((res) => {
         console.log(res);
-        fireAlert({ title: "차단했습니다.", icon: "success" });
+        router.push("/mypage/block");
+        setTimeout(() => {
+          if (res.status == 201) {
+            fireAlert({ title: "차단했습니다.", icon: "success" });
+          }
+          if (res.status == 208) {
+            fireAlert({
+              title: "이미 차단등록된 사용자입니다.",
+              icon: "warning",
+            });
+          }
+        }, 200);
       })
       .catch((err) => console.log(err));
   };
