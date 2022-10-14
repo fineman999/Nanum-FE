@@ -5,6 +5,7 @@ html {
 
 body {
   background: #edf1f1;
+  height: 100%;
 }
 * {
   padding: 0;
