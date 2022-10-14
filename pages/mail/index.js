@@ -2,7 +2,7 @@ import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
 import { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import MailModal from "../../components/common/modal/mailModal";
+import MailModal from "../../components/common/modal/MailModal";
 import {
   deleteMail,
   getMailDetail,

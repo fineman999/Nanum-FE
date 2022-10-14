@@ -12,7 +12,6 @@ import "swiper/css/navigation";
 import { useRef } from "react";
 import { useRouter } from "next/router";
 import { ProfileImg } from "../Profile";
-import { useState } from "react";
 
 const mystyle = css`
   .house_image_wrapper {
