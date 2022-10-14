@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 //확인 알럿 - 확인 취소 버튼이 없음
 export const fireAlert = ({ icon, title }) => {
-  Swal.fire({
+  return Swal.fire({
     icon: icon,
     title: title,
     showConfirmButton: false,

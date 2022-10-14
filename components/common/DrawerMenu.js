@@ -126,7 +126,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
               {
                 name: "내 정보",
                 path: isLogin
-                  ? role == "USER"
+                  ? sessionStorage.getItem("role") == "USER"
                     ? "/mypage"
                     : "/host"
                   : "/login",
