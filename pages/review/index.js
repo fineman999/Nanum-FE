@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import SubHeader from "../../components/common/SubHeader";
 import Footer from "../../components/common/Footer";
 import { fireAlert } from "../../components/common/Alert";
-import { Rating, styled } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PreviewImageForm from "../../components/PreviewImageForm";
+import { styled } from "@mui/material/styles";
+import Rating from "@mui/material/Rating";
 
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
