@@ -154,6 +154,7 @@ export default function Login() {
           const userId = res.data.result.userId;
           localStorage.setItem("accessToken", res.data.result.accessToken);
           sessionStorage.setItem("userId", res.data.result.userId);
+          sessionStorage.setItem("role", res.data.result.role);
           fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
           setAuthData({ isLogin: true });
           getUserDetail({ userId })
