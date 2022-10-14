@@ -38,12 +38,14 @@ const HostHouseListItem = ({ item }) => {
         </div>
       </div>
       <div className={styles.house_thumnail}>
-        <Image
-          src={item.mainHouseImgPath}
-          alt="main_thumnail"
-          layout="fill"
-          priority
-        />
+        {item.mainHouseImgPath && (
+          <Image
+            src={item.mainHouseImgPath}
+            alt="main_thumnail"
+            layout="fill"
+            priority
+          />
+        )}
       </div>
     </li>
   );
