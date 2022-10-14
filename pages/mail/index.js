@@ -18,7 +18,7 @@ const mailData = {
   note: {
     id: 8,
     title: "title",
-    content: "ㅗㅑㅗ",
+    content: "Hello, world",
     senderId: 1,
     receiverId: 3,
     receiver: {
