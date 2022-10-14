@@ -68,41 +68,9 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const router = useRouter();
   const [userData, setUserData] = useRecoilState(userState);
   const [authData, setAuthData] = useRecoilState(authState);
+  const [role, setRole] = useState("");
   const isLogin = authData.isLogin;
-  const [menuList, setMenuList] = useState([
-    { id: 1, name: "홈", path: "/" },
-    {
-      id: 2,
-      name: "커뮤니티",
-      sub: {
-        open: false,
-        menuList: [
-          { name: "전체", path: "/community" },
-          { name: "자유 게시판" },
-          { name: "정보 게시판", path: "/community/info" },
-        ],
-      },
-    },
-    {
-      id: 3,
-      name: "마이페이지",
-      sub: {
-        open: false,
-        menuList: [
-          { name: "내 정보", path: isLogin ? "/mypage" : "/login" },
-          { name: "설정", path: isLogin ? "/mypage/setting" : "/login" },
-        ],
-      },
-    },
-    {
-      id: 4,
-      name: "FAQ",
-      sub: {
-        open: false,
-        menuList: [{ name: "자주 묻는 질문" }],
-      },
-    },
-  ]);
+  const [menuList, setMenuList] = useState([]);
 
   const handleClick = (listItem, index) => {
     if (listItem.sub) {
@@ -132,6 +100,52 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
     setAuthData({ isLogin: false });
     toggleDrawer();
   };
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setRole(sessionStorage.getItem("role"));
+      setMenuList([
+        { id: 1, name: "홈", path: "/" },
+        {
+          id: 2,
+          name: "커뮤니티",
+          sub: {
+            open: false,
+            menuList: [
+              { name: "전체", path: "/community" },
+              { name: "자유 게시판" },
+              { name: "정보 게시판", path: "/community/info" },
+            ],
+          },
+        },
+        {
+          id: 3,
+          name: "마이페이지",
+          sub: {
+            open: false,
+            menuList: [
+              {
+                name: "내 정보",
+                path: isLogin
+                  ? role == "USER"
+                    ? "/mypage"
+                    : "/host"
+                  : "/login",
+              },
+              { name: "설정", path: isLogin ? "/mypage/setting" : "/login" },
+            ],
+          },
+        },
+        {
+          id: 4,
+          name: "FAQ",
+          sub: {
+            open: false,
+            menuList: [{ name: "자주 묻는 질문" }],
+          },
+        },
+      ]);
+    }
+  }, []);
 
   return (
     <Drawer

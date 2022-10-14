@@ -400,7 +400,7 @@ export default function Signup() {
       email: userInfo.email,
       pwd: userInfo.password,
       nickname: userInfo.nickname,
-      role: "USER",
+      role: router.query.role,
       phone: myPhone,
       gender: userInfo.sex,
     };

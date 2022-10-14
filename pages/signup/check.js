@@ -90,7 +90,7 @@ export default function SignUpCheck() {
           <h1>누구십니까?</h1>
         </section>
         <section id="choose">
-          <article id="host_check" onClick={() => setUserType(1)}>
+          <article id="host_check" onClick={() => setUserType("HOST")}>
             <h3>호스트</h3>
             <p>나의 멋진 집을 올려봐요</p>
             <img src="/images/default.png" alt="host_image" />
@@ -108,7 +108,7 @@ export default function SignUpCheck() {
             )}
           </article>
           <hr />
-          <article id="user_check" onClick={() => setUserType(2)}>
+          <article id="user_check" onClick={() => setUserType("USER")}>
             <h3>세입자</h3>
             <p>살고 싶은 집을 찾아봐요</p>
             <img src="/images/default.png" alt="user_image" />
@@ -131,7 +131,15 @@ export default function SignUpCheck() {
             취소
           </button>
 
-          <button id="next_btn" onClick={() => router.push("/signup")}>
+          <button
+            id="next_btn"
+            onClick={() =>
+              router.push(
+                { pathname: "/signup", query: { role: userType } },
+                "signup"
+              )
+            }
+          >
             다음
           </button>
         </section>

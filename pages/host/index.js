@@ -4,6 +4,8 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
 
 const style = css`
   #mypage {
@@ -134,12 +136,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 export default function MyPage() {
   const router = useRouter();
 
-  const [userName, setUserName] = useState("노숙자");
   const [houseCnt, setHouseCnt] = useState(2);
   const [reviewCnt, setReviewCnt] = useState(3);
   const [contractCnt, setLikeCnt] = useState(1);
-
-  const [imageSrc, setImageSrc] = useState("");
+  const [userData, setUserData] = useRecoilState(userState);
+  const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
 
   const [moveState, setMovieState] = useState({
     wait: 0,
@@ -175,7 +176,7 @@ export default function MyPage() {
           )}
           <div id="user_content">
             <div id="user_profile">
-              <h3>{userName}</h3>
+              <h3>{userData.nickName}</h3>
               <label className="input-file-button" htmlFor="input-file">
                 프로필 수정
               </label>
