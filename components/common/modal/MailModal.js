@@ -87,8 +87,13 @@ export default function MailModal({ open, handleClose, isType, mail }) {
                   : mail.note.receiver.profileImgUrl
               }
               size={4}
-              name="profile"
+              name={
+                isType == 1
+                  ? mail.note.sender.nickName
+                  : mail.note.receiver.nickName
+              }
               type={1}
+              id={isType == 1 ? mail.note.senderId : mail.note.receiverId}
             />
             {isType == 1 ? (
               <p style={{ marginLeft: "0.5rem" }}>

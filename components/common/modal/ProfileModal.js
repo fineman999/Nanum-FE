@@ -7,10 +7,19 @@ import { TwoButtonOption } from "../Button";
 import CloseIcon from "@mui/icons-material/Close";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { postBlock } from "../../../lib/apis/block";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../../state/atom/authState";
+import { fireAlert } from "../Alert";
 
 const mystyle = css`
   .house_image_wrapper {
     height: 30vh;
+  }
+  img {
+    width: 10vh;
+    height: 10vh;
+    border-radius: 100%;
   }
 `;
 const style = {
@@ -29,9 +38,26 @@ const style = {
 //type:1 쪽지함에서 열리는거
 //type:2 채팅창에서 열리는거
 
-export default function ProfileModal({ open, handleClose, img, name, type }) {
+export default function ProfileModal({
+  open,
+  handleClose,
+  img,
+  name,
+  type,
+  id,
+}) {
+  const userData = useRecoilValue(userState);
+  const blockerId = userData.id;
+  const blockedUserId = id;
   const goChat = () => {};
-  const goBlock = () => {};
+  const goBlock = () => {
+    postBlock({ blockerId, blockedUserId })
+      .then((res) => {
+        console.log(res);
+        fireAlert({ title: "차단했습니다.", icon: "success" });
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <div>
       <Modal

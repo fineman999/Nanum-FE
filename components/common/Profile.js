@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProfileModal from "./modal/ProfileModal";
 
-export function ProfileImg({ img, size, name, type }) {
+export function ProfileImg({ img, size, name, type, id }) {
   //modal 관리
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -27,6 +27,7 @@ export function ProfileImg({ img, size, name, type }) {
         img={img}
         type={type}
         name={name}
+        id={id}
       />
     </>
   );

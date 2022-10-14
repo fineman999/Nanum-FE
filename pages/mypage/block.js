@@ -1,7 +1,11 @@
 import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox } from "@mui/material";
+import { deleteBlock, getBlock } from "../../lib/apis/block";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../state/atom/authState";
+import { NoData } from "../../components/common/NoData";
 
 const style = css`
   #blocklist {
@@ -18,9 +22,10 @@ const style = css`
     justify-content: space-between;
   }
   img {
-    width: 8vh;
-    height: 8vh;
+    width: 7vh;
+    height: 7vh;
     margin-right: 0.5rem;
+    border-radius: 100%;
   }
   #profile {
     display: flex;
@@ -46,36 +51,71 @@ const style = css`
     font-size: 24px;
     text-align: center;
   }
+  #no_data {
+    text-align: center;
+    margin-top: 5rem;
+  }
 `;
-const tempBlockList = [
-  {
-    id: 1,
-    img: "/images/default.png",
-    username: "캉민수",
-    isBlock: true,
-  },
-  {
-    id: 2,
-    img: "/images/default.png",
-    username: "캉민수",
-    isBlock: true,
-  },
-  {
-    id: 3,
-    img: "/images/default.png",
-    username: "캉민수",
-    isBlock: true,
-  },
-  {
-    id: 4,
-    img: "/images/default.png",
-    username: "캉민수",
-    isBlock: true,
-  },
-];
+
 const label = { inputProps: { "aria-label": "Checkbox demo" } };
 export default function Block() {
   const [isUpdate, setIsUpdate] = useState(false);
+  const [blockList, setBlockList] = useState([]);
+  const userData = useRecoilValue(userState);
+  const [page, setPage] = useState(0);
+  const [delList, setDelList] = useState([]);
+
+  //삭제 리스트 추가
+  const addList = (id) => {
+    if (delList.includes(id)) {
+      const tmp = delList.filter(function (value, idex, arr) {
+        return value != id;
+      });
+      setDelList(tmp);
+    } else {
+      setDelList([...delList, id]);
+    }
+    console.log(delList);
+  };
+
+  //선택 삭제
+  const delBlcok = () => {
+    const blockerId = userData.id;
+    delList.map((blockId) => {
+      deleteBlock(blockId)
+        .then((res) => {
+          console.log(res);
+          getBlock({ blockerId, page })
+            .then((res) => {
+              console.log(res, "!!!!");
+              setBlockList(res.data.result.content);
+            })
+            .catch((err) => console.log(err));
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+  //전체 삭제
+  const delAll = () => {
+    blockList.map((block) => {
+      deleteBlock(block.id)
+        .then((res) => {
+          console.log(res);
+          setBlockList([]);
+        })
+        .catch((err) => console.log(err));
+    });
+  };
+
+  useEffect(() => {
+    const blockerId = userData.id;
+    getBlock({ blockerId, page })
+      .then((res) => {
+        console.log(res);
+        setBlockList(res.data.result.content);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <>
       <div id="blocklist">
@@ -84,22 +124,37 @@ export default function Block() {
           <h2>차단 목록</h2>
           <p onClick={() => setIsUpdate(!isUpdate)}>편집</p>
         </div>
-        {tempBlockList &&
-          tempBlockList.map((user) => (
-            <div key={user.id} id="unit_block">
+        {blockList &&
+          blockList.map((block) => (
+            <div key={block.id} id="unit_block">
               <div id="profile">
-                <img src={user.img} />
-                <p>{user.username}</p>
+                <img src={block.user.profileImgUrl} />
+                <p>{block.user.nickName}</p>
               </div>
-              <div>{isUpdate && <Checkbox {...label} color="default" />}</div>
+              <div>
+                {isUpdate && (
+                  <Checkbox
+                    {...label}
+                    color="default"
+                    onClick={() => addList(block.id)}
+                  />
+                )}
+              </div>
             </div>
           ))}
+        <NoData data={blockList} />
         {isUpdate && (
           <div id="delete">
-            <div id="delete_btn" style={{ marginRight: "0.1rem" }}>
+            <div
+              id="delete_btn"
+              style={{ marginRight: "0.1rem" }}
+              onClick={delBlcok}
+            >
               선택 해제
             </div>
-            <div id="delete_btn">전체 해제</div>
+            <div id="delete_btn" onClick={delAll}>
+              전체 해제
+            </div>
           </div>
         )}
       </div>

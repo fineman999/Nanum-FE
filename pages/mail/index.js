@@ -12,6 +12,7 @@ import {
 import { fireAlert } from "../../components/common/Alert";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
+import { NoData } from "../../components/common/NoData";
 
 // 메일 데이터
 const mailData = {
@@ -316,6 +317,7 @@ export default function MailList() {
                 </div>
               </div>
             ))}
+          <NoData data={mailType} />
         </div>
 
         <MailModal
