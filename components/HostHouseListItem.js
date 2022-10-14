@@ -32,7 +32,16 @@ const HostHouseListItem = ({ item }) => {
                 </Link>
               </div>
             ) : (
-              <Chip label="승인완료" />
+              <div className="">
+                <Chip label="승인완료" />
+                <Link href={`/host/house/manage/${item.id}`}>
+                  <Chip
+                    label="방관리"
+                    variant="outlined"
+                    sx={{ fontWeight: "bold" }}
+                  />
+                </Link>
+              </div>
             )}
           </div>
         </div>

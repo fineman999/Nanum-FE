@@ -3,6 +3,27 @@ import axios from "axios";
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import HostHouseListItem from "./HostHouseListItem";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+const LastPageComment = () => {
+  const ScrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
+
+  const style = {
+    width: "100%",
+    height: "60px",
+    color: "gray",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  };
+  return (
+    <div style={style}>
+      마지막 페이지입니다.{" "}
+      <ArrowDropUpIcon fontSize="large" onClick={ScrollToTop} />
+    </div>
+  );
+};
 
 const HostHouseList = () => {
   const [houseList, setHouseList] = useState([]);
@@ -19,6 +40,7 @@ const HostHouseList = () => {
         );
 
         const { content, totalPages } = response.data.result;
+        console.log("하우스 목록 ", content);
         setHouseList(content);
         setCurPage((prev) => prev + 1);
         setTotalPages(totalPages);
@@ -41,9 +63,11 @@ const HostHouseList = () => {
         const response = await axios.get(
           `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1?page=${curPage}&size=${defaultSize}&sort=createAt,desc`
         );
-        const data = [...response.data.result.content];
+        const { content } = response.data.result;
+        console.log("하우스 목록 ", content);
+
         setHouseList((prev) => {
-          return prev.concat(data);
+          return prev.concat(content);
         });
         setCurPage((prev) => prev + 1);
       } catch (err) {
@@ -61,7 +85,7 @@ const HostHouseList = () => {
         next={fetchMoreData}
         hasMore={hasMore}
         loader={<h4>Loading...</h4>}
-        endMessage={<div>마지막 페이지입니다.</div>}
+        endMessage={<LastPageComment />}
       >
         {houseList &&
           houseList.map((listItem, index) => (
