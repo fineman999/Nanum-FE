@@ -3,6 +3,7 @@ const nextConfig = {
   // reactStrictMode: true,
   swcMinify: true,
   env: {
+    KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
     NANUM_HOUSE_SERVICE_BASE_URL: process.env.NANUM_HOUSE_SERVICE_BASE_URL,
   },
   images: {
