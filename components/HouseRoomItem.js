@@ -1,7 +1,7 @@
 import { Button } from "@mui/material";
 import React, { useState } from "react";
 
-const HouseRoomItem = () => {
+const HouseRoomItem = ({ toggleDrawer }) => {
   const [toured, setToured] = useState(false);
 
   return (
@@ -30,17 +30,19 @@ const HouseRoomItem = () => {
       {/* 투어 신청 시 입주 신청으로 변경 */}
       <div className="room_btn_wrapper">
         {toured ? (
-          <button className="">입주 신청</button>
+          <button className="move_btn">입주 신청</button>
         ) : (
-          <button className="tour_btn">투어 신청</button>
+          <button className="tour_btn" onClick={toggleDrawer(true)}>
+            투어 신청
+          </button>
         )}
       </div>
-      <style>{`
-        .room_item_wrapper{
+      <style jsx>{`
+        .room_item_wrapper {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          
+
           box-sizing: border-box;
           width: 100%;
           padding: 10px;
@@ -49,53 +51,52 @@ const HouseRoomItem = () => {
           border-radius: 10px;
         }
 
-        .room_info_wrapper{
+        .room_info_wrapper {
           box-sizing: border-box;
           width: 65%;
         }
 
-        .room_name{
+        .room_name {
           margin-bottom: 5px;
         }
 
-        .room_type{
+        .room_type {
           display: flex;
           justify-content: space-between;
           margin-bottom: 5px;
         }
 
-        .room_price{
+        .room_price {
           display: flex;
           justify-content: space-between;
           font-size: 0.7em;
         }
 
-        .room_btn_wrapper{
+        .room_btn_wrapper {
           width: 30%;
         }
 
-
-        .room_btn_wrapper{
+        .room_btn_wrapper {
           display: flex;
-          justify-content: center;  
+          justify-content: center;
         }
 
-        .tour_btn{
+        .tour_btn {
           box-sizing: border-box;
           padding: 15px;
           border-radius: 15px;
           font-size: 0.8em;
-          
+
           border: none;
-          background: #76C1B2;
+          background: #76c1b2;
           color: white;
           cursor: pointer;
         }
 
-        .tour_btn:hover{
+        .tour_btn:hover {
           background: #555555;
         }
-        
+
         // 미디어 쿼리
         @media all (min-width: 1024px) {
         }

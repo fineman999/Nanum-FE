@@ -8,15 +8,15 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useRef, useState } from "react";
 import { pink } from "@mui/material/colors";
 import { Favorite } from "@mui/icons-material";
-import CallIcon from "@mui/icons-material/Call";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { Pagination, Navigation } from "swiper";
 
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+
 import HouseRoomItem from "../../components/HouseRoomItem";
 import HouseNearInfo from "../../components/HouseNearInfo";
 import HouseReviewList from "../../components/HouseReviewList";
+import HouseToolbar from "../../components/HouseToolbar";
 
 const houseData = {
   name: "나눔101호",
@@ -48,8 +48,13 @@ const houseData = {
 
 const House = () => {
   const [like, setLike] = useState(false);
+  const [open, setOpen] = useState(false);
   const [descMore, setDescMore] = useState(false);
   const swiperRef = useRef(null);
+
+  const toggleDrawer = (newOpen) => () => {
+    setOpen(newOpen);
+  };
 
   const handleLike = () => {
     setLike(!like);
@@ -104,7 +109,7 @@ const House = () => {
             </Swiper>
 
             {/* 좋아요 버튼 */}
-            <div className="like_wrapper">
+            <div className="like_wrapper" style={{ zIndex: "1200" }}>
               <IconButton onClick={handleLike}>
                 {like ? (
                   <Favorite sx={{ color: pink[500] }} />
@@ -195,10 +200,10 @@ const House = () => {
               />
             </div>
             <div className="room_list">
-              <HouseRoomItem />
-              <HouseRoomItem />
-              <HouseRoomItem />
-              <HouseRoomItem />
+              <HouseRoomItem toggleDrawer={toggleDrawer} />
+              <HouseRoomItem toggleDrawer={toggleDrawer} />
+              <HouseRoomItem toggleDrawer={toggleDrawer} />
+              <HouseRoomItem toggleDrawer={toggleDrawer} />
             </div>
             <div className="room_notice">
               - 미성년자 또는 41세 이상, 회원 가입시 개인정보가 계약자와 다를
@@ -235,38 +240,8 @@ const House = () => {
       <Footer />
 
       {/* 하우스 툴바 */}
-      <div className="house_toolbar_container">
-        <Divider />
-        <div className="toolbar_wrapper">
-          <div className="toolbar_ico_like_wrapper">
-            <IconButton onClick={handleLike}>
-              {like ? (
-                <Favorite sx={{ color: pink[500] }} />
-              ) : (
-                <FavoriteBorderIcon sx={{ color: pink[500] }} />
-              )}
-            </IconButton>
-          </div>
-          <div className="toolbar_info_wrapper">
-            <h2 className="house_name">나눔101</h2>
-            <span className="house_address">부산시 해운대구 우동</span>
-          </div>
-          <div className="house_toolbar_btns">
-            <div className="btn_call">
-              <IconButton>
-                <CallIcon />
-                <span className="btn_text">전화문의</span>
-              </IconButton>
-            </div>
-            <div className="btn_reg">
-              <IconButton>
-                <HowToRegIcon />
-                <span className="btn_text">투어신청</span>
-              </IconButton>
-            </div>
-          </div>
-        </div>
-      </div>
+      <HouseToolbar like={like} open={open} toggleDrawer={toggleDrawer} />
+
       <style jsx>{`
         .house_body_section {
           position: relative;
