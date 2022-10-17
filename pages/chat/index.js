@@ -2,10 +2,11 @@ import Header from "../../components/common/Header";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import css from "styled-jsx/css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { ProfileImg } from "../../components/common/Profile";
 
+import * as Api from "../../lib/apis/apiClient";
 const tempChat = [
   {
     id: 1,
@@ -99,10 +100,114 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 export default function ChatList() {
   const [isUpdate, setIsUpdate] = useState(false);
+  const [chatLists, setChatLists] = useState([]);
   const router = useRouter();
   const goChat = (id) => {
     router.push(`/chat/${id}`);
   };
+  const getChats = async () => {
+    // setChatLists([]);
+
+    const userId = sessionStorage.getItem("userId");
+    try {
+      const getChatLists = await Api.get(
+        `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/`,
+        userId
+      );
+
+      if (!getChatLists) {
+        throw new Error(`${getChatLists} not allowd`);
+      }
+
+      const findUserInfos = [];
+      getChatLists.data.forEach((data) => {
+        const userInfo = data.roomInfo;
+        userInfo.users.forEach((user) => {
+          findUserInfos.push(user.userId);
+        });
+      });
+      const getUserInfos = await Api.get(
+        `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+        findUserInfos
+      );
+
+      const chats2 = getChatLists.data;
+      let chat = {};
+      chats2.forEach((ele) => {
+        console.log(ele);
+        const userInfo = ele.roomInfo;
+
+        // 두명
+        if (ele.houseId == 0) {
+          console.log(ele.houseId);
+          userInfo.users.forEach((user) => {
+            getUserInfos.data.result.forEach((i) => {
+              if (user.userId == i.id && i.id != userId) {
+                chat = {
+                  img: i.profileImgUrl,
+                  username: i.nickName,
+                  text: `${
+                    userInfo.lastMessage === null ? "" : userInfo.lastMessage
+                  }`,
+                };
+              }
+            });
+            if (user.userId == userId) {
+              chat.cnt = user.readCount;
+              chat.id = ele.id;
+              chat.date = ele.updateAt;
+            }
+          });
+        } else if (ele.houseId != 0) {
+          // 채팅 방
+          userInfo.users.forEach((user) => {
+            getUserInfos.data.result.forEach((i) => {
+              if (userInfo.lastSentUserId != null) {
+                if (userInfo.lastSentUserId == i.id) {
+                  chat = {
+                    img: ele.houseImg,
+                    username: ele.roomName,
+                    text: `${
+                      userInfo.lastMessage == null ? "" : userInfo.lastMessage
+                    }`,
+                  };
+                }
+              } else {
+                chat = {
+                  img: `/images/default.png`,
+                  username: ele.roomName,
+                  text: `${
+                    userInfo.lastMessage == null ? "" : userInfo.lastMessage
+                  }`,
+                  cnt: 0,
+                };
+              }
+              if (user.userId == userId) {
+                chat.id = ele.id;
+                chat.date = ele.updateAt;
+                chat.cnt = user.readCount;
+              }
+            });
+          });
+        }
+        // console.log("chat" + chat.id);
+        // console.log("chat" + chat.img);
+        // console.log("chat" + chat.username);
+        // console.log("chat" + chat.date);
+        // console.log("chat" + chat.text);
+        // console.log("chat" + chat.cnt);
+        console.log(chatLists, chat);
+        setChatLists((prev) => [...prev, chat]);
+        // chat = {};
+      });
+    } catch (e) {
+      console.log("Error" + e);
+    }
+  };
+
+  useEffect(() => {
+    getChats();
+  }, []);
   return (
     <>
       <div id="chatlist">
@@ -116,10 +221,11 @@ export default function ChatList() {
           >
             편집
           </p>
-          {tempChat &&
-            tempChat.map((item) => (
-              <div key={item.id} id="unit_chat">
+          {chatLists &&
+            chatLists.map((item, idx) => (
+              <div key={idx} id="unit_chat">
                 <ProfileImg
+                  id={item.id}
                   img={item.img}
                   size={8}
                   name={item.username}
@@ -132,7 +238,7 @@ export default function ChatList() {
                   </div>
                   <div id="chat_text">
                     <p>{item.text}</p>
-                    <StyledBadge badgeContent={item.cnt} color="error" />
+                    <StyledBadge badgeContent={0} color="error" />
                   </div>
                 </div>
                 {isUpdate && (
