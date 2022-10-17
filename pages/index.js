@@ -12,6 +12,8 @@ export default function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  console.log(process.env.NANUM_HOUSE_SERVICE_BASE_URL);
+  console.log(process.env.KAKAO_MAP_API_KEY);
   return (
     <>
       <Header title="NANUM" />
