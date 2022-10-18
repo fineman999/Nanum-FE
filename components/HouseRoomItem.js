@@ -1,29 +1,45 @@
-import { Button } from "@mui/material";
 import React, { useState } from "react";
 
-const HouseRoomItem = ({ toggleDrawer }) => {
+const genderType = {
+  COMMON: "남녀공용",
+  MALE: "남성전용",
+  FEMALE: "여성전용",
+};
+
+const HouseRoomItem = ({ data, toggleDrawer }) => {
   const [toured, setToured] = useState(false);
+  const {
+    name, // 방 이름
+    roomGender: gender, // 성별 타입
+    totalMember: capacity, // 수용 인원
+    monthlyRent,
+    deposit,
+  } = data;
 
   return (
     <div className="room_item_wrapper">
       <div className="room_info_wrapper">
         <div className="room_name">
-          <strong>나눔 103동 111호</strong>
+          <strong>{name}</strong>
         </div>
         <div className="room_type">
           <div className="gender_type">
-            <strong>성별: </strong>여성전용
+            <strong>성별: </strong>
+            {genderType[gender]}
           </div>
           <div className="capacity_type">
-            <strong>인원: </strong>2인실
+            <strong>인원: </strong>
+            {capacity}인실
           </div>
         </div>
         <div className="room_price">
           <div className="monthly">
-            <strong>월세: </strong>500,000원
+            <strong>월세: </strong>
+            {Number(monthlyRent).toLocaleString("en")}원
           </div>
           <div className="deposit">
-            <strong>보증금: </strong>500,000원
+            <strong>보증금: </strong>
+            {Number(deposit).toLocaleString("en")}원
           </div>
         </div>
       </div>

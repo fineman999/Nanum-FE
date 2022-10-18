@@ -18,9 +18,9 @@ export default function Home() {
       <MainSwiper />
       <GlobalSearch handleOpen={handleOpen} />
       <SearchModal open={open} handleClose={handleClose} />
-      <HouseListSwiper title="인기 하우스" />
+      {/* <HouseListSwiper title="인기 하우스" />
       <HouseListSwiper title="쉐어 하우스" />
-      <HouseListSwiper title="마이룸" />
+      <HouseListSwiper title="마이룸" /> */}
       <Footer />
       <BottomMenu />
     </>

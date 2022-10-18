@@ -1,0 +1,8 @@
+.house_item_wrapper {
+  cursor: pointer;
+}
+
+.house_review {
+  display: flex;
+  align-items: center;
+}

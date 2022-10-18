@@ -3,127 +3,19 @@ import BottomMenu from "../../components/common/BottomMenu";
 import HouseMap from "../../components/common/map/HouseMap";
 import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
-import HouseListItem from "../../components/HouseListItem";
 import Footer from "../../components/common/Footer";
 import SubHeader from "../../components/common/SubHeader";
 import { useState } from "react";
 import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Head from "next/head";
-
-const itemData = [
-  {
-    id: 1,
-    img: "https://images.unsplash.com/photo-1549388604-817d15aa0110",
-    name: "Bed",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스],
-  },
-  {
-    id: 2,
-    img: "https://images.unsplash.com/photo-1525097487452-6278ff080c31",
-    name: "Books",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 3,
-    img: "https://images.unsplash.com/photo-1523413651479-597eb2da0ad6",
-    name: "Sink",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 4,
-    img: "https://images.unsplash.com/photo-1563298723-dcfebaa392e3",
-    name: "Kitchen",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 5,
-    img: "https://images.unsplash.com/photo-1588436706487-9d55d73a39e3",
-    name: "Blinds",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 6,
-    img: "https://images.unsplash.com/photo-1574180045827-681f8a1a9622",
-    name: "Chairs",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 7,
-    img: "https://images.unsplash.com/photo-1530731141654-5993c3016c77",
-    name: "Laptop",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 8,
-    img: "https://images.unsplash.com/photo-1481277542470-605612bd2d61",
-    name: "Doors",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 9,
-    img: "https://images.unsplash.com/photo-1517487881594-2787fef5ebf7",
-    name: "Coffee",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 10,
-    img: "https://images.unsplash.com/photo-1516455207990-7a41ce80f7ee",
-    name: "Storage",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 11,
-    img: "https://images.unsplash.com/photo-1597262975002-c5c3b14bbd62",
-    name: "Candle",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 12,
-    img: "https://images.unsplash.com/photo-1519710164239-da123dc03ef4",
-    name: "Coffee table",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-  {
-    id: 13,
-    img: "https://images.unsplash.com/photo-1568605114967-8130f3a36994",
-    name: "night",
-    isLike: false,
-    gender: "남성전용", // 'm' 남성전용, 'f' 여성전용, 'c' 남녀공용
-    type: "빌라", // [빌라, 아파트, 오피스텔]
-  },
-];
+import HouseSearchList from "../../components/HouseSearchList";
 
 export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchForm, setSearchForm] = useState({
-    searchInput: "",
+    searchWord: "",
   });
 
   const handleOpen = () => setOpen(true);
@@ -137,10 +29,9 @@ export default function Houses() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(searchForm.searchInput);
     router.push({
       pathname: "/house",
-      query: { search: searchForm.searchInput },
+      query: { search: searchForm.searchWord },
     });
   };
 
@@ -160,7 +51,12 @@ export default function Houses() {
             <div className="search_inp_wrapper">
               <input
                 className="search_input"
-                name="searchInput"
+                name="searchWord"
+                value={
+                  searchForm.searchWord.length >= 20
+                    ? `${searchForm.searchWord.slice(0, 20)}...`
+                    : searchForm.searchWord
+                }
                 placeholder="지역명, 대학명, 지하철역으로 검색..."
                 onChange={handleChange}
               />
@@ -186,14 +82,10 @@ export default function Houses() {
               <li>기타</li>
             </ul>
           </div>
-          <ul className="house_list">
-            {itemData &&
-              itemData.map((item, index) => (
-                <li className="house_list_item" key={index}>
-                  <HouseListItem item={item} />
-                </li>
-              ))}
-          </ul>
+          <HouseSearchList
+            searchForm={searchForm}
+            setSearchForm={setSearchForm}
+          />
         </div>
       </div>
       <SearchModal open={open} handleClose={handleClose} />
@@ -278,23 +170,6 @@ export default function Houses() {
           font-weight: bold;
         }
 
-        .house_list {
-          box-sizing: border-box;
-          width: 100%;
-          padding: 10px;
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: space-between;
-        }
-
-        .house_list_item {
-          box-sizing: border-box;
-          width: 48%;
-          margin-bottom: 12px;
-          font-size: 10px;
-        }
-
-        // media query
         @media all (min-width: 1024px) {
           .search_container {
             flex-direction: row-reverse;
@@ -313,13 +188,6 @@ export default function Houses() {
 
           .house_list_wrapper::-webkit-scrollbar {
             display: none;
-          }
-
-          .house_list_item {
-            box-sizing: border-box;
-            width: 33%;
-            margin-bottom: 12px;
-            font-size: 16px;
           }
         }
       `}</style>
