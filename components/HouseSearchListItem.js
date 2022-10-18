@@ -15,7 +15,7 @@ const genderType = {
 const HOUSE_NAME_LENGTH_SIZE = 8;
 const HOUSE_ADDRESS_LENGTH_SIZE = 10;
 
-const HouseListItem = ({ listItem }) => {
+const HouseSearchListItem = ({ listItem }) => {
   const router = useRouter();
   const {
     id,
@@ -35,6 +35,7 @@ const HouseListItem = ({ listItem }) => {
   const handleClick = () => {
     router.push(`/house/${id}`);
   };
+
   return (
     <div className={styles.house_item_wrapper} onClick={handleClick}>
       <div
@@ -77,8 +78,8 @@ const HouseListItem = ({ listItem }) => {
           </div>
         </div>
         <div className="house_info_bottom">
-          <div className="house_price">월세 최대값: {maxMonthlyRent}</div>
-          <div className="house_price">월세 최저값: {minMonthlyRent}</div>
+          <div className="house_price">최대값: {maxMonthlyRent}</div>
+          <div className="house_price">최저값: {minMonthlyRent}</div>
           <div className={styles.house_review}>
             <StarIcon fontSize="16" /> {reviewAvg} {reviewCount}개
           </div>
@@ -153,4 +154,4 @@ const HouseListItem = ({ listItem }) => {
   );
 };
 
-export default HouseListItem;
+export default HouseSearchListItem;

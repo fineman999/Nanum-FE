@@ -32,14 +32,6 @@ const Puller = styled(Box)(({ theme }) => ({
 const SwipeableEdgeDrawer = ({ open, toggleDrawer }) => {
   return (
     <Root>
-      <Global
-        styles={{
-          ".MuiDrawer-root > .MuiPaper-root": {
-            height: `580px`,
-            overflow: "visible",
-          },
-        }}
-      />
       <SwipeableDrawer
         anchor="bottom"
         open={open}

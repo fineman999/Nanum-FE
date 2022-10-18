@@ -125,9 +125,9 @@ const HouseListSwiper = ({ title }) => {
         className="mySwiper"
       >
         {itemData &&
-          itemData.map((item, index) => (
-            <SwiperSlide key={index}>
-              <HouseListItem item={item} />
+          itemData.map((listItem) => (
+            <SwiperSlide key={listItem.id}>
+              <HouseListItem listItem={listItem} />
             </SwiperSlide>
           ))}
       </Swiper>
