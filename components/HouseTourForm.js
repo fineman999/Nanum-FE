@@ -14,20 +14,10 @@ const HouseTourForm = () => {
       <HouseDateForm />
       <HouseTimeList />
       <div className={styles.form_btns}>
-        <Button
-          color="primary"
-          variant="contained"
-          startIcon={<HowToRegIcon />}
-          sx={{ color: "white", mr: 1 }}
-        >
+        <Button variant="contained" startIcon={<HowToRegIcon />} sx={{ mr: 1 }}>
           투어신청
         </Button>
-        <Button
-          color="other"
-          variant="contained"
-          startIcon={<DoorFrontIcon />}
-          sx={{ color: "white" }}
-        >
+        <Button variant="contained" startIcon={<DoorFrontIcon />}>
           입주신청
         </Button>
       </div>
