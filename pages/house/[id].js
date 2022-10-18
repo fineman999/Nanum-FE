@@ -13,13 +13,9 @@ import { Pagination, Navigation } from "swiper";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 
-import HouseRoomItem from "../../components/HouseRoomItem";
-import HouseNearInfo from "../../components/HouseNearInfo";
-import HouseReviewList from "../../components/HouseReviewList";
 import HouseToolbar from "../../components/HouseToolbar";
 import HouseDetailTopMenu from "../../components/HouseDetailTopMenu";
 import { useRouter } from "next/router";
-import { get } from "../../lib/apis/apiClient";
 import axios from "axios";
 import HouseDetailIntro from "../../components/HouseDetailIntro";
 import HouseRoomDetail from "../../components/HouseRoomDetail";
