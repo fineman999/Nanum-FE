@@ -36,6 +36,7 @@ const style = css`
     margin-right: 0.2rem;
   }
 `;
+
 export function SendMessage({ text, time }) {
   return (
     <>
@@ -47,18 +48,14 @@ export function SendMessage({ text, time }) {
     </>
   );
 }
-export function GetMessage({ text, time }) {
-  const user = {
-    img: "/images/default.png",
-    name: "강민수",
-  };
+export function GetMessage({ text, time, nickName, profileImgUrl }) {
   return (
     <>
       <div id="get" className="message">
         <div>
-          <ProfileImg img={user.img} name={user.name} size={5} type={1} />
+          <ProfileImg img={profileImgUrl} name={nickName} size={5} type={1} />
 
-          <p>{user.name}</p>
+          <p>{nickName}</p>
         </div>
         <p className="text">{text}</p>
         <p>{time}</p>

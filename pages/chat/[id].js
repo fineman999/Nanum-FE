@@ -4,72 +4,11 @@ import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
 import IconButton from "@mui/joy/IconButton";
 import { GetMessage, SendMessage } from "../../components/common/Message";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
+import { useRef } from "react";
 
-//type:0 받은거 1:보낸거
-const message = [
-  { id: 1, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 2,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 3, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 4,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 5, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 6,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 7, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 8,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 9, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 10,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 11, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 12,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요!!! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  {
-    id: 13,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-  { id: 14, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 15,
-    type: 1,
-    text: "안녕하세요! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-    date: "오후 07:30",
-  },
-  { id: 16, type: 0, date: "오후 07:30", text: "안녕하세요" },
-  {
-    id: 17,
-    type: 1,
-    date: "오후 07:30",
-    text: "안녕하세요!!! 혹시 관리비에 어떤 요금이 포함되어있나요?",
-  },
-];
 const style = css`
   #chat {
   }
@@ -106,27 +45,114 @@ const style = css`
   }
 `;
 export default function Chat() {
+  const [msg, setMsg] = useState("");
+  const [message, setMessage] = useState([]);
+  const [sendMsg, setSendMsg] = useState(false);
+  const userData = useRecoilState(userState);
+  const messageBoxRef = useRef();
+
+  const scrollToBottom = () => {
+    if (messageBoxRef.current) {
+      messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
+    }
+  };
+
+  let userId = userData[0].id;
+  let roomNum = "634d59514f38382123b8fc18";
+  const uri = `ws://20.214.170.222:8000/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
+  let ws = useRef(null);
+
+  //소켓 열기
+  const onOpen = async () => {
+    ws.current = new WebSocket(uri);
+    ws.current.onopen = (e) => {
+      console.log("open", e);
+    };
+    ws.current.onclose = (e) => {
+      console.log("close", e);
+    };
+    ws.current.onerror = (e) => {
+      console.log("error", e);
+    };
+    ws.current.onmessage = (e) => {
+      let obj = JSON.parse(e.data);
+      setMessage((prev) => [...prev, obj]);
+      // console.log(obj, "~~");
+    };
+  };
+
+  // //소켓 메시지 보내기
+  const sendMessage = () => {
+    let obj = {
+      sender: userData[0].id + "",
+      message: msg,
+      username: userData[0].nickName,
+      type: "MESSAGE",
+      createAt: new Intl.DateTimeFormat("kr", { timeStyle: "short" }).format(
+        new Date()
+      ),
+      img: userData[0].profileImgUrl,
+    };
+    ws.current.send(JSON.stringify(obj));
+    setMsg("");
+    setSendMsg(!sendMsg);
+    // console.log(userData[0]);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      sendMessage();
+    }
+  };
+
+  useEffect(() => {
+    onOpen();
+  }, [ws]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [message]);
+
   return (
     <>
       <div id="chat">
         <Header title="채팅" type="chat" />
-        <section id="chat_body">
+        <section id="chat_body" ref={messageBoxRef}>
           {message &&
-            message.map((m) => (
-              <div key={m.id}>
-                {m.type == 1 ? (
-                  <SendMessage text={m.text} time={m.date} />
+            message.map((m, idx) => (
+              <div key={idx}>
+                {m.sender == userId ? (
+                  <SendMessage
+                    text={m.message}
+                    time={m.createAt}
+                    nickName={m.username}
+                    profileImgUrl={m.img}
+                  />
                 ) : (
-                  <GetMessage text={m.text} time={m.date} />
+                  <GetMessage
+                    text={m.message}
+                    time={m.createAt}
+                    nickName={m.username}
+                    profileImgUrl={m.img}
+                  />
                 )}
               </div>
             ))}
         </section>
         <section id="send_form">
-          <input type="text" placeholder="메세지를 입력하세요." />
+          <input
+            type="text"
+            value={msg}
+            placeholder="메세지를 입력하세요."
+            onChange={(e) => {
+              setMsg(e.target.value);
+            }}
+            onKeyPress={handleKeyPress}
+          />
           <IconButton
             variant="outlined"
             sx={{ borderRadius: "100%", height: "40px" }}
+            onClick={sendMessage}
           >
             <SendIcon />
           </IconButton>

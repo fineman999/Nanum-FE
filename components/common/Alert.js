@@ -20,7 +20,7 @@ export const fireAlert = ({ icon, title }) => {
 //입력 받는 알럿
 export const inputAlert = ({ title }) => {
   Swal.fire({
-    title: title,
+    title: title + "33",
     input: "text",
     inputAttributes: {
       autocapitalize: "off",
