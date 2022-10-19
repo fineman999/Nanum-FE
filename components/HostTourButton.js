@@ -1,6 +1,12 @@
 import { Chip } from "@mui/material";
 
-const HostTourButton = ({ contract, tourStatus, handleReject }) => {
+const HostTourButton = ({
+  contract,
+  tourStatus,
+  handleApprove,
+  handleReject,
+  handleComplete,
+}) => {
   switch (tourStatus) {
     case "WAITING":
       return (
@@ -8,7 +14,7 @@ const HostTourButton = ({ contract, tourStatus, handleReject }) => {
           <Chip
             label="승인"
             variant="outlined"
-            onClick={() => console.log("투어 승인!")}
+            onClick={() => handleApprove(contract.id)}
             sx={{ mr: 0.5 }}
           />
           <Chip
@@ -24,7 +30,7 @@ const HostTourButton = ({ contract, tourStatus, handleReject }) => {
         <Chip
           label="투어 완료"
           variant="outlined"
-          onClick={() => console.log("투어 완료!")}
+          onClick={() => handleComplete(contract.id)}
         />
       );
       break;

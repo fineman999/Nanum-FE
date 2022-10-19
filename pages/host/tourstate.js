@@ -186,38 +186,8 @@ export default function TourState() {
           </h3>
         </section>
         <section id="contract_body">
-          {contractData &&
-            contractData.map((contract) => (
-              <div key={contract.id} id="unit_contract">
-                <div id="contract_text">
-                  <div>
-                    <p id="contract_header">투어 신청 {typeData[isType]}</p>
-                    <div id="contract_data">
-                      {contract.date === "" ? (
-                        ""
-                      ) : (
-                        <p>
-                          {contract.date} {contract.time}
-                        </p>
-                      )}
-
-                      <p>{contract.place}</p>
-                    </div>
-                  </div>
-                  <div id="contract_footer">
-                    <div style={{ display: "flex", alignItems: "flex-end" }}>
-                      <img src={contract.userProfile} />
-                      <p>{contract.username}</p>
-                    </div>
-                    {isType == 0 && <button>신청 처리</button>}
-                    {isType == 1 && <button>투어 완료</button>}
-                  </div>
-                </div>
-                <img src={contract.imgURL} />
-              </div>
-            ))}
+          <HostTourContractList />
         </section>
-        <HostTourContractList />
       </div>
       <style jsx>{style}</style>
     </>

@@ -7,6 +7,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { Divider } from "@mui/material";
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
+const API_URI = "/tours";
 
 const LastPageComment = () => {
   const ScrollToTop = () => {
@@ -44,11 +45,28 @@ const HostTourContractList = () => {
       });
   }, []);
 
+  const handleApprove = (id) => {
+    const formData = {
+      houseTourId: id,
+      houseTourStatus: "APPROVED",
+    };
+
+    put(BASE_URL, API_URI, formData).then((res) => console.log(res));
+  };
+
   const handleReject = (id) => {
-    const API_URI = "/tours";
     const formData = {
       houseTourId: id,
       houseTourStatus: "REJECTED",
+    };
+
+    put(BASE_URL, API_URI, formData).then((res) => console.log(res));
+  };
+
+  const handleComplete = (id) => {
+    const formData = {
+      houseTourId: id,
+      houseTourStatus: "TOUR_COMPLETED",
     };
 
     put(BASE_URL, API_URI, formData).then((res) => console.log(res));
@@ -63,7 +81,9 @@ const HostTourContractList = () => {
               <HostTourContractListItem
                 key={contract.id}
                 contract={contract}
+                handleApprove={handleApprove}
                 handleReject={handleReject}
+                handleComplete={handleComplete}
               />
               {index !== contractList.length - 1 ? <Divider /> : ""}
             </>

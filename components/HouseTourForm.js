@@ -14,6 +14,8 @@ import { post } from "../lib/apis/apiClient";
 const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
   const [timeList, setTimeList] = useState([]);
   const handleTour = () => {
+    const message = "";
+    const status = "";
     if (!tourForm.roomId) {
       // fireAlert({ icon: "warning", title: "방을 선택해주세요!!" });
       alert("방을 선택해주세요!!");

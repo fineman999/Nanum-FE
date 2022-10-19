@@ -12,7 +12,12 @@ const messages = {
   TOUR_COMPLETED: "완료됨",
 };
 
-const HostTourContractListItem = ({ contract, handleReject }) => {
+const HostTourContractListItem = ({
+  contract,
+  handleApprove,
+  handleReject,
+  handleComplete,
+}) => {
   const { houseTourStatus } = contract;
   return (
     <li className={styles.contract_list_item}>
@@ -23,7 +28,9 @@ const HostTourContractListItem = ({ contract, handleReject }) => {
           <HostTourButton
             contract={contract}
             tourStatus={houseTourStatus}
+            handleApprove={handleApprove}
             handleReject={handleReject}
+            handleComplete={handleComplete}
           />
         </div>
       </div>

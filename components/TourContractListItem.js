@@ -3,6 +3,7 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 
 import styles from "../styles/TourContractListItem.module.css";
+import { fireAlert } from "./common/Alert";
 
 const messages = {
   WAITING: "대기중",
@@ -12,8 +13,8 @@ const messages = {
   TOUR_COMPLETED: "완료됨",
 };
 
-const TourButton = (contract, tourStatus, handleCancel) => {
-  switch (tourStatus) {
+const TourButton = ({ contract, houseTourStatus, handleCancel }) => {
+  switch (houseTourStatus) {
     case "WAITING":
       return (
         <Chip
@@ -24,13 +25,7 @@ const TourButton = (contract, tourStatus, handleCancel) => {
       );
       break;
     case "APPROVED":
-      return (
-        <Chip
-          label="입주 신청"
-          variant="outlined"
-          onClick={() => console.log("입주 신청!")}
-        />
-      );
+      return <Chip label="투어 승인됨" />;
       break;
     case "REJECTED":
       return <Chip label="투어 거부됨" />;
@@ -39,7 +34,15 @@ const TourButton = (contract, tourStatus, handleCancel) => {
       return <Chip label="투어 취소됨" />;
       break;
     case "TOUR_COMPLETED":
-      return <Chip label="투어 완료됨" />;
+      return (
+        <Chip
+          label="입주 신청"
+          variant="outlined"
+          onClick={() =>
+            fireAlert({ icon: "success", title: "입주 신청 완료!" })
+          }
+        />
+      );
       break;
   }
 };
@@ -57,7 +60,11 @@ const TourContractListItem = ({ contract, handleCancel }) => {
         <h3>투어 신청 {messages[houseTourStatus]}</h3>
         <div className={styles.tour_date}>{contract.tourDate}</div>{" "}
         <div className="tour_btns">
-          {TourButton(contract, houseTourStatus, handleCancel)}
+          <TourButton
+            contract={contract}
+            houseTourStatus={houseTourStatus}
+            handleCancel={handleCancel}
+          />
         </div>
       </div>
       <div className={styles.tour_image}>

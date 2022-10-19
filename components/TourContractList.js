@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import TourContractListItem from "./TourContractListItem";
 
 import styles from "../styles/TourContractList.module.css";
@@ -10,7 +10,16 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 const LastPageComment = () => {
   const ScrollToTop = () => {
-    window.scrollTo(0, 0);
+    const anchor = (event.target.ownerDocument || document).querySelector(
+      "#back-to-top-anchor"
+    );
+
+    if (anchor) {
+      anchor.scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
   };
 
   const style = {
@@ -21,6 +30,7 @@ const LastPageComment = () => {
     justifyContent: "center",
     alignItems: "center",
   };
+
   return (
     <div style={style}>
       마지막 페이지입니다.{" "}
@@ -65,14 +75,13 @@ const TourContractList = () => {
       <ul className={styles.contract_list}>
         {contractList &&
           contractList.map((contract, index) => (
-            <>
+            <Fragment key={contract.id}>
               <TourContractListItem
-                key={index}
                 contract={contract}
                 handleCancel={handleCancel}
               />
               {index !== contractList.length - 1 ? <Divider /> : ""}
-            </>
+            </Fragment>
           ))}
       </ul>
       <LastPageComment />
