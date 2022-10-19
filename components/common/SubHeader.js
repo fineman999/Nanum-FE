@@ -38,6 +38,7 @@ const SubHeader = ({ title = "제목", type = "main" }) => {
             boxShadow: "none",
             background: "white",
             borderBottom: "1px solid #f5f5f5",
+            zIndex: "1300",
           }}
         >
           <Toolbar>

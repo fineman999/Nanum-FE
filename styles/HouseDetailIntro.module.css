@@ -1,0 +1,12 @@
+.house_intro_wrapper {
+  background: white;
+  margin-bottom: 20px;
+
+  box-sizing: border-box;
+  padding: 0px 20px 0px 20px;
+}
+
+.house_info_header {
+  box-sizing: border-box;
+  padding: 20px;
+}

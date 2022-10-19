@@ -1,0 +1,9 @@
+.house_review_wrapper {
+  background: white;
+  margin-bottom: 20px;
+}
+
+.house_info_header {
+  box-sizing: border-box;
+  padding: 20px;
+}

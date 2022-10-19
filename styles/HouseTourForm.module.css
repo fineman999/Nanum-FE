@@ -1,0 +1,11 @@
+.form_btns {
+  width: 100%;
+  display: flex;
+  justify-content: right;
+  margin-top: 10px;
+}
+
+.MuiButtonBase-root:disabled {
+  cursor: not-allowed;
+  pointer-events: auto;
+}
