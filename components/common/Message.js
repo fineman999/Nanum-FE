@@ -1,5 +1,8 @@
 import css from "styled-jsx/css";
-import { displayedAt } from "../../lib/utils/useful-functions";
+import {
+  displayedASpringMVC,
+  displayedAt,
+} from "../../lib/utils/useful-functions";
 import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
@@ -42,7 +45,7 @@ export function SendMessage({ text, time }) {
   return (
     <>
       <div id="send" className="message">
-        <p id="time">{displayedAt(time)}</p>
+        <p id="time">{displayedASpringMVC(time)}</p>
         <p className="text">{text}</p>
       </div>
       <style jsx>{style}</style>
@@ -59,7 +62,7 @@ export function GetMessage({ text, time, nickName, profileImgUrl }) {
           <p>{nickName}</p>
         </div>
         <p className="text">{text}</p>
-        <p>{displayedAt(time)}</p>
+        <p>{displayedASpringMVC(time)}</p>
       </div>
       <style jsx>{style}</style>
     </>
