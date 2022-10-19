@@ -25,8 +25,6 @@ const style = {
 };
 
 export default function BigImageModal({ open, handleClose, image }) {
-  const handleOpen = () => setOpen(true);
-
   return (
     <div>
       <Modal
