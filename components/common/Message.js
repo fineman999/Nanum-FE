@@ -1,4 +1,5 @@
 import css from "styled-jsx/css";
+import { displayedAt } from "../../lib/utils/useful-functions";
 import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
@@ -41,7 +42,7 @@ export function SendMessage({ text, time }) {
   return (
     <>
       <div id="send" className="message">
-        <p id="time">{time}</p>
+        <p id="time">(time)</p>
         <p className="text">{text}</p>
       </div>
       <style jsx>{style}</style>

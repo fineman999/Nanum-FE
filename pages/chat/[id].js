@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { useRef } from "react";
+import { useRouter } from "next/router";
 
 const style = css`
   #chat {
@@ -50,7 +51,10 @@ export default function Chat() {
   const [sendMsg, setSendMsg] = useState(false);
   const userData = useRecoilState(userState);
   const messageBoxRef = useRef();
+  const router = useRouter();
+  const { id: roomNum } = router.query;
 
+  //채팅목록 젤  하단으로
   const scrollToBottom = () => {
     if (messageBoxRef.current) {
       messageBoxRef.current.scrollTop = messageBoxRef.current.scrollHeight;
@@ -58,7 +62,6 @@ export default function Chat() {
   };
 
   let userId = userData[0].id;
-  let roomNum = "634d59514f38382123b8fc18";
   const uri = `ws://20.214.170.222:8000/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
   let ws = useRef(null);
 
@@ -77,7 +80,6 @@ export default function Chat() {
     ws.current.onmessage = (e) => {
       let obj = JSON.parse(e.data);
       setMessage((prev) => [...prev, obj]);
-      // console.log(obj, "~~");
     };
   };
 
@@ -88,9 +90,8 @@ export default function Chat() {
       message: msg,
       username: userData[0].nickName,
       type: "MESSAGE",
-      createAt: new Intl.DateTimeFormat("kr", { timeStyle: "short" }).format(
-        new Date()
-      ),
+      createAt: new Date(),
+
       img: userData[0].profileImgUrl,
     };
     ws.current.send(JSON.stringify(obj));
