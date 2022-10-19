@@ -42,7 +42,7 @@ export function SendMessage({ text, time }) {
   return (
     <>
       <div id="send" className="message">
-        <p id="time">(time)</p>
+        <p id="time">{displayedAt(time)}</p>
         <p className="text">{text}</p>
       </div>
       <style jsx>{style}</style>
@@ -59,7 +59,7 @@ export function GetMessage({ text, time, nickName, profileImgUrl }) {
           <p>{nickName}</p>
         </div>
         <p className="text">{text}</p>
-        <p>{time}</p>
+        <p>{displayedAt(time)}</p>
       </div>
       <style jsx>{style}</style>
     </>
