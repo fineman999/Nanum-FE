@@ -17,10 +17,29 @@ export const fireAlert = ({ icon, title }) => {
   });
 };
 
+//yes or no 알럿
+export const confirmAlert = ({ icon, title, text, successText }) => {
+  Swal.fire({
+    title: title,
+    text: text,
+    icon: icon,
+    showCancelButton: true,
+    confirmButtonColor: "#777777",
+    cancelButtonColor: "#76c1b2",
+    confirmButtonText: "삭제",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire("삭제완료", successText, "success");
+      return true;
+    }
+    return false;
+  });
+};
+
 //입력 받는 알럿
 export const inputAlert = ({ title }) => {
   Swal.fire({
-    title: title,
+    title: title + "33",
     input: "text",
     inputAttributes: {
       autocapitalize: "off",

@@ -1,4 +1,5 @@
 import css from "styled-jsx/css";
+import { displayedAt } from "../../lib/utils/useful-functions";
 import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
@@ -36,32 +37,29 @@ const style = css`
     margin-right: 0.2rem;
   }
 `;
+
 export function SendMessage({ text, time }) {
   return (
     <>
       <div id="send" className="message">
-        <p id="time">{time}</p>
+        <p id="time">{displayedAt(time)}</p>
         <p className="text">{text}</p>
       </div>
       <style jsx>{style}</style>
     </>
   );
 }
-export function GetMessage({ text, time }) {
-  const user = {
-    img: "/images/default.png",
-    name: "강민수",
-  };
+export function GetMessage({ text, time, nickName, profileImgUrl }) {
   return (
     <>
       <div id="get" className="message">
         <div>
-          <ProfileImg img={user.img} name={user.name} size={5} type={1} />
+          <ProfileImg img={profileImgUrl} name={nickName} size={5} type={1} />
 
-          <p>{user.name}</p>
+          <p>{nickName}</p>
         </div>
         <p className="text">{text}</p>
-        <p>{time}</p>
+        <p>{displayedAt(time)}</p>
       </div>
       <style jsx>{style}</style>
     </>

@@ -12,6 +12,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/atom/authState";
 import { fireAlert } from "../Alert";
 import { useRouter } from "next/router";
+import { onOpen } from "../../../lib/apis/chat";
 
 const mystyle = css`
   .house_image_wrapper {
@@ -99,14 +100,14 @@ export default function ProfileModal({
             <TwoButtonOption
               text1="채팅하기"
               text2="차단하기"
-              handleBtn1={goChat}
+              handleBtn1={onOpen}
               handleBtn2={goBlock}
             />
           ) : (
             <TwoButtonOption
               text1="쪽지보내기"
               text2="차단하기"
-              handleBtn1={goChat}
+              handleBtn1={onOpen}
               handleBtn2={goBlock}
             />
           )}
