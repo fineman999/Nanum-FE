@@ -30,7 +30,9 @@ export const confirmAlert = ({ icon, title, text, successText }) => {
   }).then((result) => {
     if (result.isConfirmed) {
       Swal.fire("삭제완료", successText, "success");
+      return true;
     }
+    return false;
   });
 };
 
