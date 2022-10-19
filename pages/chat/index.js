@@ -2,45 +2,12 @@ import Header from "../../components/common/Header";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import css from "styled-jsx/css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { ProfileImg } from "../../components/common/Profile";
-import { getSessionId ,displayedAt} from "../../lib/utils/useful-functions";
+import { getSessionId ,displayedAt, getCurrentDate, displayedASpringMVC} from "../../lib/utils/useful-functions";
 import * as Api from "../../lib/apis/apiClient";
-const tempChat = [
-  {
-    id: 1,
-    img: "/images/default.png",
-    username: "캉민수",
-    text: "오늘 야자 몇시?",
-    date: "9월26일",
-    cnt: 2,
-  },
-  {
-    id: 2,
-    img: "/images/default.png",
-    username: "캉민수",
-    text: "오늘 야자 몇시?",
-    date: "9월25일",
-    cnt: 100,
-  },
-  {
-    id: 3,
-    img: "/images/default.png",
-    username: "캉민수",
-    text: "오늘 야자 몇시?",
-    date: "9월24일",
-    cnt: 20,
-  },
-  {
-    id: 4,
-    img: "/images/default.png",
-    username: "캉민수",
-    text: "오늘 야자 몇시?",
-    date: "9월20일",
-    cnt: 10,
-  },
-];
+
 const style = css`
   #chatlist {
     display: flex;
@@ -60,13 +27,25 @@ const style = css`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.5rem;
+    padding: 0.3rem;
     margin: 1rem;
     border-radius: 20px;
+    opacity: 1;
+    transition: 0.3s;
+  }
+  #unit_chat:hover {
+    cursor:pointer;
+    background-color: rgba(0, 0, 0, 0.20);
+    color: #fff;
   }
   #chat_content {
     margin-left: 1rem;
     width: 100%;
+    height: 8vh;
+    justify-content: center;
+    flex-direction: column;
+    /* align-items: center; */
+    display: flex;
   }
   #chat_user {
     display: flex;
@@ -78,6 +57,7 @@ const style = css`
     align-items: center;
     justify-content: space-between;
     padding-right: 1rem;
+
   }
   #update {
     margin-left: 1rem;
@@ -102,12 +82,13 @@ export default function ChatList() {
   const [isUpdate, setIsUpdate] = useState(false);
   const [chatLists, setChatLists] = useState([]);
   const [data, setData] = useState([]);
+  const content = useRef();
   const router = useRouter();
   const goChat = (id) => {
     router.push(`/chat/${id}`);
   };
   const getChats = async () => {
-    // setChatLists([]);
+    setChatLists([]);
     const userId = getSessionId();
     console.log("userid",userId)
     try {
@@ -152,7 +133,7 @@ export default function ChatList() {
                     userInfo.lastMessage === null ? "" : userInfo.lastMessage
                   }`,
                   id: ele.id,
-                  date: ele.updateAt,
+                  date: displayedAt(ele.updateAt),
                   cnt: `${
                     userInfo.users[0].userId == userId ? userInfo.users[0].readCount : userInfo.users[1].readCount
                   }`
@@ -174,7 +155,7 @@ export default function ChatList() {
                   user.readCount
                 }`,
                 id:ele.id,
-                date:ele.updateAt,
+                date: displayedAt(ele.updateAt),
 
               };
             }
@@ -186,42 +167,27 @@ export default function ChatList() {
       console.log("Error" + e);
     }
   };
-const connectSse = async () =>{
-  const userId = getSessionId();
-  // const  eventSource = new EventSource(`http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userId}`); //구독
-  const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
-  console.log("eventSource", eventSource);
+  const connectSse = async () =>{
 
-  eventSource.onopen = event => {
-    console.log("connection opened");
-  };
+    const userId = getSessionId();
+    const  eventSource = new EventSource(`http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userId}`); //구독
+    // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
+    console.log("eventSource", eventSource);
+    eventSource.onopen = event => {
+      console.log("connection opened");
+    };
 
   eventSource.onmessage = event => {
     console.log("result", event.data);
-    const data = JSON.parse(event.data);
-    const content = JSON.parse(data.content);
-    console.log(data)
-    console.log(JSON.parse(data.content))
-    console.log(chatLists)
-    // 1. 해당 값 찾고
-    const result = chatLists.find(item=>item.id==content.id);
-    console.log("resut",result)
-    // 2. 기존의 값 복사하고 
-    const removeCopiedChatLists= [...chatLists];
+    const sseMessage = JSON.parse(event.data);
+    if(sseMessage.title==="CHAT"){
+       content.current = JSON.parse(sseMessage.content);
+      console.log("content: ",content.current);
+      setData(old => [...old, event.data]);
+    }else{
+      console.log("it's not a chat")
+    }
 
-    // 3. 해당 값 삭제하고
-   const copiedChatLists = removeCopiedChatLists.filter(item=>item.id!=content.id);
-    
-    // result.date = content.date;
-    // result.cnt +=1;
-    // result.text = content.lastMessage;
-    // let newObject = [];
-    // newObject.push(result);
-    // newObject.concat(copiedChatLists);
-    // console.log("didid");
-    // console.log(copiedChatLists);
-    setData(old => [...old, event.data]);
-    // setChatLists(newObject);
   };
 
   eventSource.onerror = event => {
@@ -231,16 +197,105 @@ const connectSse = async () =>{
     }
     eventSource.close();
   };
-  return () => {
-    eventSource.close();
-  };
+}
+const getSse = async () =>{
+  let findIndex = chatLists.findIndex(item => item.id === content.current.id);
+  /* id값으로 인덱스를 찾는 것까지는 동일하다 */
+  console.log("findIndex",findIndex)
+  
+  // /* 새로운 변수를 선언해 기존의 배열을 복사하는 과정을 거쳐야 한다.
+  // useState로 만든 변수는 set함수로만 값을 변경할 수 있기 때문이다. */
+
+  if(findIndex === 0){
+    let copiedItems = [...chatLists];
+    copiedItems[findIndex].text = content.current.lastMessage;
+    copiedItems[findIndex].date = displayedASpringMVC(content.current.date);
+    copiedItems[findIndex].cnt = Number(copiedItems[findIndex].cnt)+1;  
+    setChatLists(copiedItems)
+  }else if(findIndex >=1){
+    const copiedItems = [...chatLists];
+    const addChat = [{
+      img: copiedItems[findIndex].img,
+      username: copiedItems[findIndex].username,
+      text: content.current.lastMessage,
+      cnt: Number(copiedItems[findIndex].cnt)+1,
+      id: copiedItems[findIndex].id,
+      date: displayedASpringMVC(content.current.date),
+
+    }];
+    const deleteChatList = chatLists.filter(item=>item.id !== content.current.id);
+
+    const newChatList = [
+      ...addChat,
+      ...deleteChatList
+    ]
+    setChatLists(newChatList);
+  }else{
+   console.log("testing.....................");
+   console.log(content.current)
+   if(content.current!=undefined){
+    const copiedItems = [...chatLists];
+     try {
+      const getChats = await Api.get(
+        `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/`,
+        content.current
+      );
+
+      if (!getChats) {
+        throw new Error(`${getChats} not allowd`);
+      }
+      let addChat = {};
+      if(Number(getChats.data.houseId) === 0){
+        getChats.data.roomInfo.users.forEach(async user=>{
+              if(Number(user.userId) !== Number(getSessionId())){
+
+                const getUserInfos = await Api.get(
+                  `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+                  user.userId
+                );
+                if (!getUserInfos) {
+                  throw new Error(`${user.userId} not allowd`);
+                }
+                addChat = {
+                  img: getUserInfos.data.result[0].profileImgUrl,
+                  username: getUserInfos.data.result[0].nickName,
+                  text: content.current.lastMessage,
+                  cnt: 1,
+                  id: content.current.id,
+                  date: displayedASpringMVC(content.current.date),
+            
+                };
+              }
+        })
+      }else{
+        addChat = {
+          img: getChats.data.houseImg,
+          username: getChats.data.roomName,
+          text: content.current.lastMessage,
+          cnt: 1,
+          id: content.current.id,
+          date: displayedASpringMVC(content.current.date),
+        };
+      }
+      const newChatList = [
+        addChat,
+        ...chatLists
+      ]
+      setChatLists(newChatList);
+    }catch (e) {
+      console.log("Error" + e);
+    }
+   }
+  }
 }
   useEffect(() => {
-    getChats();   
+    getChats();    
+    connectSse();
   }, []);
   useEffect(() => {
-    connectSse();  
+    // connectSse();  
     // getChats();  
+    getSse()
   }, [data]);
   return (
     <>
@@ -268,11 +323,12 @@ const connectSse = async () =>{
                 <div id="chat_content" onClick={() => goChat(item.id)}>
                   <div id="chat_user">
                     <h3>{item.username}</h3>
-                    <p> {displayedAt(item.date)}</p>
+                    <p style={{}}> {item.date}</p>
                   </div>
                   <div id="chat_text">
                     <p>{item.text}</p>
-                    <StyledBadge badgeContent={item.cnt} color="error" />
+                    {Number(item.cnt) > 
+                    0?<StyledBadge badgeContent={item.cnt} color="error" />:""}
                   </div>
                 </div>
                 {isUpdate && (
@@ -290,3 +346,4 @@ const connectSse = async () =>{
     </>
   );
 }
+
