@@ -12,7 +12,8 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/atom/authState";
 import { fireAlert } from "../Alert";
 import { useRouter } from "next/router";
-import { onOpen } from "../../../lib/apis/chat";
+import { getChat, onOpen } from "../../../lib/apis/chat";
+import { useEffect } from "react";
 
 const mystyle = css`
   .house_image_wrapper {
@@ -47,12 +48,17 @@ export default function ProfileModal({
   name,
   type,
   id,
+  roomNum,
 }) {
   const userData = useRecoilValue(userState);
   const router = useRouter();
   const blockerId = userData.id;
   const blockedUserId = id;
-  const goChat = () => {};
+
+  const goChat = () => {
+    router.push(`/chat/${roomNum}`);
+  };
+
   const goBlock = () => {
     postBlock({ blockerId, blockedUserId })
       .then((res) => {
@@ -100,7 +106,7 @@ export default function ProfileModal({
             <TwoButtonOption
               text1="채팅하기"
               text2="차단하기"
-              handleBtn1={onOpen}
+              handleBtn1={goChat}
               handleBtn2={goBlock}
             />
           ) : (
