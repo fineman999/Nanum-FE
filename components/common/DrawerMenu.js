@@ -17,10 +17,10 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
-import { getUserDetail, logout } from "../../lib/apis/auth";
+import { logout } from "../../lib/apis/auth";
 
 const UserMenu = ({ menuList, handleClick }) => {
   return (
@@ -152,6 +152,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
       anchor="right"
       open={onToggle}
       PaperProps={{ sx: { width: "100%" } }}
+      sx={{ zIndex: "1300" }}
     >
       <Box p={2}>
         {authData.isLogin && userData.profileImgUrl !== "" ? (

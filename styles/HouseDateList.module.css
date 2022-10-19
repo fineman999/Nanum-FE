@@ -1,0 +1,16 @@
+.house_date_list_wrapper {
+  width: 100%;
+}
+
+.date_list {
+  display: flex;
+  flex-wrap: wrap;
+  color: black;
+  margin-top: 10px;
+}
+
+.date_list > li {
+  margin-bottom: 10px;
+  width: 24%;
+  text-align: center;
+}

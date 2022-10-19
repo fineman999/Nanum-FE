@@ -1,0 +1,46 @@
+.house_toolbar_container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+
+  background: white;
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  z-index: 1300;
+}
+
+.toolbar_ico_like_wrapper {
+  text-align: center;
+  flex: 1;
+}
+
+.toolbar_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+}
+
+.toolbar_info_wrapper {
+  font-size: 0.7em;
+  flex: 3;
+}
+
+.house_name {
+  margin-bottom: 3px;
+}
+
+.house_toolbar_btns {
+  display: flex;
+  flex: 6;
+}
+
+.house_toolbar_btns > * {
+  flex: 1;
+}
+
+.btn_text {
+  font-size: 0.7em;
+  margin-left: 5px;
+}
