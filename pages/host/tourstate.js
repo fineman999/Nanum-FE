@@ -1,11 +1,10 @@
+import { Toolbar } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import css from "styled-jsx/css";
 import Header from "../../components/common/Header";
+import HostTourContractList from "../../components/HostTourContractList";
 const style = css`
-  #process {
-    padding: 5rem 1rem 1rem;
-  }
   #process_header {
     display: flex;
     align-items: flex-end;
@@ -140,16 +139,22 @@ const doneState = [
     username: "노숙자",
   },
 ];
+
 export default function TourState() {
   const router = useRouter();
   const [contractData, setContractData] = useState(waitState);
   const [isType, setIsType] = useState(router.query.type);
   //0:대기 1:진행 2:완료
   const typeData = ["대기", "진행", "완료"];
+
+  const [contractList, setContractList] = useState([]);
+  useEffect(() => {}, []);
+
   return (
     <>
       <div id="process">
         <Header title="신청현황" type="state" />
+        <Toolbar />
         <section id="process_header">
           <h2>투어 신청</h2>
           <h3
@@ -212,6 +217,7 @@ export default function TourState() {
               </div>
             ))}
         </section>
+        <HostTourContractList />
       </div>
       <style jsx>{style}</style>
     </>

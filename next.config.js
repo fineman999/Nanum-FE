@@ -5,6 +5,7 @@ const nextConfig = {
   env: {
     KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
     NANUM_HOUSE_SERVICE_BASE_URL: process.env.NANUM_HOUSE_SERVICE_BASE_URL,
+    NANUM_ENROLL_SERVICE_BASE_URL: process.env.NANUM_ENROLL_SERVICE_BASE_URL,
   },
   images: {
     domains: [

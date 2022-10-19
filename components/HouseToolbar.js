@@ -8,10 +8,23 @@ import { IconButton } from "@mui/material";
 import styles from "../styles/HouseToolbar.module.css";
 import LikeButton from "./common/LikeButton";
 
-const HouseToolbar = ({ like, open, toggleDrawer }) => {
+const HouseToolbar = ({
+  roomData,
+  tourForm,
+  setTourForm,
+  like,
+  open,
+  toggleDrawer,
+}) => {
   return (
     <div className={styles.house_toolbar_container}>
-      <SwipeableEdgeDrawer open={open} toggleDrawer={toggleDrawer} />
+      <SwipeableEdgeDrawer
+        roomData={roomData}
+        tourForm={tourForm}
+        setTourForm={setTourForm}
+        open={open}
+        toggleDrawer={toggleDrawer}
+      />
       <div className={styles.toolbar_wrapper}>
         <div className={styles.toolbar_ico_like_wrapper}>
           <LikeButton isLike={like} />

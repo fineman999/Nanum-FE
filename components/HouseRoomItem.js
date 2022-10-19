@@ -6,15 +6,19 @@ const genderType = {
   FEMALE: "여성전용",
 };
 
-const HouseRoomItem = ({ data, toggleDrawer }) => {
-  const [toured, setToured] = useState(false);
+const HouseRoomItem = ({ data, tourForm, setTourForm, toggleDrawer }) => {
   const {
+    id,
     name, // 방 이름
     roomGender: gender, // 성별 타입
     totalMember: capacity, // 수용 인원
     monthlyRent,
     deposit,
   } = data;
+
+  const handleTour = (id) => {
+    toggleDrawer(true)();
+  };
 
   return (
     <div className="room_item_wrapper">
@@ -45,13 +49,9 @@ const HouseRoomItem = ({ data, toggleDrawer }) => {
       </div>
       {/* 투어 신청 시 입주 신청으로 변경 */}
       <div className="room_btn_wrapper">
-        {toured ? (
-          <button className="move_btn">입주 신청</button>
-        ) : (
-          <button className="tour_btn" onClick={toggleDrawer(true)}>
-            투어 신청
-          </button>
-        )}
+        <button className="tour_btn" onClick={() => handleTour(id)}>
+          투어 신청
+        </button>
       </div>
       <style jsx>{`
         .room_item_wrapper {

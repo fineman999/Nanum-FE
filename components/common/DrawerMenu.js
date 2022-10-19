@@ -29,11 +29,9 @@ const UserMenu = ({ menuList, handleClick }) => {
         menuList.map((listItem, index) => (
           <Fragment key={listItem.id}>
             <ListItem onClick={() => handleClick(listItem, index)}>
-              <Link href={listItem.path || ""}>
-                <ListItemButton>
-                  <ListItemText primary={listItem.name} />
-                </ListItemButton>
-              </Link>
+              <ListItemButton>
+                <ListItemText primary={listItem.name} />
+              </ListItemButton>
               {/* 하위 메뉴 더보기 */}
               {listItem.sub &&
                 (listItem.sub.open ? <ExpandLess /> : <ExpandMore />)}
@@ -100,6 +98,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
     setAuthData({ isLogin: false });
     toggleDrawer();
   };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(sessionStorage.getItem("role"));
