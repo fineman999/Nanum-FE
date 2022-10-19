@@ -89,131 +89,123 @@ export default function ChatList() {
   const [chatLists, setChatLists] = useState([]);
   const [data, setData] = useState([]);
   const content = useRef();
+  const eventSource = useRef();
   const userData = useRecoilValue(userState);
   const router = useRouter();
   const goChat = (id) => {
     router.push(`/chat/${id}`);
   };
+
   const getChats = async () => {
-    setChatLists([]);
+    // setChatLists([]);
     console.log(userData, "~~~~~~~");
     const userId = userData.id;
-    console.log("userid", userId);
+    let getChatLists = null;
     try {
-      const getChatLists = await Api.get(
+      getChatLists = await Api.get(
         `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/`,
         userId
       );
-
       if (!getChatLists) {
         throw new Error(`${getChatLists} not allowd`);
       }
-
-      const findUserInfos = [];
-      getChatLists.data.forEach((data) => {
-        const userInfo = data.roomInfo;
-        userInfo.users.forEach((user) => {
-          findUserInfos.push(user.userId);
-        });
-      });
-      const getUserInfos = await Api.get(
-        `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
-        findUserInfos
-      );
-
-      const chats2 = getChatLists.data;
-
-      chats2.forEach((ele) => {
-        let chat = {};
-        console.log(ele);
-        const userInfo = ele.roomInfo;
-
-        // 두명
-        if (ele.houseId == 0) {
-          console.log(ele.houseId);
-          userInfo.users.forEach((user) => {
-            getUserInfos.data.result.forEach((i, x) => {
-              if (user.userId == i.id && i.id != userId) {
-                console.log(userInfo.updateAt);
-                chat = {
-                  img: i.profileImgUrl,
-                  username: i.nickName,
-                  text: `${
-                    userInfo.lastMessage === null ? "" : userInfo.lastMessage
-                  }`,
-                  id: ele.id,
-                  date: displayedASpringMVC(userInfo.updateAt),
-                  cnt: `${
-                    userInfo.users[0].userId == userId
-                      ? userInfo.users[0].readCount
-                      : userInfo.users[1].readCount
-                  }`,
-                };
-              }
-            });
-          });
-        } else if (ele.houseId != 0) {
-          // 채팅 방
-          userInfo.users.forEach((user) => {
-            if (user.userId == userId) {
-              console.log(userInfo);
-              chat = {
-                img: ele.houseImg,
-                username: ele.roomName,
-                text: `${
-                  userInfo.lastMessage == null ? "" : userInfo.lastMessage
-                }`,
-                cnt: `${user.readCount}`,
-                id: ele.id,
-                date: displayedASpringMVC(userInfo.updateAt),
-              };
-            }
-          });
-        }
-        setChatLists((prev) => [...prev, chat]);
-      });
     } catch (e) {
       console.log("Error" + e);
     }
+    const findUserInfos = [];
+    getChatLists.data.forEach((data) => {
+      const userInfo = data.roomInfo;
+      userInfo.users.forEach((user) => {
+        findUserInfos.push(user.userId);
+      });
+    });
+    const getUserInfos = await Api.get(
+      `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+      findUserInfos
+    );
+
+    const chats2 = getChatLists.data;
+
+    chats2.forEach((ele) => {
+      let chat = {};
+      const userInfo = ele.roomInfo;
+
+      // 두명
+      if (ele.houseId == 0) {
+        userInfo.users.forEach((user) => {
+          getUserInfos.data.result.forEach((i, x) => {
+            if (user.userId == i.id && i.id != userId) {
+              chat = {
+                img: i.profileImgUrl,
+                username: i.nickName,
+                text: `${
+                  userInfo.lastMessage === null ? "" : userInfo.lastMessage
+                }`,
+                id: ele.id,
+                date: displayedASpringMVC(userInfo.updateAt),
+                cnt: `${
+                  userInfo.users[0].userId == userId
+                    ? userInfo.users[0].readCount
+                    : userInfo.users[1].readCount
+                }`,
+              };
+            }
+          });
+        });
+      } else if (ele.houseId != 0) {
+        // 채팅 방
+        userInfo.users.forEach((user) => {
+          if (user.userId == userId) {
+            chat = {
+              img: ele.houseImg,
+              username: ele.roomName,
+              text: `${
+                userInfo.lastMessage == null ? "" : userInfo.lastMessage
+              }`,
+              cnt: `${user.readCount}`,
+              id: ele.id,
+              date: displayedASpringMVC(userInfo.updateAt),
+            };
+          }
+        });
+      }
+      setChatLists((prev) => [...prev, chat]);
+    });
   };
   const connectSse = async () => {
     const userId = userData.id;
-    console.log(userId, "~!!!!!!!!!!");
-    const eventSource = new EventSource(
-      `http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userId}`
+    eventSource.current = new EventSource(
+      `http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userId}`,
+      { withCredentials: true }
     ); //구독
     // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
-    console.log("eventSource", eventSource);
-    eventSource.onopen = (event) => {
+    eventSource.current.onopen = (event) => {
       console.log("connection opened");
     };
 
-    eventSource.onmessage = (event) => {
-      console.log("result", event.data);
+    eventSource.current.onmessage = (event) => {
       const sseMessage = JSON.parse(event.data);
       if (sseMessage.title === "CHAT") {
         content.current = JSON.parse(sseMessage.content);
         console.log("content: ", content.current);
-        setData((old) => [...old, event.data]);
+        // setData((old) => [...old, event.data]);
+        getSse();
       } else {
         console.log("it's not a chat");
       }
     };
 
-    eventSource.onerror = (event) => {
-      console.log(event.target.readyState);
+    eventSource.current.onerror = (event) => {
       if (event.target.readyState === EventSource.CLOSED) {
         console.log("eventsource closed (" + event.target.readyState + ")");
       }
-      eventSource.close();
+      eventSource.current.close();
     };
   };
   const getSse = async () => {
     let findIndex = chatLists.findIndex(
       (item) => item.id === content.current.id
     );
-    /* id값으로 인덱스를 찾는 것까지는 동일하다 */
-    console.log("findIndex", findIndex);
 
     // /* 새로운 변수를 선언해 기존의 배열을 복사하는 과정을 거쳐야 한다.
     // useState로 만든 변수는 set함수로만 값을 변경할 수 있기 때문이다. */
@@ -243,8 +235,6 @@ export default function ChatList() {
       const newChatList = [...addChat, ...deleteChatList];
       setChatLists(newChatList);
     } else {
-      console.log("testing.....................");
-      console.log(content.current);
       if (content.current != undefined) {
         const copiedItems = [...chatLists];
         try {
@@ -296,14 +286,17 @@ export default function ChatList() {
     }
   };
   useEffect(() => {
-    getChats();
-    connectSse();
+    async function reactive() {
+      await getChats();
+      await connectSse();
+    }
+    reactive();
   }, []);
-  useEffect(() => {
-    // connectSse();
-    // getChats();
-    getSse();
-  }, [data]);
+  // useEffect(async () => {
+  //   // connectSse();
+  //   // getChats();
+  //   await getSse();
+  // }, [data]);
   return (
     <>
       <div id="chatlist">
