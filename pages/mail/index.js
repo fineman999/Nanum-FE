@@ -150,7 +150,7 @@ export default function MailList() {
 
   //현재 쪽지
   const handleCurrentMail = (noteId) => {
-    getMailDetail(noteId)
+    getMailDetail({ noteId, userId })
       .then((res) => {
         console.log(res.data, "ss");
         setCurrentMail(res.data);
