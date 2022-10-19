@@ -9,6 +9,9 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { useRef } from "react";
 import { useRouter } from "next/router";
+import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
+import ImageModal from "../../components/common/modal/ImageModal";
+import { postS3 } from "../../lib/apis/image";
 
 const style = css`
   #chat {
@@ -39,7 +42,7 @@ const style = css`
     background-color: azure;
     padding: 0.2rem 1rem;
     border-radius: 20px;
-    margin-right: 1rem;
+    margin: 0rem 1rem;
   }
   #send_form input:focus {
     outline: none;
@@ -53,6 +56,17 @@ export default function Chat() {
   const messageBoxRef = useRef();
   const router = useRouter();
   const { id: roomNum } = router.query;
+
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const [imageFile, setImageFile] = useState();
+  //modal 관리
+  const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+    setImageSrc("");
+  };
 
   //채팅목록 젤  하단으로
   const scrollToBottom = () => {
@@ -100,6 +114,28 @@ export default function Chat() {
     // console.log(userData[0]);
   };
 
+  //이미지 하나 s3에 보내고 소켓 이미지 보내기
+  const sendS3 = () => {
+    postS3({ imgFile: imageFile })
+      .then((res) => {
+        console.log(res);
+        let obj = {
+          sender: userData[0].id + "",
+          message: res.data.result,
+          username: userData[0].nickName,
+          type: "IMAGE",
+          createAt: new Date(),
+          img: userData[0].profileImgUrl,
+        };
+        console.log(obj, "~~~~");
+        ws.current.send(JSON.stringify(obj));
+
+        setSendMsg(!sendMsg);
+        handleClose();
+      })
+      .catch((err) => console.log(err));
+  };
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       sendMessage();
@@ -125,13 +161,13 @@ export default function Chat() {
                 {m.sender == userId ? (
                   <SendMessage
                     text={m.message}
+                    type={m.type}
                     time={m.createAt}
-                    nickName={m.username}
-                    profileImgUrl={m.img}
                   />
                 ) : (
                   <GetMessage
                     text={m.message}
+                    type={m.type}
                     time={m.createAt}
                     nickName={m.username}
                     profileImgUrl={m.img}
@@ -141,6 +177,9 @@ export default function Chat() {
             ))}
         </section>
         <section id="send_form">
+          <IconButton variant="outlined" sx={{ height: "40px" }}>
+            <AddPhotoAlternateIcon onClick={() => setOpen(true)} />
+          </IconButton>
           <input
             type="text"
             value={msg}
@@ -159,6 +198,14 @@ export default function Chat() {
           </IconButton>
         </section>
       </div>
+      <ImageModal
+        open={open}
+        handleClose={handleClose}
+        imageSrc={imageSrc}
+        setImageSrc={setImageSrc}
+        setImageFile={setImageFile}
+        sendS3={sendS3}
+      />
       <style jsx>{style}</style>
     </>
   );
