@@ -29,7 +29,13 @@ const Puller = styled(Box)(({ theme }) => ({
   left: "calc(50% - 15px)",
 }));
 
-const SwipeableEdgeDrawer = ({ open, toggleDrawer }) => {
+const SwipeableEdgeDrawer = ({
+  roomData,
+  tourForm,
+  setTourForm,
+  open,
+  toggleDrawer,
+}) => {
   return (
     <Root>
       <SwipeableDrawer
@@ -65,7 +71,12 @@ const SwipeableEdgeDrawer = ({ open, toggleDrawer }) => {
             borderTop: "1px solid #f5f5f5",
           }}
         >
-          <HouseTourForm />
+          <HouseTourForm
+            roomData={roomData}
+            tourForm={tourForm}
+            setTourForm={setTourForm}
+            toggleDrawer={toggleDrawer}
+          />
         </StyledBox>
       </SwipeableDrawer>
     </Root>

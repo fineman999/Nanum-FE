@@ -2,6 +2,7 @@ import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import TourContractList from "../../components/TourContractList";
 
 const style = css`
   #mail_header {
@@ -200,7 +201,7 @@ export default function MailList() {
             ))}
         </div>
       </div>
-
+      <TourContractList />
       <style jsx>{style}</style>
     </>
   );

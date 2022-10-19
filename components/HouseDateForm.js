@@ -5,12 +5,14 @@ import TextField from "@mui/material/TextField";
 import styles from "../styles/HouseDateForm.module.css";
 import formatDate from "../lib/fomatDate";
 
-const HouseDateForm = () => {
+const HouseDateForm = ({ tourForm, setTourForm }) => {
   const [value, setValue] = useState(formatDate(new Date()));
-  useEffect(() => {}, []);
 
   const handleChange = (newValue) => {
-    console.log(formatDate(newValue.toDate()));
+    setTourForm({
+      ...tourForm,
+      tourDate: formatDate(newValue.toDate()),
+    });
     setValue(newValue);
   };
 

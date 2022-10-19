@@ -1,30 +1,32 @@
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { get } from "../lib/apis/apiClient";
 
 import styles from "../styles/HouseRoomDetail.module.css";
 import HouseRoomItem from "./HouseRoomItem";
 
-const HouseRoomDetail = ({ data, toggleDrawer }) => {
-  const [roomData, setRoomData] = useState([]);
-
+const HouseRoomDetail = ({
+  data,
+  roomData,
+  setRoomData,
+  tourForm,
+  setTourForm,
+  toggleDrawer,
+}) => {
   useEffect(() => {
     const { id } = data;
     const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
     const API_URI = `/houses/${id}/rooms`;
 
-    const requestAPI = async () => {
-      try {
-        const response = await axios.get(BASE_URL + API_URI);
-        const { content } = response.data.result;
-        setRoomData([...content]);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
     if (id) {
-      requestAPI();
+      get(BASE_URL, API_URI)
+        .then((res) => res.data)
+        .then((data) => {
+          console.log("하우스 방 목록: ", data);
+          setRoomData([...data.result.content]);
+        })
+        .catch((err) => console.log("하우스 방 목록 조회: ", err));
     }
   }, [data]);
 
@@ -51,6 +53,8 @@ const HouseRoomDetail = ({ data, toggleDrawer }) => {
             <HouseRoomItem
               key={room.id}
               data={room}
+              tourForm={tourForm}
+              setTourForm={setTourForm}
               toggleDrawer={toggleDrawer}
             />
           ))}

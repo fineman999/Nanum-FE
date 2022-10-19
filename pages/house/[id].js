@@ -16,16 +16,24 @@ import "swiper/css/navigation";
 import HouseToolbar from "../../components/HouseToolbar";
 import HouseDetailTopMenu from "../../components/HouseDetailTopMenu";
 import { useRouter } from "next/router";
-import axios from "axios";
 import HouseDetailIntro from "../../components/HouseDetailIntro";
 import HouseRoomDetail from "../../components/HouseRoomDetail";
 import HouseNearDetail from "../../components/HouseNearDetail";
 import HouseReviewDetail from "../../components/HouseReviewDetail";
+import { get } from "../../lib/apis/apiClient";
 
 const House = () => {
   const router = useRouter();
 
   const [houseData, setHouseData] = useState({});
+  const [roomData, setRoomData] = useState([]);
+  const [tourForm, setTourForm] = useState({
+    name: "",
+    houseId: "",
+    roomId: "",
+    timeId: "",
+    tourDate: "",
+  });
   const [like, setLike] = useState(false);
   const [open, setOpen] = useState(false);
   const swiperRef = useRef(null);
@@ -34,16 +42,18 @@ const House = () => {
     const { id: houseId } = router.query;
     const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
     const API_URI = `/houses/house/${houseId}`;
-    const requestAPI = async () => {
-      try {
-        const response = await axios.get(BASE_URL + API_URI);
-        setHouseData(response.data.result);
-      } catch (err) {
-        console.log(err);
-      }
-    };
 
-    requestAPI();
+    get(BASE_URL, API_URI)
+      .then((res) => res.data)
+      .then((data) => {
+        console.log(data);
+        setHouseData(data.result);
+        setTourForm({
+          ...tourForm,
+          houseId: data.result.id,
+        });
+      })
+      .catch((err) => console.log("하우스 상세 조회 오류: ", err));
   }, []);
 
   const toggleDrawer = (newOpen) => () => {
@@ -59,6 +69,7 @@ const House = () => {
       <Head>
         <title>하우스 상세 페이지</title>
       </Head>
+
       <SubHeader title="하우스 상세" type="detail" />
 
       <section className="house_body_section">
@@ -116,7 +127,14 @@ const House = () => {
           {/* 하우스 상세 소개 */}
           <HouseDetailIntro data={houseData} />
           {/* 하우스 방 정보 */}
-          <HouseRoomDetail data={houseData} toggleDrawer={toggleDrawer} />
+          <HouseRoomDetail
+            data={houseData}
+            roomData={roomData}
+            setRoomData={setRoomData}
+            tourForm={tourForm}
+            setTourForm={setTourForm}
+            toggleDrawer={toggleDrawer}
+          />
           {/* 하우스 주변 정보 */}
           <HouseNearDetail data={houseData} />
           {/* 하우스 리뷰 정보 */}
@@ -126,7 +144,14 @@ const House = () => {
       <Footer />
 
       {/* 하우스 툴바 */}
-      <HouseToolbar like={like} open={open} toggleDrawer={toggleDrawer} />
+      <HouseToolbar
+        roomData={roomData}
+        tourForm={tourForm}
+        setTourForm={setTourForm}
+        like={like}
+        open={open}
+        toggleDrawer={toggleDrawer}
+      />
 
       <style jsx>{`
         .house_body_section {
