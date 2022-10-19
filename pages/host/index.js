@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import css from "styled-jsx/css";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
@@ -141,7 +141,11 @@ export default function MyPage() {
   const [contractCnt, setLikeCnt] = useState(1);
   const [userData, setUserData] = useRecoilState(userState);
   const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
-
+  const [count, setCount] = useState({
+    noteCount: 0,
+    chatCount: 0,
+    alertCount: 0,
+  });
   const [moveState, setMovieState] = useState({
     wait: 0,
     go: 0,
@@ -164,6 +168,46 @@ export default function MyPage() {
       };
     });
   };
+  // 개수 가져오기
+  useEffect(() => {
+    async function reactive() {
+      try {
+        const userCountNote = await Api.get(
+          `http://20.214.170.222:8000/supplementary-service/api/v1/notes/${userId}/count`,
+          ""
+        );
+        if (!userCountNote) {
+          throw new Error(`${getChatLists} not allowd`);
+        }
+        setCount((current) => {
+          let newCondition = { ...current };
+          newCondition["noteCount"] = userCountNote.data.result.count;
+          return newCondition;
+        });
+        console.log(userCountNote);
+      } catch (e) {
+        console.log("Error" + e);
+      }
+      try {
+        const userCountNote = await Api.get(
+          `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/${userId}/count`,
+          ""
+        );
+        if (!userCountNote) {
+          throw new Error(`${getChatLists} not allowd`);
+        }
+        setCount((current) => {
+          let newCondition = { ...current };
+          newCondition["chatCount"] = userCountNote.data.count;
+          return newCondition;
+        });
+        console.log(userCountNote);
+      } catch (e) {
+        console.log("Error" + e);
+      }
+    }
+    reactive();
+  }, []);
   return (
     <>
       <Header title="마이페이지" type="my" />

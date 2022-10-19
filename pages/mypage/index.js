@@ -152,46 +152,6 @@ export default function MyPage() {
       };
     });
   };
-  // 개수 가져오기
-  useEffect(() => {
-    async function reactive() {
-      try {
-        const userCountNote = await Api.get(
-          `http://20.214.170.222:8000/supplementary-service/api/v1/notes/${userId}/count`,
-          ""
-        );
-        if (!userCountNote) {
-          throw new Error(`${getChatLists} not allowd`);
-        }
-        setCount((current) => {
-          let newCondition = { ...current };
-          newCondition["noteCount"] = userCountNote.data.result.count;
-          return newCondition;
-        });
-        console.log(userCountNote);
-      } catch (e) {
-        console.log("Error" + e);
-      }
-      try {
-        const userCountNote = await Api.get(
-          `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/${userId}/count`,
-          ""
-        );
-        if (!userCountNote) {
-          throw new Error(`${getChatLists} not allowd`);
-        }
-        setCount((current) => {
-          let newCondition = { ...current };
-          newCondition["chatCount"] = userCountNote.data.count;
-          return newCondition;
-        });
-        console.log(userCountNote);
-      } catch (e) {
-        console.log("Error" + e);
-      }
-    }
-    reactive();
-  }, []);
 
   // 개수 가져오기
   useEffect(() => {
@@ -222,6 +182,7 @@ export default function MyPage() {
           throw new Error(`${getChatLists} not allowd`);
         }
         setCount((current) => {
+          console.log(userCountNote);
           let newCondition = { ...current };
           newCondition["chatCount"] = userCountNote.data.count;
           return newCondition;
