@@ -13,7 +13,12 @@ const messages = {
   TOUR_COMPLETED: "완료됨",
 };
 
-const TourButton = ({ contract, houseTourStatus, handleCancel }) => {
+const TourButton = ({
+  contract,
+  houseTourStatus,
+  handleCancel,
+  handleMove,
+}) => {
   switch (houseTourStatus) {
     case "WAITING":
       return (
@@ -38,16 +43,14 @@ const TourButton = ({ contract, houseTourStatus, handleCancel }) => {
         <Chip
           label="입주 신청"
           variant="outlined"
-          onClick={() =>
-            fireAlert({ icon: "success", title: "입주 신청 완료!" })
-          }
+          onClick={() => handleMove(contract.houseId, contract.roomId)}
         />
       );
       break;
   }
 };
 
-const TourContractListItem = ({ contract, handleCancel }) => {
+const TourContractListItem = ({ contract, handleCancel, handleMove }) => {
   const { houseTourStatus } = contract;
 
   return (
@@ -64,6 +67,7 @@ const TourContractListItem = ({ contract, handleCancel }) => {
             contract={contract}
             houseTourStatus={houseTourStatus}
             handleCancel={handleCancel}
+            handleMove={handleMove}
           />
         </div>
       </div>

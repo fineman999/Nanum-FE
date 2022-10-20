@@ -2,14 +2,15 @@ import React, { Fragment, useEffect, useState } from "react";
 import TourContractListItem from "./TourContractListItem";
 
 import styles from "../styles/TourContractList.module.css";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { get, put } from "../lib/apis/apiClient";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { get, post, put } from "../lib/apis/apiClient";
 import { userState } from "../state/atom/authState";
 import { Divider } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { fireAlert } from "./common/Alert";
 import tourListState from "../state/atom/tourListState";
 import filteredTourListState from "../state/selector/filteredTourListState";
+import { useRouter } from "next/router";
 
 const LastPageComment = () => {
   const ScrollToTop = () => {
@@ -45,6 +46,8 @@ const LastPageComment = () => {
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
 const TourContractList = () => {
+  const router = useRouter();
+
   const userValue = useRecoilValue(userState);
   const [contractList, setContractList] = useState([]);
   const setTourList = useSetRecoilState(tourListState);
@@ -61,7 +64,6 @@ const TourContractList = () => {
       .catch((err) => console.log("사용자 투어 목록 조회 오류", err));
   }, []);
 
-  // 투어 취소
   // WAITING("대기 중"),
   // APPROVED("승인 완료됨"),
   // REJECTED("거부됨"),
@@ -95,6 +97,27 @@ const TourContractList = () => {
       });
   };
 
+  const handleMove = (houseId, roomId) => {
+    alert("하우스 아이디: " + houseId + " 룸 아이디: " + roomId);
+    // const API_URI = `/move-in/houses/${houseId}/rooms/${roomId}`;
+    const formData = {
+      moveDate: "2022-10-31",
+      inquiry: "문의 내용 테스트",
+    };
+
+    router.push(
+      {
+        pathname: "/move",
+        query: {
+          houseId: houseId,
+          roomId: roomId,
+        },
+      },
+      "/move"
+    );
+    // post(BASE_URL, API_URI, formData).then((res) => console.log(res));
+  };
+
   return (
     <div className={styles.tour_contract_list_wrapper}>
       <ul className={styles.contract_list}>
@@ -104,6 +127,7 @@ const TourContractList = () => {
               <TourContractListItem
                 contract={contract}
                 handleCancel={handleCancel}
+                handleMove={handleMove}
               />
               {index !== filteredTourList.length - 1 ? <Divider /> : ""}
             </Fragment>

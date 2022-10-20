@@ -1,45 +1,16 @@
 import React, { useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import styles from "../styles/TourContractFilter.module.css";
 import tourFilterState from "../state/atom/tourFilterState";
 
 import classNames from "classnames/bind";
+import filterStateListState from "../state/atom/filterStateListState";
 const cx = classNames.bind(styles);
 
 const TourContractFilter = () => {
-  const [filterStateList, setFilterStateList] = useState([
-    {
-      id: 1,
-      name: "전체",
-      active: true,
-    },
-    {
-      id: 2,
-      name: "대기",
-      active: false,
-    },
-    {
-      id: 3,
-      name: "승인",
-      active: false,
-    },
-    {
-      id: 4,
-      name: "거부",
-      active: false,
-    },
-    {
-      id: 5,
-      name: "취소",
-      active: false,
-    },
-    {
-      id: 6,
-      name: "완료",
-      active: false,
-    },
-  ]);
+  const [filterStateList, setFilterStateList] =
+    useRecoilState(filterStateListState);
   const setTourFilterState = useSetRecoilState(tourFilterState);
 
   const handleClick = (e, id) => {
