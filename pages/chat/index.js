@@ -101,7 +101,6 @@ export default function ChatList() {
   const getChats = async () => {
     // setChatLists([]);
 
-    console.log("userid", userData.id);
     try {
       const getChatLists = await Api.get(
         `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/`,
@@ -130,46 +129,63 @@ export default function ChatList() {
         let chat = {};
         console.log(ele);
         const userInfo = ele.roomInfo;
-
-        // 두명
-        if (ele.houseId == 0) {
-          console.log(ele.houseId);
-          userInfo.users.forEach((user) => {
-            getUserInfos.data.result.forEach((i, x) => {
-              if (user.userId == i.id && i.id != userData.id) {
+        if (userInfo.users.length <= 1) {
+          chat = {
+            img: "/images/default.png",
+            username: "알수없음",
+            text: `${
+              userInfo.lastMessage === null ? "" : userInfo.lastMessage
+            }`,
+            id: ele.id,
+            date: displayedAt(ele.updateAt),
+            cnt: `${
+              userInfo.users[0].userId == userData.id
+                ? userInfo.users[0].readCount
+                : 0
+            }`,
+          };
+        } else {
+          // 두명
+          if (ele.houseId == 0) {
+            console.log(ele.houseId);
+            console.log("userInfo.users.size", userInfo.users.length);
+            userInfo.users.forEach((user) => {
+              getUserInfos.data.result.forEach((i, x) => {
+                if (user.userId == i.id && i.id != userData.id) {
+                  chat = {
+                    img: i.profileImgUrl,
+                    username: i.nickName,
+                    text: `${
+                      userInfo.lastMessage === null ? "" : userInfo.lastMessage
+                    }`,
+                    id: ele.id,
+                    date: displayedAt(ele.updateAt),
+                    cnt: `${
+                      userInfo.users[0].userId == userData.id
+                        ? userInfo.users[0].readCount
+                        : userInfo.users[1].readCount
+                    }`,
+                  };
+                }
+              });
+            });
+          } else if (ele.houseId != 0) {
+            // 채팅 방
+            userInfo.users.forEach((user) => {
+              if (user.userId == userData.id) {
                 chat = {
-                  img: i.profileImgUrl,
-                  username: i.nickName,
+                  img: ele.houseImg,
+                  username: ele.roomName,
                   text: `${
-                    userInfo.lastMessage === null ? "" : userInfo.lastMessage
+                    userInfo.lastMessage == null ? "" : userInfo.lastMessage
                   }`,
+                  cnt: `${user.readCount}`,
                   id: ele.id,
                   date: displayedAt(ele.updateAt),
-                  cnt: `${
-                    userInfo.users[0].userId == userData.id
-                      ? userInfo.users[0].readCount
-                      : userInfo.users[1].readCount
-                  }`,
                 };
               }
             });
-          });
-        } else if (ele.houseId != 0) {
-          // 채팅 방
-          userInfo.users.forEach((user) => {
-            if (user.userId == userData.id) {
-              chat = {
-                img: ele.houseImg,
-                username: ele.roomName,
-                text: `${
-                  userInfo.lastMessage == null ? "" : userInfo.lastMessage
-                }`,
-                cnt: `${user.readCount}`,
-                id: ele.id,
-                date: displayedAt(ele.updateAt),
-              };
-            }
-          });
+          }
         }
         setChatLists((prev) => [...prev, chat]);
       });
@@ -179,6 +195,9 @@ export default function ChatList() {
   };
 
   const getSse = async () => {
+    if (content.current === undefined) {
+      return;
+    }
     let findIndex = chatLists.findIndex(
       (item) => item.id === content.current.id
     );
