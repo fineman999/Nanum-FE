@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 
 import styles from "../styles/TourContractListItem.module.css";
-import { fireAlert } from "./common/Alert";
 
 const messages = {
   WAITING: "대기중",

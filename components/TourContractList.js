@@ -1,47 +1,16 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import TourContractListItem from "./TourContractListItem";
 
 import styles from "../styles/TourContractList.module.css";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { get, post, put } from "../lib/apis/apiClient";
 import { userState } from "../state/atom/authState";
 import { Divider } from "@mui/material";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import { fireAlert } from "./common/Alert";
 import tourListState from "../state/atom/tourListState";
 import filteredTourListState from "../state/selector/filteredTourListState";
 import { useRouter } from "next/router";
-
-const LastPageComment = () => {
-  const ScrollToTop = () => {
-    const anchor = (event.target.ownerDocument || document).querySelector(
-      "#back-to-top-anchor"
-    );
-
-    if (anchor) {
-      anchor.scrollIntoView({
-        block: "center",
-        behavior: "smooth",
-      });
-    }
-  };
-
-  const style = {
-    width: "100%",
-    height: "60px",
-    color: "gray",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-
-  return (
-    <div style={style}>
-      마지막 페이지입니다.{" "}
-      <ArrowDropUpIcon fontSize="large" onClick={ScrollToTop} />
-    </div>
-  );
-};
+import LastPageComment from "./LastPageComment";
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
@@ -49,35 +18,28 @@ const TourContractList = () => {
   const router = useRouter();
 
   const userValue = useRecoilValue(userState);
-  const [contractList, setContractList] = useState([]);
-  const setTourList = useSetRecoilState(tourListState);
+  const [tourList, setTourList] = useRecoilState(tourListState);
   const filteredTourList = useRecoilValue(filteredTourListState);
+
   useEffect(() => {
     const API_URI = `/tours/users/${userValue.id}`;
 
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
-        setContractList([...data.result]);
         setTourList([...data.result]);
       })
       .catch((err) => console.log("사용자 투어 목록 조회 오류", err));
   }, []);
 
-  // WAITING("대기 중"),
-  // APPROVED("승인 완료됨"),
-  // REJECTED("거부됨"),
-  // CANCELED("취소됨"),
-  // TOUR_COMPLETED("투어 완료됨");
   const handleCancel = (id) => {
-    const nextContractList = contractList.map((listItem) => {
+    const nextTourList = tourList.map((listItem) => {
       return listItem.id === id
         ? { ...listItem, houseTourStatus: "CANCELED" }
         : listItem;
     });
 
     const API_URI = "/tours";
-
     const formData = {
       houseTourId: id,
       houseTourStatus: "CANCELED",
@@ -89,7 +51,7 @@ const TourContractList = () => {
         const { result } = res.data;
         if (status === 200) {
           fireAlert({ icon: "success", title: result });
-          setContractList(nextContractList);
+          setTourList(nextTourList);
         }
       })
       .catch((err) => {
