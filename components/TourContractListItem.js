@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
 import styles from "../styles/TourContractListItem.module.css";
 import { fireAlert } from "./common/Alert";
@@ -50,16 +50,16 @@ const TourButton = ({ contract, houseTourStatus, handleCancel }) => {
 const TourContractListItem = ({ contract, handleCancel }) => {
   const { houseTourStatus } = contract;
 
-  useEffect(() => {
-    console.log("TourContractListItem ", contract);
-  }, []);
-
   return (
     <li className={styles.contract_list_item}>
       <div className={styles.tour_status}>
         <h3>투어 신청 {messages[houseTourStatus]}</h3>
-        <div className={styles.tour_date}>{contract.tourDate}</div>{" "}
-        <div className="tour_btns">
+        <div className={styles.tour_date}>{contract.tourDate}</div>
+        <div className={styles.tour_name}>
+          <span className={styles.tour_house_name}>{contract.houseName}</span>
+          <span className="tour_room_name">{contract.roomName}</span>
+        </div>
+        <div className={styles.tour_btns}>
           <TourButton
             contract={contract}
             houseTourStatus={houseTourStatus}
