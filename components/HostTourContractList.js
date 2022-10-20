@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { get, put } from "../lib/apis/apiClient";
 import { userState } from "../state/atom/authState";
@@ -77,7 +77,7 @@ const HostTourContractList = () => {
       <ul className="contract_list">
         {contractList &&
           contractList.map((contract, index) => (
-            <>
+            <Fragment key={contract.id}>
               <HostTourContractListItem
                 key={contract.id}
                 contract={contract}
@@ -86,7 +86,7 @@ const HostTourContractList = () => {
                 handleComplete={handleComplete}
               />
               {index !== contractList.length - 1 ? <Divider /> : ""}
-            </>
+            </Fragment>
           ))}
       </ul>
       <LastPageComment />
