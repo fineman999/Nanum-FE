@@ -5,7 +5,7 @@ import {
   displayedAt,
 } from "../../lib/utils/useful-functions";
 import { ProfileImg } from "./Profile";
-
+import BigImageModal from "./modal/BigImageModal";
 //pink:ffcfcf
 //puple:92aaff
 const style = css`
