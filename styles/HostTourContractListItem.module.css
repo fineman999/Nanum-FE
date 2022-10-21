@@ -14,7 +14,14 @@
 }
 .tour_date {
   color: #76c1b2;
-  margin-bottom: 10px;
+}
+
+.tour_name {
+  margin-bottom: 5px;
+}
+
+.tour_house_name {
+  margin-right: 8px;
 }
 
 .tour_image {
@@ -25,4 +32,9 @@
   overflow: hidden;
   box-sizing: border-box;
   border-radius: 10px;
+}
+
+.tour_btns {
+  display: flex;
+  justify-content: right;
 }

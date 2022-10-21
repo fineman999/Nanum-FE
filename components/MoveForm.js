@@ -5,7 +5,13 @@ import MoveDateForm from "./MoveDateForm";
 import MoveInquiryForm from "./MoveInquiryForm";
 import { Button } from "@mui/material";
 import DoorFrontIcon from "@mui/icons-material/DoorFront";
+import { useRouter } from "next/router";
+import { post } from "../lib/apis/apiClient";
+
+const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
+
 const MoveForm = () => {
+  const router = useRouter();
   const [moveForm, setMoveForm] = useState({
     moveDate: "",
     inquiry: "",
@@ -32,7 +38,17 @@ const MoveForm = () => {
   };
 
   const handleSubmit = (e) => {
+    console.log(router);
+
+    if (moveForm.moveDate === "" || moveForm.inquiry === "") return null;
+    const { houseId, roomId } = router.query;
     console.log(moveForm);
+    const API_URI = `/move-in/houses/${houseId}/rooms/${roomId}`;
+    const formData = {
+      moveDate: moveForm.moveDate,
+      inquiry: moveForm.inquiry,
+    };
+    post(BASE_URL, API_URI, formData).then((res) => console.log(res));
   };
 
   return (
