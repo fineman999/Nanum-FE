@@ -4,7 +4,6 @@ import {
   displayedASpringMVC,
   displayedAt,
 } from "../../lib/utils/useful-functions";
-import BigImageModal from "./modal/BigimageModal";
 import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
