@@ -1,5 +1,10 @@
+import { useState } from "react";
 import css from "styled-jsx/css";
-import { displayedAt } from "../../lib/utils/useful-functions";
+import {
+  displayedASpringMVC,
+  displayedAt,
+} from "../../lib/utils/useful-functions";
+import BigImageModal from "./modal/BigimageModal";
 import { ProfileImg } from "./Profile";
 
 //pink:ffcfcf
@@ -32,35 +37,48 @@ const style = css`
     margin-right: 0.5rem;
   }
   img {
-    width: 5vh;
-    height: 5vh;
-    margin-right: 0.2rem;
+    width: 20vh;
+    height: 20vh;
+    margin: 0rem 0.2rem;
   }
 `;
 
-export function SendMessage({ text, time }) {
+export function SendMessage({ text, time, type }) {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
   return (
     <>
       <div id="send" className="message">
-        <p id="time">{displayedAt(time)}</p>
-        <p className="text">{text}</p>
+        <p id="time">{displayedASpringMVC(time)}</p>
+        {type == "MESSAGE" ? (
+          <p className="text">{text}</p>
+        ) : (
+          <img src={text} alt="img" onClick={() => setOpen(true)} />
+        )}
       </div>
+      <BigImageModal open={open} handleClose={handleClose} image={text} />
       <style jsx>{style}</style>
     </>
   );
 }
-export function GetMessage({ text, time, nickName, profileImgUrl }) {
+export function GetMessage({ text, time, nickName, profileImgUrl, type }) {
+  const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
   return (
     <>
       <div id="get" className="message">
         <div>
           <ProfileImg img={profileImgUrl} name={nickName} size={5} type={1} />
-
           <p>{nickName}</p>
         </div>
-        <p className="text">{text}</p>
-        <p>{displayedAt(time)}</p>
+        {type == "MESSAGE" ? (
+          <p className="text">{text}</p>
+        ) : (
+          <img src={text} alt="img" onClick={() => setOpen(true)} />
+        )}
+        <p>{displayedASpringMVC(time)}</p>
       </div>
+      <BigImageModal open={open} handleClose={handleClose} image={text} />
       <style jsx>{style}</style>
     </>
   );

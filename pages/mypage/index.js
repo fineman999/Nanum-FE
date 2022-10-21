@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import css from "styled-jsx/css";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
@@ -9,7 +9,7 @@ import { userState } from "../../state/atom/authState";
 import { fireAlert } from "../../components/common/Alert";
 import axios from "axios";
 import { getUserDetail } from "../../lib/apis/auth";
-
+import * as Api from "../../lib/apis/apiClient";
 const style = css`
   #mypage {
     display: flex;
@@ -23,7 +23,7 @@ const style = css`
   }
   #user_header {
     display: flex;
-    width: 40vh
+    width: 40vh;
     align-items: center;
     justify-content: center;
   }
@@ -39,7 +39,6 @@ const style = css`
     width: 10vh;
     height: 10vh;
     border-radius: 100%;
-    
   }
   #user_content {
     margin-left: 1rem;
@@ -128,7 +127,11 @@ export default function MyPage() {
   const [postCnt, setPostCnt] = useState(2);
   const [commentCnt, setCommentCnt] = useState(3);
   const [likeCnt, setLikeCnt] = useState(1);
-
+  const [count, setCount] = useState({
+    noteCount: 0,
+    chatCount: 0,
+    alertCount: 0,
+  });
   const [userData, setUserData] = useRecoilState(userState);
   const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
   const userDate = "2022.10.31";
@@ -149,6 +152,48 @@ export default function MyPage() {
       };
     });
   };
+
+  // 개수 가져오기
+  useEffect(() => {
+    async function reactive() {
+      try {
+        const userCountNote = await Api.get(
+          `http://20.214.170.222:8000/supplementary-service/api/v1/notes/${userId}/count`,
+          ""
+        );
+        if (!userCountNote) {
+          throw new Error(`${getChatLists} not allowd`);
+        }
+        setCount((current) => {
+          let newCondition = { ...current };
+          newCondition["noteCount"] = userCountNote.data.result.count;
+          return newCondition;
+        });
+        console.log(userCountNote);
+      } catch (e) {
+        console.log("Error" + e);
+      }
+      try {
+        const userCountNote = await Api.get(
+          `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/${userId}/count`,
+          ""
+        );
+        if (!userCountNote) {
+          throw new Error(`${getChatLists} not allowd`);
+        }
+        setCount((current) => {
+          console.log(userCountNote);
+          let newCondition = { ...current };
+          newCondition["chatCount"] = userCountNote.data.count;
+          return newCondition;
+        });
+        console.log(userCountNote);
+      } catch (e) {
+        console.log("Error" + e);
+      }
+    }
+    reactive();
+  }, []);
   //프로필 이미지 변경하기
   const changeProfile = async (fileBob) => {
     const formData = new FormData();
@@ -313,20 +358,20 @@ export default function MyPage() {
         <section>
           <section id="user_btn">
             <div id="user_unit" onClick={() => router.push("/mail")}>
-              <StyledBadge badgeContent={2} color="error">
+              <StyledBadge badgeContent={count.noteCount} color="error">
                 <img src="/icons/mail.png" />
               </StyledBadge>
               <p>쪽지함</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/chat")}>
-              <StyledBadge badgeContent={100} color="error">
+              <StyledBadge badgeContent={count.chatCount} color="error">
                 <img src="/icons/chat.png" style={{ padding: "5px" }} />
               </StyledBadge>
 
               <p>채팅</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
-              <StyledBadge badgeContent={4} color="error">
+              <StyledBadge badgeContent={count.alertCount} color="error">
                 <img src="/icons/alarm.png" />
               </StyledBadge>
 

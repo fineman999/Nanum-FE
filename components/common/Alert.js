@@ -18,8 +18,8 @@ export const fireAlert = ({ icon, title }) => {
 };
 
 //yes or no 알럿
-export const confirmAlert = ({ icon, title, text, successText }) => {
-  Swal.fire({
+export const confirmAlert = async ({ icon, title, text, successText }) => {
+ const result =  await Swal.fire({
     title: title,
     text: text,
     icon: icon,
@@ -34,6 +34,7 @@ export const confirmAlert = ({ icon, title, text, successText }) => {
     }
     return false;
   });
+  return result;
 };
 
 //입력 받는 알럿
