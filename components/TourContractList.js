@@ -67,16 +67,13 @@ const TourContractList = () => {
       inquiry: "문의 내용 테스트",
     };
 
-    router.push(
-      {
-        pathname: "/move",
-        query: {
-          houseId: houseId,
-          roomId: roomId,
-        },
+    router.push({
+      pathname: "/move",
+      query: {
+        houseId: houseId,
+        roomId: roomId,
       },
-      "/move"
-    );
+    });
     // post(BASE_URL, API_URI, formData).then((res) => console.log(res));
   };
 
