@@ -93,7 +93,8 @@ export default function Chat() {
     };
     ws.current.onmessage = (e) => {
       let obj = JSON.parse(e.data);
-      setMessage((prev) => [...prev, obj]);
+      console.log(obj);
+      setMessage((prev) => [...prev, obj.message]);
     };
   };
 
@@ -144,6 +145,11 @@ export default function Chat() {
 
   useEffect(() => {
     onOpen();
+    // 어디 나갈때 닫아줘야됨
+    return () => {
+      ws.current.close();
+      console.log("websocket closed");
+    };
   }, [ws]);
 
   useEffect(() => {
