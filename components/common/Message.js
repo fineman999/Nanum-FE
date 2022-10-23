@@ -41,19 +41,46 @@ const style = css`
     height: 20vh;
     margin: 0rem 0.2rem;
   }
+  #image {
+    width: 20vh;
+    height: 20vh;
+    margin: 0rem 0.2rem;
+  }
+  #emoticon {
+    width: 10vh;
+    height: 10vh;
+    border-radius: 4vh;
+  }
+  .count {
+    color: orange;
+  }
 `;
 
-export function SendMessage({ text, time, type }) {
+export function SendMessage({ text, time, type, count }) {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
     <>
       <div id="send" className="message">
         <p id="time">{displayedASpringMVC(time)}</p>
+        <p
+          id="sendClass"
+          className="count sendClass"
+          style={{ marginLeft: "0.3rem" }}
+        >
+          {count}
+        </p>
         {type == "MESSAGE" ? (
           <p className="text">{text}</p>
+        ) : type == "EMOTICON" ? (
+          <img
+            id="emoticon"
+            src={text}
+            alt="img"
+            onClick={() => setOpen(true)}
+          />
         ) : (
-          <img src={text} alt="img" onClick={() => setOpen(true)} />
+          <img id="image" src={text} alt="img" onClick={() => setOpen(true)} />
         )}
       </div>
       <BigImageModal open={open} handleClose={handleClose} image={text} />
@@ -61,7 +88,14 @@ export function SendMessage({ text, time, type }) {
     </>
   );
 }
-export function GetMessage({ text, time, nickName, profileImgUrl, type }) {
+export function GetMessage({
+  text,
+  time,
+  nickName,
+  profileImgUrl,
+  type,
+  count,
+}) {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
   return (
@@ -73,9 +107,17 @@ export function GetMessage({ text, time, nickName, profileImgUrl, type }) {
         </div>
         {type == "MESSAGE" ? (
           <p className="text">{text}</p>
+        ) : type == "EMOTICON" ? (
+          <img
+            id="emoticon"
+            src={text}
+            alt="img"
+            onClick={() => setOpen(true)}
+          />
         ) : (
-          <img src={text} alt="img" onClick={() => setOpen(true)} />
+          <img id="image" src={text} alt="img" onClick={() => setOpen(true)} />
         )}
+        <p className="count">{count}</p>
         <p>{displayedASpringMVC(time)}</p>
       </div>
       <BigImageModal open={open} handleClose={handleClose} image={text} />
