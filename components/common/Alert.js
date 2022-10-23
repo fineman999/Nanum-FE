@@ -10,6 +10,9 @@ import Swal from "sweetalert2";
 //확인 알럿 - 확인 취소 버튼이 없음
 export const fireAlert = ({ icon, title }) => {
   return Swal.fire({
+    customClass: {
+      container: "my-swal",
+    },
     icon: icon,
     title: title,
     showConfirmButton: false,
@@ -19,7 +22,7 @@ export const fireAlert = ({ icon, title }) => {
 
 //yes or no 알럿
 export const confirmAlert = async ({ icon, title, text, successText }) => {
- const result =  await Swal.fire({
+  const result = await Swal.fire({
     title: title,
     text: text,
     icon: icon,

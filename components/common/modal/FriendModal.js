@@ -17,6 +17,7 @@ import { useState } from "react";
 import { ProfileImg } from "../Profile";
 import ListSubheader from "@mui/material/ListSubheader";
 import { dateTimeForLocalTime } from "../../../lib/utils/useful-functions";
+import { ChatListItem } from "../ChatListIem";
 const mystyle = css`
   .input-file-button {
     background-color: #76c1b2;
@@ -30,6 +31,7 @@ const mystyle = css`
     width: 20vh;
     padding: 0.4rem 0.8rem;
   }
+
   img {
     width: 2rem;
   }
@@ -49,15 +51,17 @@ const mystyle = css`
 `;
 const style = {
   position: "absolute",
-  top: "90.5%",
-  left: "85%",
-  transform: "translate(-40%, -80%)",
+  // top: "50%",
+  left: "95%",
+  transform: "translate(-95%,0)",
   // opacity: 0.5,
-  // boxShadow: "0px 3px 5px -1px",
+  boxShadow: "0px 3px 5px -1px",
+  bottom: "80px",
   bgcolor: "background.paper",
-  width: "99px",
-  height: "20px",
-  borderRadius: "50px",
+  width: "5rem",
+  height: "1.5rem",
+  // float: "right",
+  borderRadius: "2.5rem",
 };
 export default function FriendModal({ roomNum }) {
   const [openInfo, setOpenInfo] = useState(false);
@@ -80,7 +84,7 @@ export default function FriendModal({ roomNum }) {
   };
   const openInfoEvent = async () => {
     setOpenInfo(true);
-    console.log(openInfo);
+
     try {
       const getRooms = await Api.get(
         `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/`,
@@ -89,7 +93,6 @@ export default function FriendModal({ roomNum }) {
       if (!getRooms) {
         throw new Error(`${getRooms} not allowd`);
       }
-      console.log("test...", getRooms);
 
       setRoomInfo({
         id: getRooms.data.id,
@@ -99,7 +102,7 @@ export default function FriendModal({ roomNum }) {
         createAt: getRooms.data.createAt,
       });
       const users = getRooms.data.roomInfo.users.map((user) => user.userId);
-      console.log(users);
+
       const getUsers = await Api.get(
         `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
         users
@@ -131,7 +134,7 @@ export default function FriendModal({ roomNum }) {
       <List
         sx={{ lineStyle: "40px" }}
         subheader={
-          <ListSubheader component="div" id="nested-list-subheader" s>
+          <ListSubheader component="div" id="nested-list-subheader">
             <div
               id="room_info"
               style={{
@@ -172,19 +175,27 @@ export default function FriendModal({ roomNum }) {
         <Divider />
         {chatUsers.map((user, index) => (
           <ListItem key={user.id} disablePadding>
-            <ListItemButton>
+            {/* <ListItemButton>
               <ProfileImg
                 img={user.profileImgUrl}
                 name={user.nickName}
                 size={5}
-                type={1}
+                type={0}
                 id={user.id}
               />
               <ListItemText
                 primary={user.nickName}
                 sx={{ marginLeft: "2rem" }}
               />
-            </ListItemButton>
+            </ListItemButton> */}
+            <ChatListItem
+              img={user.profileImgUrl}
+              name={user.nickName}
+              size={5}
+              type={2}
+              id={user.id}
+              primary={user.nickName}
+            />
           </ListItem>
         ))}
       </List>
@@ -207,7 +218,6 @@ export default function FriendModal({ roomNum }) {
         open={openInfo}
         onClose={() => setOpenInfo(false)}
         onOpen={() => setOpenInfo(false)}
-        sx={{ borderRadius: 2 }}
       >
         {list("bottom")}
       </SwipeableDrawer>

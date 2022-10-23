@@ -130,7 +130,7 @@ export default function ChatList() {
 
       chats2.forEach((ele) => {
         let chat = {};
-        console.log(ele);
+
         const userInfo = ele.roomInfo;
         if (userInfo.users.length <= 1) {
           chat = {
@@ -150,8 +150,6 @@ export default function ChatList() {
         } else {
           // 두명
           if (ele.houseId == 0) {
-            console.log(ele.houseId);
-            console.log("userInfo.users.size", userInfo.users.length);
             userInfo.users.forEach((user) => {
               getUserInfos.data.result.forEach((i, x) => {
                 if (user.userId == i.id && i.id != userData.id) {
@@ -204,11 +202,6 @@ export default function ChatList() {
     let findIndex = chatLists.findIndex(
       (item) => item.id === content.current.id
     );
-    /* id값으로 인덱스를 찾는 것까지는 동일하다 */
-    console.log("findIndex", findIndex);
-
-    // /* 새로운 변수를 선언해 기존의 배열을 복사하는 과정을 거쳐야 한다.
-    // useState로 만든 변수는 set함수로만 값을 변경할 수 있기 때문이다. */
 
     if (findIndex === 0) {
       let copiedItems = [...chatLists];
@@ -235,8 +228,6 @@ export default function ChatList() {
       const newChatList = [...addChat, ...deleteChatList];
       setChatLists(newChatList);
     } else {
-      console.log("testing.....................");
-      console.log(content.current);
       if (content.current != undefined) {
         const copiedItems = [...chatLists];
         try {
@@ -301,25 +292,20 @@ export default function ChatList() {
         `http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userData.id}`
       ); //구독
       // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
-      console.log("eventSource", eventSource.current);
+
       eventSource.current.onopen = (event) => {
         console.log("connection opened");
       };
 
       eventSource.current.onmessage = async (event) => {
-        console.log("result", event.data);
         const sseMessage = JSON.parse(event.data);
         if (sseMessage.title === "CHAT") {
           content.current = JSON.parse(sseMessage.content);
-          console.log("content: ", content.current);
           setData((old) => [...old, event.data]);
-        } else {
-          console.log("it's not a chat");
         }
       };
 
       eventSource.current.onerror = (event) => {
-        console.log(event.target.readyState);
         if (event.target.readyState === EventSource.CLOSED) {
           console.log("eventsource closed (" + event.target.readyState + ")");
         }
@@ -330,7 +316,7 @@ export default function ChatList() {
     }
     return () => {
       eventSource.current.close();
-      console.log("eventsource closed");
+
       cancleToken.cancel();
     };
     // getChats();
@@ -361,7 +347,6 @@ export default function ChatList() {
     };
     confirmAlert(sendAlert)
       .then(async (result) => {
-        console.log(result);
         if (result) {
           try {
             if (deleteState) {
@@ -370,7 +355,7 @@ export default function ChatList() {
                 `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
                 ""
               );
-              console.log(chatDeleteResult);
+
               setChatLists(chatLists.filter((item) => item.id !== roomId));
             }
           } catch (e) {
@@ -429,8 +414,6 @@ export default function ChatList() {
                       id="delete_btn"
                       onClick={(e) => {
                         deletedEvent(item.id, userData.id, item.username);
-                        console.log(e);
-                        console.log(item.id);
                       }}
                     >
                       <img src="/icons/trash.png" />

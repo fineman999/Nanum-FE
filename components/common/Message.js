@@ -1,3 +1,4 @@
+import { fontSize } from "@mui/system";
 import { useState } from "react";
 import css from "styled-jsx/css";
 import {
@@ -20,13 +21,27 @@ const style = css`
     align-items: center;
     margin: 0.2rem 0rem;
   }
+  #get .text:after {
+    border-top: 15px solid #333333;
+    border-left: 15px solid transparent;
+    border-right: 0px solid transparent;
+    border-bottom: 0px solid transparent;
+
+    position: absolute;
+    top: 10px;
+    left: -15px;
+  }
 
   #send .text {
     background-color: #92aaff;
     margin-left: 0.5rem;
     max-width: 60%;
+    word-break: break-all;
   }
   #send p {
+    margin-left: auto;
+  }
+  #send span {
     margin-left: auto;
   }
   #send #time {
@@ -35,6 +50,7 @@ const style = css`
   #get .text {
     background-color: #ffcfcf;
     margin-right: 0.5rem;
+    word-break: break-all;
   }
   img {
     width: 20vh;
@@ -53,6 +69,11 @@ const style = css`
   }
   .count {
     color: orange;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  p {
+    font-size: 0.8rem;
   }
 `;
 
@@ -62,14 +83,16 @@ export function SendMessage({ text, time, type, count }) {
   return (
     <>
       <div id="send" className="message">
-        <p id="time">{displayedASpringMVC(time)}</p>
-        <p
-          id="sendClass"
-          className="count sendClass"
-          style={{ marginLeft: "0.3rem" }}
-        >
-          {count}
-        </p>
+        <span>
+          <p
+            id="sendClass"
+            className="count sendClass"
+            style={{ marginLeft: "3rem" }}
+          >
+            {count}
+          </p>
+          <p id="time">{displayedASpringMVC(time)}</p>
+        </span>
         {type == "MESSAGE" ? (
           <p className="text">{text}</p>
         ) : type == "EMOTICON" ? (
@@ -101,10 +124,11 @@ export function GetMessage({
   return (
     <>
       <div id="get" className="message">
-        <div>
+        <div style={{ display: "flex", flexDirection: "column" }}>
           <ProfileImg img={profileImgUrl} name={nickName} size={5} type={1} />
           <p>{nickName}</p>
         </div>
+
         {type == "MESSAGE" ? (
           <p className="text">{text}</p>
         ) : type == "EMOTICON" ? (
@@ -117,8 +141,16 @@ export function GetMessage({
         ) : (
           <img id="image" src={text} alt="img" onClick={() => setOpen(true)} />
         )}
-        <p className="count">{count}</p>
-        <p>{displayedASpringMVC(time)}</p>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            fontSize: "0.5rem",
+          }}
+        >
+          <p className="count">{count}</p>
+          <p>{displayedASpringMVC(time)}</p>
+        </div>
       </div>
       <BigImageModal open={open} handleClose={handleClose} image={text} />
       <style jsx>{style}</style>

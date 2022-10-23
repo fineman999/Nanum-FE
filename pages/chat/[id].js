@@ -13,12 +13,10 @@ import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ImageModal from "../../components/common/modal/ImageModal";
 import { postS3 } from "../../lib/apis/image";
 import FriendModal from "../../components/common/modal/FriendModal";
-import LikeModal from "../../components/common/modal/LikeModal";
+
 import WaveModal from "../../components/common/modal/WaveModal";
 
 const style = css`
-  #chat {
-  }
   #chat_body {
     height: -webkit-fill-available;
     margin-top: 64px;
@@ -43,7 +41,7 @@ const style = css`
     display: flex;
     align-items: center;
     position: fixed;
-    bottom: 80px;
+    bottom: 90px;
     width: -webkit-fill-available;
   }
   #send_form input {
@@ -60,6 +58,7 @@ const style = css`
     outline: none;
   }
 `;
+
 export default function Chat() {
   const [msg, setMsg] = useState("");
   const [message, setMessage] = useState([]);
@@ -101,10 +100,6 @@ export default function Chat() {
   const onOpen = async () => {
     const uri = `ws://20.214.170.222:8000/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
     ws.current = new WebSocket(uri);
-    // ws.current.onopen = (e) => {
-    //   console.log("openTesting!");
-    //   console.log("open", e);
-    // };
 
     ws.current.onclose = (e) => {
       console.log("close", e);
@@ -114,17 +109,15 @@ export default function Chat() {
     };
     ws.current.onmessage = (e) => {
       let obj = JSON.parse(e.data);
-      console.log(obj);
+
       if (ws.current.readyState === 1) {
         if (obj.message.type == "IN") {
           /*고민 */
           setFirst(true);
           setInit(obj.message);
-
-          console.log("hihi", obj.users.length);
         } else {
           setMessage((prev) => [...prev, obj.message]);
-          console.log("count before", count);
+
           setCount((prev) => [
             ...prev,
             {
@@ -136,7 +129,6 @@ export default function Chat() {
     };
 
     ws.current.addEventListener("open", (event) => {
-      console.log("openTesting!");
       if (ws.current.readyState === 1) {
         let obj = {
           sender: userData[0].id + "",
@@ -168,14 +160,12 @@ export default function Chat() {
     ws.current.send(JSON.stringify(obj));
     setMsg("");
     setSendMsg(!sendMsg);
-    // console.log(userData[0]);
   };
 
   //이미지 하나 s3에 보내고 소켓 이미지 보내기
   const sendS3 = () => {
     postS3({ imgFile: imageFile })
       .then((res) => {
-        console.log(res);
         let obj = {
           sender: userData[0].id + "",
           message: res.data.result,
@@ -184,7 +174,7 @@ export default function Chat() {
           createAt: new Date(),
           img: userData[0].profileImgUrl,
         };
-        console.log(obj, "~~~~");
+
         ws.current.send(JSON.stringify(obj));
 
         setSendMsg(!sendMsg);
@@ -215,7 +205,7 @@ export default function Chat() {
     // 어디 나갈때 닫아줘야됨
 
     if (!router.isReady) return;
-    console.log(roomNum, "🙆‍♀️ 콘솔에 쿼리 찍힘!");
+    // console.log(roomNum, "🙆‍♀️ 콘솔에 쿼리 찍힘!");
     return () => {
       ws.current.close();
       console.log("websocket closed");
@@ -251,7 +241,11 @@ export default function Chat() {
                     text={m.message}
                     type={m.type}
                     time={m.createAt}
-                    count={count[idx].users.length}
+                    count={
+                      count[idx].users.length === 0
+                        ? ""
+                        : count[idx].users.length
+                    }
                   />
                 ) : (
                   <GetMessage
@@ -260,7 +254,11 @@ export default function Chat() {
                     time={m.createAt}
                     nickName={m.username}
                     profileImgUrl={m.img}
-                    count={count[idx].users.length}
+                    count={
+                      count[idx].users.length === 0
+                        ? ""
+                        : count[idx].users.length
+                    }
                   />
                 )}
               </div>
@@ -274,15 +272,13 @@ export default function Chat() {
             img={userData[0].profileImgUrl}
             ws={ws}
           />
-           
-          <LikeModal
+
+          {/* <LikeModal
             sender={userData[0].id + ""}
             username={userData[0].nickName}
             img={userData[0].profileImgUrl}
             ws={ws}
-          />
-           
-          
+          /> */}
         </section>
         <section id="send_form">
           <IconButton variant="outlined" sx={{ height: "40px" }}>

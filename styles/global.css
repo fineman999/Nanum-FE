@@ -23,3 +23,6 @@ address {
 a {
   text-decoration: none;
 }
+.my-swal {
+  z-index: 300000 !important;
+}

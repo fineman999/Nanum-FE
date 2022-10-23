@@ -1,12 +1,12 @@
 import * as React from "react";
-import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
 import css from "styled-jsx/css";
 import { useState } from "react";
-import { ProfileImg } from "../Profile";
-import ListSubheader from "@mui/material/ListSubheader";
-import { dateTimeForLocalTime } from "../../../lib/utils/useful-functions";
 import SignLanguageIcon from "@mui/icons-material/SignLanguage";
-import { IconButton } from "@mui/material";
+import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import DoNotTouchIcon from "@mui/icons-material/DoNotTouch";
+import { IconButton, Stack } from "@mui/material";
+import CheckIcon from "@mui/icons-material/Check";
+
 const mystyle = css`
   .input-file-button {
     background-color: #76c1b2;
@@ -20,66 +20,117 @@ const mystyle = css`
     width: 20vh;
     padding: 0.4rem 0.8rem;
   }
-  img {
-    width: 30px;
-    color: rgba(0, 0, 0, 0.54);
-  }
-  img:hover {
-    background-color: rgba(0, 0, 0, 0.54);
-  }
-  #room_info {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 0.4rem;
-  }
 `;
 const style = {
-  //   position: "absolute",
-  //   top: "90.5%",
-  //   left: "58%",
-  //   transform: "translate(-40%, -80%)",
-  //   // opacity: 0.5,
-  boxShadow: "0px 0px 5px -2px",
+  boxShadow: "0px 0px 4px -2px",
   color: "inherit",
   bgcolor: "background.paper",
-  width: "60px",
-  height: "30px",
-  borderRadius: "30px",
+  width: "3rem",
+  height: "1.5rem",
+  borderRadius: "1.5rem",
 };
+const emoticonList = [
+  "/icons/wave.gif",
+  "/icons/like.gif",
+  "/icons/okay.gif",
+  "/icons/no.gif",
+];
 export default function WaveModal({ sender, username, img, ws }) {
-  const [openInfo, setOpenInfo] = useState(false);
-  const [state, setState] = useState({
-    bottom: false,
-  });
-  const [chatUsers, setChatUsers] = useState([]);
-  const [roomInfo, setRoomInfo] = useState({});
-  const anchor = "bottom";
   const openInfoEvent = () => {
-    console.log("Hi");
     let obj = {
       sender: sender,
-      message: "/icons/wave.gif",
+      message: emoticonList[0],
       username: username,
       type: "EMOTICON",
       createAt: new Date(),
       img: img,
     };
-    console.log(obj);
+    ws.current.send(JSON.stringify(obj));
+  };
+  const openLikeEvent = () => {
+    console.log("Hi");
+    let obj = {
+      sender: sender,
+      message: emoticonList[1],
+      username: username,
+      type: "EMOTICON",
+      createAt: new Date(),
+      img: img,
+    };
+    ws.current.send(JSON.stringify(obj));
+  };
+  const openOkayEvent = () => {
+    console.log("Hi");
+    let obj = {
+      sender: sender,
+      message: emoticonList[2],
+      username: username,
+      type: "EMOTICON",
+      createAt: new Date(),
+      img: img,
+    };
+    ws.current.send(JSON.stringify(obj));
+  };
+  const openNoEvent = () => {
+    console.log("Hi");
+    let obj = {
+      sender: sender,
+      message: emoticonList[3],
+      username: username,
+      type: "EMOTICON",
+      createAt: new Date(),
+      img: img,
+    };
     ws.current.send(JSON.stringify(obj));
   };
 
   return (
     <div>
-      <IconButton
-        sx={style}
-        size="medium"
-        color="inherit"
-        // aria-label="add"
-        // onClick={openInfoEvent}
+      <Stack
+        direction="row"
+        spacing={{ xs: 2, sm: 2, md: 4 }}
+        style={{
+          marginLeft: "0.1rem",
+          overflow: "auto",
+          whiteSpace: "nowrap",
+        }}
       >
-        <SignLanguageIcon onClick={openInfoEvent} />
-        {/* <img src="/icons/wave.gif" /> */}
-      </IconButton>
+        <IconButton
+          sx={style}
+          size="medium"
+          color="inherit"
+          // aria-label="add"
+          onClick={openInfoEvent}
+        >
+          <SignLanguageIcon />
+        </IconButton>
+        <IconButton
+          sx={style}
+          size="medium"
+          color="inherit"
+          onClick={openLikeEvent}
+        >
+          <ThumbUpOffAltIcon />
+        </IconButton>
+        <IconButton
+          sx={style}
+          size="medium"
+          color="inherit"
+          // aria-label="add"
+          onClick={openOkayEvent}
+        >
+          <CheckIcon />
+        </IconButton>
+        <IconButton
+          sx={style}
+          size="medium"
+          color="inherit"
+          // aria-label="add"
+          onClick={openNoEvent}
+        >
+          <DoNotTouchIcon />
+        </IconButton>
+      </Stack>
 
       <style jsx>{mystyle}</style>
     </div>
