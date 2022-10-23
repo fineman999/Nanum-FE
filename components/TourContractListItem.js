@@ -1,6 +1,6 @@
 import { Chip } from "@mui/material";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React from "react";
 
 import styles from "../styles/TourContractListItem.module.css";
 
@@ -12,8 +12,13 @@ const messages = {
   TOUR_COMPLETED: "완료됨",
 };
 
-const TourButton = (contract, tourStatus, handleCancel) => {
-  switch (tourStatus) {
+const TourButton = ({
+  contract,
+  houseTourStatus,
+  handleCancel,
+  handleMove,
+}) => {
+  switch (houseTourStatus) {
     case "WAITING":
       return (
         <Chip
@@ -24,13 +29,7 @@ const TourButton = (contract, tourStatus, handleCancel) => {
       );
       break;
     case "APPROVED":
-      return (
-        <Chip
-          label="입주 신청"
-          variant="outlined"
-          onClick={() => console.log("입주 신청!")}
-        />
-      );
+      return <Chip label="투어 승인됨" />;
       break;
     case "REJECTED":
       return <Chip label="투어 거부됨" />;
@@ -39,25 +38,36 @@ const TourButton = (contract, tourStatus, handleCancel) => {
       return <Chip label="투어 취소됨" />;
       break;
     case "TOUR_COMPLETED":
-      return <Chip label="투어 완료됨" />;
+      return (
+        <Chip
+          label="입주 신청"
+          variant="outlined"
+          onClick={() => handleMove(contract.houseId, contract.roomId)}
+        />
+      );
       break;
   }
 };
 
-const TourContractListItem = ({ contract, handleCancel }) => {
+const TourContractListItem = ({ contract, handleCancel, handleMove }) => {
   const { houseTourStatus } = contract;
-
-  useEffect(() => {
-    console.log("TourContractListItem ", contract);
-  }, []);
 
   return (
     <li className={styles.contract_list_item}>
       <div className={styles.tour_status}>
         <h3>투어 신청 {messages[houseTourStatus]}</h3>
-        <div className={styles.tour_date}>{contract.tourDate}</div>{" "}
-        <div className="tour_btns">
-          {TourButton(contract, houseTourStatus, handleCancel)}
+        <div className={styles.tour_date}>{contract.tourDate}</div>
+        <div className={styles.tour_name}>
+          <span className={styles.tour_house_name}>{contract.houseName}</span>
+          <span className="tour_room_name">{contract.roomName}</span>
+        </div>
+        <div className={styles.tour_btns}>
+          <TourButton
+            contract={contract}
+            houseTourStatus={houseTourStatus}
+            handleCancel={handleCancel}
+            handleMove={handleMove}
+          />
         </div>
       </div>
       <div className={styles.tour_image}>

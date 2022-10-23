@@ -17,6 +17,11 @@ const HouseRoomItem = ({ data, tourForm, setTourForm, toggleDrawer }) => {
   } = data;
 
   const handleTour = (id) => {
+    setTourForm({
+      ...tourForm,
+      name: name,
+      roomId: id,
+    });
     toggleDrawer(true)();
   };
 

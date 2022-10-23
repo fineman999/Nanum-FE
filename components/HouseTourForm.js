@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import HouseDateForm from "./HouseDateForm";
 import HouseTimeList from "./HouseTimeList";
@@ -8,17 +8,23 @@ import { Button } from "@mui/material";
 
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HouseRoomSelector from "./HouseRoomSelector";
-import { fireAlert } from "./common/Alert";
 import { post } from "../lib/apis/apiClient";
 
 const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
-  const [timeList, setTimeList] = useState([]);
+  const [warnStatus, setWarnStatus] = useState(false);
+  const [timeWarning, setTimeWarning] = useState(false);
+  const onWarning = () => setWarnStatus(true);
+  const offWarning = () => setWarnStatus(false);
+  const onTimeWarning = () => setTimeWarning(true);
+  const offTimeWarning = () => setTimeWarning(false);
+
   const handleTour = () => {
     if (!tourForm.roomId) {
-      // fireAlert({ icon: "warning", title: "방을 선택해주세요!!" });
-      alert("방을 선택해주세요!!");
+      onWarning();
       console.log(tourForm);
-
+      return null;
+    } else if (!tourForm.timeId) {
+      onTimeWarning();
       return null;
     }
     console.log(tourForm);
@@ -31,8 +37,20 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
       inquiry: "",
     };
 
-    post(BASE_URL, API_URI, formData).then((res) => console.log(res));
-    toggleDrawer(false)();
+    post(BASE_URL, API_URI, formData).then((res) => {
+      console.log(res);
+      const { data, status } = res;
+      const { message } = data;
+      switch (status) {
+        case 201:
+          alert(message);
+          toggleDrawer(false)();
+          break;
+        case 208:
+          alert(message);
+          break;
+      }
+    });
   };
 
   return (
@@ -41,9 +59,21 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
         roomData={roomData}
         tourForm={tourForm}
         setTourForm={setTourForm}
+        warnStatus={warnStatus}
+        offWarning={offWarning}
       />
-      <HouseDateForm tourForm={tourForm} setTourForm={setTourForm} />
-      <HouseTimeList tourForm={tourForm} setTourForm={setTourForm} />
+      <HouseDateForm
+        tourForm={tourForm}
+        setTourForm={setTourForm}
+        onWarning={onWarning}
+        offWarning={offWarning}
+      />
+      <HouseTimeList
+        tourForm={tourForm}
+        setTourForm={setTourForm}
+        timeWarning={timeWarning}
+        offTimeWarning={offTimeWarning}
+      />
       <div className={styles.form_btns}>
         <Button
           variant="contained"

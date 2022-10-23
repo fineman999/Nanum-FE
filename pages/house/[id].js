@@ -21,7 +21,7 @@ import HouseRoomDetail from "../../components/HouseRoomDetail";
 import HouseNearDetail from "../../components/HouseNearDetail";
 import HouseReviewDetail from "../../components/HouseReviewDetail";
 import { get } from "../../lib/apis/apiClient";
-
+import formatDate from "../../lib/fomatDate";
 const House = () => {
   const router = useRouter();
 
@@ -32,7 +32,7 @@ const House = () => {
     houseId: "",
     roomId: "",
     timeId: "",
-    tourDate: "",
+    tourDate: formatDate(new Date()),
   });
   const [like, setLike] = useState(false);
   const [open, setOpen] = useState(false);

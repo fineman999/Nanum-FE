@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 
 import styles from "../styles/HouseDateForm.module.css";
 import formatDate from "../lib/fomatDate";
 
-const HouseDateForm = ({ tourForm, setTourForm }) => {
-  const [value, setValue] = useState(formatDate(new Date()));
+const HouseDateForm = ({ tourForm, setTourForm, onWarning }) => {
+  const [value, setValue] = useState();
 
   const handleChange = (newValue) => {
+    if (tourForm.roomId === "") {
+      onWarning();
+      return null;
+    }
     setTourForm({
       ...tourForm,
       tourDate: formatDate(newValue.toDate()),
+      timeId: "",
     });
     setValue(newValue);
   };

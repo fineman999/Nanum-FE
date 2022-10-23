@@ -1,78 +1,95 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import TourContractListItem from "./TourContractListItem";
 
 import styles from "../styles/TourContractList.module.css";
-import { useRecoilValue } from "recoil";
-import { get, put } from "../lib/apis/apiClient";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { get, post, put } from "../lib/apis/apiClient";
 import { userState } from "../state/atom/authState";
 import { Divider } from "@mui/material";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-
-const LastPageComment = () => {
-  const ScrollToTop = () => {
-    window.scrollTo(0, 0);
-  };
-
-  const style = {
-    width: "100%",
-    height: "60px",
-    color: "gray",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  };
-  return (
-    <div style={style}>
-      마지막 페이지입니다.{" "}
-      <ArrowDropUpIcon fontSize="large" onClick={ScrollToTop} />
-    </div>
-  );
-};
+import { fireAlert } from "./common/Alert";
+import tourListState from "../state/atom/tourListState";
+import filteredTourListState from "../state/selector/filteredTourListState";
+import { useRouter } from "next/router";
+import LastPageComment from "./LastPageComment";
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
 const TourContractList = () => {
+  const router = useRouter();
+
   const userValue = useRecoilValue(userState);
-  const [contractList, setContractList] = useState([]);
+  const [tourList, setTourList] = useRecoilState(tourListState);
+  const filteredTourList = useRecoilValue(filteredTourListState);
+
   useEffect(() => {
     const API_URI = `/tours/users/${userValue.id}`;
 
     get(BASE_URL, API_URI)
       .then((res) => res.data)
-      .then((data) => setContractList([...data.result]))
+      .then((data) => {
+        setTourList([...data.result]);
+      })
       .catch((err) => console.log("사용자 투어 목록 조회 오류", err));
   }, []);
 
-  // 투어 취소
-  // WAITING("대기 중"),
-  // APPROVED("승인 완료됨"),
-  // REJECTED("거부됨"),
-  // CANCELED("취소됨"),
-  // TOUR_COMPLETED("투어 완료됨");
   const handleCancel = (id) => {
-    const API_URI = "/tours";
+    const nextTourList = tourList.map((listItem) => {
+      return listItem.id === id
+        ? { ...listItem, houseTourStatus: "CANCELED" }
+        : listItem;
+    });
 
+    const API_URI = "/tours";
     const formData = {
       houseTourId: id,
       houseTourStatus: "CANCELED",
     };
 
-    put(BASE_URL, API_URI, formData).then((res) => console.log(res));
+    put(BASE_URL, API_URI, formData)
+      .then((res) => {
+        const { status } = res;
+        const { result } = res.data;
+        if (status === 200) {
+          fireAlert({ icon: "success", title: result });
+          setTourList(nextTourList);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleMove = (houseId, roomId) => {
+    alert("하우스 아이디: " + houseId + " 룸 아이디: " + roomId);
+    // const API_URI = `/move-in/houses/${houseId}/rooms/${roomId}`;
+    const formData = {
+      moveDate: "2022-10-31",
+      inquiry: "문의 내용 테스트",
+    };
+
+    router.push({
+      pathname: "/move",
+      query: {
+        houseId: houseId,
+        roomId: roomId,
+      },
+    });
+    // post(BASE_URL, API_URI, formData).then((res) => console.log(res));
   };
 
   return (
     <div className={styles.tour_contract_list_wrapper}>
       <ul className={styles.contract_list}>
-        {contractList &&
-          contractList.map((contract, index) => (
-            <>
+        {filteredTourList &&
+          filteredTourList.map((contract, index) => (
+            <Fragment key={contract.id}>
               <TourContractListItem
-                key={index}
                 contract={contract}
                 handleCancel={handleCancel}
+                handleMove={handleMove}
               />
-              {index !== contractList.length - 1 ? <Divider /> : ""}
-            </>
+              {index !== filteredTourList.length - 1 ? <Divider /> : ""}
+            </Fragment>
           ))}
       </ul>
       <LastPageComment />

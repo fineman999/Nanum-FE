@@ -5,9 +5,20 @@ import Select from "@mui/material/Select";
 import React, { useEffect, useState } from "react";
 
 import styles from "../styles/HouseRoomSelector.module.css";
+import { Alert } from "@mui/material";
 
-const HouseRoomSelector = ({ roomData, tourForm, setTourForm }) => {
+const HouseRoomSelector = ({
+  roomData,
+  tourForm,
+  setTourForm,
+  warnStatus,
+  offWarning,
+}) => {
   const [selectRoom, setSelectRoom] = useState("");
+
+  useEffect(() => {
+    setSelectRoom(tourForm.name);
+  }, [tourForm]);
 
   const handleChange = (e, { props }) => {
     const { index } = props;
@@ -16,15 +27,21 @@ const HouseRoomSelector = ({ roomData, tourForm, setTourForm }) => {
     if (e.target.value !== "") {
       setTourForm({
         ...tourForm,
+        name: e.target.value,
         roomId: roomData[index].id,
+        timeId: "",
       });
+      offWarning();
     } else {
       setTourForm({
         ...tourForm,
+        name: "",
         roomId: "",
+        timeId: "",
       });
     }
   };
+
   return (
     <div className={styles.house_room_selector_wrapper}>
       <FormControl fullWidth>
@@ -44,6 +61,11 @@ const HouseRoomSelector = ({ roomData, tourForm, setTourForm }) => {
           ))}
         </Select>
       </FormControl>
+      {warnStatus && (
+        <Alert severity="error" sx={{ mt: 1 }}>
+          방을 선택해주세요!
+        </Alert>
+      )}
     </div>
   );
 };
