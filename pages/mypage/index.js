@@ -158,7 +158,7 @@ export default function MyPage() {
     async function reactive() {
       try {
         const userCountNote = await Api.get(
-          `http://20.214.170.222:8000/supplementary-service/api/v1/notes/${userId}/count`,
+          `https://nanum.site/supplementary-service/api/v1/notes/${userId}/count`,
           ""
         );
         if (!userCountNote) {
@@ -175,7 +175,7 @@ export default function MyPage() {
       }
       try {
         const userCountNote = await Api.get(
-          `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/${userId}/count`,
+          `https://nanum.site/web-flux-service/api/v1/rooms/users/${userId}/count`,
           ""
         );
         if (!userCountNote) {
@@ -211,7 +211,7 @@ export default function MyPage() {
       new Blob([uploaderString], { type: "application/json" })
     );
     const res = await axios.put(
-      `http://20.214.170.222:8000/user-service/api/v1/users/${userData.id}`,
+      `https://nanum.site/user-service/api/v1/users/${userData.id}`,
       formData,
       {
         headers: {

@@ -87,7 +87,7 @@ export default function FriendModal({ roomNum }) {
 
     try {
       const getRooms = await Api.get(
-        `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/`,
+        `https://nanum.site/web-flux-service/api/v1/rooms/`,
         roomNum
       );
       if (!getRooms) {
@@ -104,7 +104,7 @@ export default function FriendModal({ roomNum }) {
       const users = getRooms.data.roomInfo.users.map((user) => user.userId);
 
       const getUsers = await Api.get(
-        `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+        `https://nanum.site/user-service/api/v1/users/particular?param=`,
         users
       );
       if (!getUsers) {

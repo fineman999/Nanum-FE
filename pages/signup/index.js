@@ -425,7 +425,7 @@ export default function Signup() {
       );
 
       const res = await axios.post(
-        "http://20.214.170.222:8000/user-service/api/v1/signup",
+        "https://nanum.site/user-service/api/v1/signup",
         formData,
         {
           headers: {

@@ -62,7 +62,7 @@ export default function Send() {
     );
 
     const res = await axios.post(
-      "http://20.214.170.222:8000/supplementary-service/api/v1/notes",
+      "https://nanum.site/supplementary-service/api/v1/notes",
       formData,
       {
         headers: {
