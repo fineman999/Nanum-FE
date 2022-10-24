@@ -1,0 +1,33 @@
+.room_user_list_item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px;
+}
+
+.user_name {
+  font-weight: bold;
+}
+
+.user_btns {
+  display: flex;
+  align-items: center;
+}
+
+.mail_btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  color: #76c1b2;
+}
+
+.chat_btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #76c1b2;
+}

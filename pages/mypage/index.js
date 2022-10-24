@@ -10,6 +10,8 @@ import { fireAlert } from "../../components/common/Alert";
 import axios from "axios";
 import { getUserDetail } from "../../lib/apis/auth";
 import * as Api from "../../lib/apis/apiClient";
+import MypageNavList from "../../components/mypage/MypageNavList";
+
 const style = css`
   #mypage {
     display: flex;
@@ -293,6 +295,7 @@ export default function MyPage() {
         </section>
         <hr />
         <section id="user_state">
+          <MypageNavList />
           <div id="user_move">
             <div id="move_content">
               <div id="move_title">
