@@ -12,7 +12,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../../state/atom/authState";
 import { fireAlert } from "../Alert";
 import { useRouter } from "next/router";
-import { getChat, onOpen } from "../../../lib/apis/chat";
+import { getChat } from "../../../lib/apis/chat";
 import { useEffect } from "react";
 
 const mystyle = css`
@@ -58,7 +58,19 @@ export default function ProfileModal({
   const goChat = () => {
     router.push(`/chat/${roomNum}`);
   };
-
+  const handleSend = () => {
+    router.push(
+      {
+        pathname: "/mail/send",
+        query: {
+          name: name,
+          receiverId: id,
+          senderId: userData.id,
+        },
+      },
+      "/mail/send"
+    );
+  };
   const goBlock = () => {
     postBlock({ blockerId, blockedUserId })
       .then((res) => {
@@ -113,7 +125,7 @@ export default function ProfileModal({
             <TwoButtonOption
               text1="쪽지보내기"
               text2="차단하기"
-              handleBtn1={onOpen}
+              handleBtn1={handleSend}
               handleBtn2={goBlock}
             />
           )}

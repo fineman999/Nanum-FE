@@ -12,10 +12,11 @@ import { useRouter } from "next/router";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import ImageModal from "../../components/common/modal/ImageModal";
 import { postS3 } from "../../lib/apis/image";
+import FriendModal from "../../components/common/modal/FriendModal";
+
+import WaveModal from "../../components/common/modal/WaveModal";
 
 const style = css`
-  #chat {
-  }
   #chat_body {
     height: -webkit-fill-available;
     margin-top: 64px;
@@ -27,11 +28,20 @@ const style = css`
   }
   #send_form {
     background-color: #ffff;
-    padding: 2rem;
+    padding: 1rem;
     display: flex;
     align-items: center;
     position: fixed;
     bottom: 0;
+    width: -webkit-fill-available;
+  }
+  #emoticon_form {
+    /* background-color: #ffff; */
+    padding: 0;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 90px;
     width: -webkit-fill-available;
   }
   #send_form input {
@@ -48,24 +58,31 @@ const style = css`
     outline: none;
   }
 `;
+
 export default function Chat() {
   const [msg, setMsg] = useState("");
   const [message, setMessage] = useState([]);
+  const [count, setCount] = useState([]);
   const [sendMsg, setSendMsg] = useState(false);
   const userData = useRecoilState(userState);
   const messageBoxRef = useRef();
   const router = useRouter();
   const { id: roomNum } = router.query;
-
+  const [init, setInit] = useState("");
+  const [first, setFirst] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
   const [imageUrl, setImageUrl] = useState("");
   const [imageFile, setImageFile] = useState();
+
   //modal 관리
   const [open, setOpen] = useState(false);
-
+  const [freindOpen, setFreidnOpen] = useState(true);
   const handleClose = () => {
     setOpen(false);
     setImageSrc("");
+  };
+  const handleFreindOpen = () => {
+    setFreidnOpen(false);
   };
 
   //채팅목록 젤  하단으로
@@ -76,15 +93,14 @@ export default function Chat() {
   };
 
   let userId = userData[0].id;
-  const uri = `ws://20.214.170.222:8000/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
+
   let ws = useRef(null);
 
   //소켓 열기
   const onOpen = async () => {
+    const uri = `ws://20.214.170.222:8000/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
     ws.current = new WebSocket(uri);
-    ws.current.onopen = (e) => {
-      console.log("open", e);
-    };
+
     ws.current.onclose = (e) => {
       console.log("close", e);
     };
@@ -93,9 +109,41 @@ export default function Chat() {
     };
     ws.current.onmessage = (e) => {
       let obj = JSON.parse(e.data);
-      console.log(obj);
-      setMessage((prev) => [...prev, obj.message]);
+
+      if (ws.current.readyState === 1) {
+        if (obj.message.type == "IN") {
+          /*고민 */
+          setFirst(true);
+          setInit(obj.message);
+        } else {
+          setMessage((prev) => [...prev, obj.message]);
+
+          setCount((prev) => [
+            ...prev,
+            {
+              users: obj.users.filter((user) => user != userId + ""),
+            },
+          ]);
+        }
+      }
     };
+
+    ws.current.addEventListener("open", (event) => {
+      if (ws.current.readyState === 1) {
+        let obj = {
+          sender: userData[0].id + "",
+          message: userData[0].id + "",
+          username: userData[0].nickName,
+          type: "IN",
+          createAt: new Date(),
+          img: userData[0].profileImgUrl,
+        };
+        ws.current.send(JSON.stringify(obj));
+      }
+    });
+    if (ws.current.readyState === 1) {
+      ws.current.send(JSON.stringify(obj));
+    }
   };
 
   // //소켓 메시지 보내기
@@ -112,14 +160,12 @@ export default function Chat() {
     ws.current.send(JSON.stringify(obj));
     setMsg("");
     setSendMsg(!sendMsg);
-    // console.log(userData[0]);
   };
 
   //이미지 하나 s3에 보내고 소켓 이미지 보내기
   const sendS3 = () => {
     postS3({ imgFile: imageFile })
       .then((res) => {
-        console.log(res);
         let obj = {
           sender: userData[0].id + "",
           message: res.data.result,
@@ -128,7 +174,7 @@ export default function Chat() {
           createAt: new Date(),
           img: userData[0].profileImgUrl,
         };
-        console.log(obj, "~~~~");
+
         ws.current.send(JSON.stringify(obj));
 
         setSendMsg(!sendMsg);
@@ -143,19 +189,45 @@ export default function Chat() {
     }
   };
 
+  // useEffect(() => {
+  //   onOpen();
+  //   // 어디 나갈때 닫아줘야됨
+  //   return () => {
+  //     ws.current.close();
+  //     console.log("websocket closed");
+  //   };
+  // }, [ws]);
   useEffect(() => {
-    onOpen();
+    async function reactive() {
+      await onOpen();
+    }
+    reactive();
     // 어디 나갈때 닫아줘야됨
+
+    if (!router.isReady) return;
+    // console.log(roomNum, "🙆‍♀️ 콘솔에 쿼리 찍힘!");
     return () => {
       ws.current.close();
       console.log("websocket closed");
     };
-  }, [ws]);
+  }, [router.isReady, ws]);
 
   useEffect(() => {
     scrollToBottom();
   }, [message]);
 
+  // 안 읽음 표시 업데이트
+  useEffect(() => {
+    if (first) {
+      let comit = [];
+      count.forEach((ele) => {
+        // console.log("ele", ele.users);
+        comit.push({ users: ele.users.filter((ix) => ix !== init.sender) });
+      });
+      setCount(comit);
+    }
+    setFirst(false);
+  }, [init]);
   return (
     <>
       <div id="chat">
@@ -169,6 +241,11 @@ export default function Chat() {
                     text={m.message}
                     type={m.type}
                     time={m.createAt}
+                    count={
+                      count[idx].users.length === 0
+                        ? ""
+                        : count[idx].users.length
+                    }
                   />
                 ) : (
                   <GetMessage
@@ -177,10 +254,31 @@ export default function Chat() {
                     time={m.createAt}
                     nickName={m.username}
                     profileImgUrl={m.img}
+                    count={
+                      count[idx].users.length === 0
+                        ? ""
+                        : count[idx].users.length
+                    }
                   />
                 )}
               </div>
             ))}
+        </section>
+        <section id="emoticon_form">
+          <WaveModal
+            variant="outlined"
+            sender={userData[0].id + ""}
+            username={userData[0].nickName}
+            img={userData[0].profileImgUrl}
+            ws={ws}
+          />
+
+          {/* <LikeModal
+            sender={userData[0].id + ""}
+            username={userData[0].nickName}
+            img={userData[0].profileImgUrl}
+            ws={ws}
+          /> */}
         </section>
         <section id="send_form">
           <IconButton variant="outlined" sx={{ height: "40px" }}>
@@ -212,6 +310,19 @@ export default function Chat() {
         setImageFile={setImageFile}
         sendS3={sendS3}
       />
+      <FriendModal roomNum={roomNum} handleFreindOpen={handleFreindOpen} />
+      {/* <LikeModal
+        sender={userData[0].id + ""}
+        username={userData[0].nickName}
+        img={userData[0].profileImgUrl}
+        ws={ws}
+      /> */}
+      {/* <WaveModal
+        sender={userData[0].id + ""}
+        username={userData[0].nickName}
+        img={userData[0].profileImgUrl}
+        ws={ws}
+      /> */}
       <style jsx>{style}</style>
     </>
   );

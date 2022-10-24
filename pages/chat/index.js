@@ -16,6 +16,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { DeleteRounded } from "@mui/icons-material";
 import { confirmAlert } from "../../components/common/Alert";
+import axios from "axios";
 
 const style = css`
   #chatlist {
@@ -95,16 +96,17 @@ export default function ChatList() {
   const userData = useRecoilValue(userState);
   let eventSource = useRef(null);
   const [listening, setListening] = useState(false);
+  const [deleteState, setDeleteState] = useState(true);
   const goChat = (id) => {
     router.push(`/chat/${id}`);
   };
-  const getChats = async () => {
+  const getChats = async (cancelToken) => {
     // setChatLists([]);
-
     try {
-      const getChatLists = await Api.get(
+      const getChatLists = await Api.getCancelToken(
         `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/`,
-        userData.id
+        userData.id,
+        cancelToken
       );
 
       if (!getChatLists) {
@@ -118,16 +120,17 @@ export default function ChatList() {
           findUserInfos.push(user.userId);
         });
       });
-      const getUserInfos = await Api.get(
+      const getUserInfos = await Api.getCancelToken(
         `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
-        findUserInfos
+        findUserInfos,
+        cancelToken
       );
 
       const chats2 = getChatLists.data;
 
       chats2.forEach((ele) => {
         let chat = {};
-        console.log(ele);
+
         const userInfo = ele.roomInfo;
         if (userInfo.users.length <= 1) {
           chat = {
@@ -147,8 +150,6 @@ export default function ChatList() {
         } else {
           // 두명
           if (ele.houseId == 0) {
-            console.log(ele.houseId);
-            console.log("userInfo.users.size", userInfo.users.length);
             userInfo.users.forEach((user) => {
               getUserInfos.data.result.forEach((i, x) => {
                 if (user.userId == i.id && i.id != userData.id) {
@@ -194,18 +195,13 @@ export default function ChatList() {
     }
   };
 
-  const getSse = async () => {
+  const getSse = async (cancelToken) => {
     if (content.current === undefined) {
       return;
     }
     let findIndex = chatLists.findIndex(
       (item) => item.id === content.current.id
     );
-    /* id값으로 인덱스를 찾는 것까지는 동일하다 */
-    console.log("findIndex", findIndex);
-
-    // /* 새로운 변수를 선언해 기존의 배열을 복사하는 과정을 거쳐야 한다.
-    // useState로 만든 변수는 set함수로만 값을 변경할 수 있기 때문이다. */
 
     if (findIndex === 0) {
       let copiedItems = [...chatLists];
@@ -232,14 +228,13 @@ export default function ChatList() {
       const newChatList = [...addChat, ...deleteChatList];
       setChatLists(newChatList);
     } else {
-      console.log("testing.....................");
-      console.log(content.current);
       if (content.current != undefined) {
         const copiedItems = [...chatLists];
         try {
-          const getChats = await Api.get(
+          const getChats = await Api.getCancelToken(
             `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/`,
-            content.current.id
+            content.current.id,
+            cancelToken
           );
 
           if (!getChats) {
@@ -249,9 +244,10 @@ export default function ChatList() {
           if (Number(getChats.data.houseId) === 0) {
             getChats.data.roomInfo.users.forEach(async (user) => {
               if (Number(user.userId) !== Number(getSessionId())) {
-                const getUserInfos = await Api.get(
+                const getUserInfos = await Api.getCancelToken(
                   `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
-                  user.userId
+                  user.userId,
+                  cancelToken
                 );
                 if (!getUserInfos) {
                   throw new Error(`${user.userId} not allowd`);
@@ -286,8 +282,9 @@ export default function ChatList() {
   };
 
   useEffect(() => {
+    const cancleToken = axios.CancelToken.source();
     async function reactive() {
-      await getChats();
+      await getChats(cancleToken);
     }
     reactive();
     if (!listening) {
@@ -295,25 +292,20 @@ export default function ChatList() {
         `http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userData.id}`
       ); //구독
       // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
-      console.log("eventSource", eventSource.current);
+
       eventSource.current.onopen = (event) => {
         console.log("connection opened");
       };
 
       eventSource.current.onmessage = async (event) => {
-        console.log("result", event.data);
         const sseMessage = JSON.parse(event.data);
         if (sseMessage.title === "CHAT") {
           content.current = JSON.parse(sseMessage.content);
-          console.log("content: ", content.current);
           setData((old) => [...old, event.data]);
-        } else {
-          console.log("it's not a chat");
         }
       };
 
       eventSource.current.onerror = (event) => {
-        console.log(event.target.readyState);
         if (event.target.readyState === EventSource.CLOSED) {
           console.log("eventsource closed (" + event.target.readyState + ")");
         }
@@ -324,23 +316,29 @@ export default function ChatList() {
     }
     return () => {
       eventSource.current.close();
-      console.log("eventsource closed");
+
+      cancleToken.cancel();
     };
     // getChats();
     // connectSse();
   }, []);
   useEffect(() => {
+    const cancleToken = axios.CancelToken.source();
     // connectSse();
     // getChats();
     async function reactive() {
-      await getSse();
+      await getSse(cancleToken);
     }
     reactive();
     // getSse()
+
+    return () => {
+      cancleToken.cancel();
+    };
   }, [data]);
 
   const deletedEvent = (roomId, userId, username) => {
-    console.log(roomId + " :::" + userId);
+    if (deleteState) console.log(roomId + " :::" + userId);
     const sendAlert = {
       icon: "warning",
       title: username,
@@ -349,14 +347,21 @@ export default function ChatList() {
     };
     confirmAlert(sendAlert)
       .then(async (result) => {
-        console.log(result);
         if (result) {
-          const chatDeleteResult = await Api.delete(
-            `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/${userId}/users/${userId}`,
-            ""
-          );
-          console.log(chatDeleteResult);
-          setChatLists(chatLists.filter((item) => item.id !== roomId));
+          try {
+            if (deleteState) {
+              setDeleteState(false);
+              const chatDeleteResult = await Api.delete(
+                `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
+                ""
+              );
+
+              setChatLists(chatLists.filter((item) => item.id !== roomId));
+            }
+          } catch (e) {
+            console.log("error", e);
+          }
+          setDeleteState(true);
         }
       })
       .catch((res) => {
@@ -409,8 +414,6 @@ export default function ChatList() {
                       id="delete_btn"
                       onClick={(e) => {
                         deletedEvent(item.id, userData.id, item.username);
-                        console.log(e);
-                        console.log(item.id);
                       }}
                     >
                       <img src="/icons/trash.png" />
