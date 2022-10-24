@@ -153,7 +153,7 @@ export default function Setting() {
       new Blob([uploaderString], { type: "application/json" })
     );
     const res = await axios.put(
-      `http://20.214.170.222:8000/user-service/api/v1/users/${userData.id}`,
+      `https://nanum.site/user-service/api/v1/users/${userData.id}`,
       formData,
       {
         headers: {

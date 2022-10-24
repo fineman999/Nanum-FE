@@ -104,7 +104,7 @@ export default function ChatList() {
     // setChatLists([]);
     try {
       const getChatLists = await Api.getCancelToken(
-        `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/users/`,
+        `https://nanum.site/web-flux-service/api/v1/rooms/users/`,
         userData.id,
         cancelToken
       );
@@ -121,7 +121,7 @@ export default function ChatList() {
         });
       });
       const getUserInfos = await Api.getCancelToken(
-        `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+        `https://nanum.site/user-service/api/v1/users/particular?param=`,
         findUserInfos,
         cancelToken
       );
@@ -234,7 +234,7 @@ export default function ChatList() {
         const copiedItems = [...chatLists];
         try {
           const getChats = await Api.getCancelToken(
-            `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/`,
+            `hhttps://nanum.site/web-flux-service/api/v1/rooms/`,
             content.current.id,
             cancelToken
           );
@@ -247,7 +247,7 @@ export default function ChatList() {
             getChats.data.roomInfo.users.forEach(async (user) => {
               if (Number(user.userId) !== Number(getSessionId())) {
                 const getUserInfos = await Api.getCancelToken(
-                  `http://20.214.170.222:8000/user-service/api/v1/users/particular?param=`,
+                  `https://nanum.site/user-service/api/v1/users/particular?param=`,
                   user.userId,
                   cancelToken
                 );
@@ -291,7 +291,7 @@ export default function ChatList() {
     reactive();
     if (!listening) {
       eventSource.current = new EventSource(
-        `http://20.214.170.222:8000/web-flux-service/api/v1/alerts/users?param=${userData.id}`
+        `https://nanum.site/web-flux-service/api/v1/alerts/users?param=${userData.id}`
       ); //구독
       // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
 
@@ -354,7 +354,7 @@ export default function ChatList() {
             if (deleteState) {
               setDeleteState(false);
               const chatDeleteResult = await Api.delete(
-                `http://20.214.170.222:8000/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
+                `https://nanum.site/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
                 ""
               );
 
