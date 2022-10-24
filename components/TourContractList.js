@@ -27,6 +27,7 @@ const TourContractList = () => {
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
+        console.log(data);
         setTourList([...data.result]);
       })
       .catch((err) => console.log("사용자 투어 목록 조회 오류", err));
@@ -61,12 +62,6 @@ const TourContractList = () => {
 
   const handleMove = (houseId, roomId) => {
     alert("하우스 아이디: " + houseId + " 룸 아이디: " + roomId);
-    // const API_URI = `/move-in/houses/${houseId}/rooms/${roomId}`;
-    const formData = {
-      moveDate: "2022-10-31",
-      inquiry: "문의 내용 테스트",
-    };
-
     router.push({
       pathname: "/move",
       query: {
@@ -74,7 +69,6 @@ const TourContractList = () => {
         roomId: roomId,
       },
     });
-    // post(BASE_URL, API_URI, formData).then((res) => console.log(res));
   };
 
   return (

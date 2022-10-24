@@ -2,7 +2,7 @@ import SubHeader from "../../components/common/SubHeader";
 import HostTourContractFilter from "../../components/HostTourContractFilter";
 import HostTourContractList from "../../components/HostTourContractList";
 
-export default function TourState() {
+export default function tours() {
   return (
     <>
       <div id="process">

@@ -22,7 +22,9 @@ address {
 
 a {
   text-decoration: none;
+  color: black;
 }
+
 .my-swal {
   z-index: 300000 !important;
 }
