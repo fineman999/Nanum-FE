@@ -6,6 +6,7 @@ import Header from "../components/common/Header";
 import SearchModal from "../components/common/modal/SearchModal";
 import HouseListSwiper from "../components/HouseListSwiper";
 import MainSwiper from "../components/MainSwiper";
+// import NotificationProvider from "../components/pwa/NotificationProvider";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ export default function Home() {
 
   return (
     <>
+      {/* <NotificationProvider /> */}
       <Header title="NANUM" />
       <MainSwiper />
       <GlobalSearch handleOpen={handleOpen} />

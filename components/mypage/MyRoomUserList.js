@@ -1,18 +1,20 @@
 import { Divider } from "@mui/material";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
+import { get } from "../../lib/apis/apiClient";
 import styles from "../../styles/MyRoomUserList.module.css";
 import MyRoomUserListItem from "./MyRoomUserListItem";
 
-const userList = [
-  { id: 1, name: "안대현" },
-  { id: 2, name: "강민수" },
-  { id: 3, name: "전호정" },
-  { id: 4, name: "박찬흠" },
-  { id: 5, name: "곽찬영" },
-];
+const BASE_URL = `${process.env.NANUM_USER_SERVICE_BASE_URL}`;
 
 const MyRoomUserList = ({ userInfo }) => {
-  useEffect(() => {}, []);
+  const [userList, setUserList] = useState([]);
+  useEffect(() => {
+    const API_URI = `/houses/users/lists/1,3`;
+    get(BASE_URL, API_URI)
+      .then((res) => res.data)
+      .then((data) => setUserList(data.result))
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className="room_user_list_wrapper">
