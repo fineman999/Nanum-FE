@@ -1,13 +1,14 @@
 /** @type {import('next').NextConfig} */
 
-// Next PWA build
+// Next PWA build, serviceWorker
 const withPWA = require("next-pwa")({
   dest: "public",
+  swSrc: "service-worker.js",
 });
 
 const nextConfig = withPWA({
   // reactStrictMode: true,
-  // swcMinify: true,
+  swcMinify: true,
   env: {
     KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
     NANUM_USER_SERVICE_BASE_URL: process.env.NANUM_USER_SERVICE_BASE_URL,
