@@ -28,6 +28,7 @@ const style = css`
     width: 40vh;
     align-items: center;
     justify-content: center;
+    margin-bottom: 10px;
   }
   #user_profile {
     display: flex;
@@ -62,7 +63,7 @@ const style = css`
     display: flex;
     padding: 1rem;
     background-color: #ffff;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 1rem 0rem;
     justify-content: space-between;
     min-width: 39vh;
@@ -296,67 +297,7 @@ export default function MyPage() {
         <hr />
         <section id="user_state">
           <MypageNavList />
-          <div id="user_move">
-            <div id="move_content">
-              <div id="move_title">
-                <p>입주 신청 현황 </p>
-                <p
-                  style={{
-                    marginLeft: "0.5rem",
-                    color: "red",
-                    fontWeight: "normal",
-                    fontSize: "12px",
-                  }}
-                  onClick={() => {
-                    router.push(
-                      {
-                        pathname: "/mypage/contracts",
-                        query: { type: 1 },
-                      },
-                      `/mypage/contracts`
-                    );
-                  }}
-                >
-                  더보기
-                </p>
-              </div>
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
-            </div>
-            <img src="/images/house.png" />
-          </div>
-          <div id="user_move">
-            <div id="move_content">
-              <div id="move_title">
-                <p>투어 신청 현황</p>
-                <p
-                  style={{
-                    marginLeft: "0.5rem",
-                    color: "red",
-                    fontWeight: "normal",
-                    fontSize: "12px",
-                  }}
-                  onClick={() =>
-                    router.push(
-                      {
-                        pathname: "/mypage/contracts",
-                        query: { type: 2 },
-                      },
-                      `/mypage/contracts`
-                    )
-                  }
-                >
-                  더보기
-                </p>
-              </div>
-
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
-            </div>
-            <img src="/images/house.png" />
-          </div>
+          <div id="user_move"></div>
         </section>
         <section>
           <section id="user_btn">

@@ -1,9 +1,16 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+
+// Next PWA build
+const withPWA = require("next-pwa")({
+  dest: "public",
+});
+
+const nextConfig = withPWA({
   // reactStrictMode: true,
-  swcMinify: true,
+  // swcMinify: true,
   env: {
     KAKAO_MAP_API_KEY: process.env.KAKAO_MAP_API_KEY,
+    NANUM_USER_SERVICE_BASE_URL: process.env.NANUM_USER_SERVICE_BASE_URL,
     NANUM_HOUSE_SERVICE_BASE_URL: process.env.NANUM_HOUSE_SERVICE_BASE_URL,
     NANUM_ENROLL_SERVICE_BASE_URL: process.env.NANUM_ENROLL_SERVICE_BASE_URL,
   },
@@ -26,6 +33,6 @@ const nextConfig = {
       },
     },
   },
-};
+});
 
 module.exports = nextConfig;

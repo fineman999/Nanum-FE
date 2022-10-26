@@ -5,7 +5,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TuneIcon from "@mui/icons-material/Tune";
 import Footer from "../../components/common/Footer";
 import SubHeader from "../../components/common/SubHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -14,24 +14,29 @@ import HouseSearchList from "../../components/HouseSearchList";
 export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(router.query.searchWord);
   const [searchForm, setSearchForm] = useState({
     searchWord: "",
+    searchArea: "",
+    genderType: "",
+    houseType: "",
+    cPositionY: "", // 중심 좌표 값 (위도, 경도)
+    cPositionX: "",
+    bPositionY: "", // 경계 좌표 값 (위도, 경도)
+    bPositionX: "",
   });
+
+  useEffect(() => {}, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleChange = (e) => {
-    setSearchForm({
-      ...searchForm,
-      [e.target.name]: e.target.value,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
     router.push({
       pathname: "/house",
-      query: { search: searchForm.searchWord },
+      query: {
+        searchWord: searchInput,
+      },
     });
   };
 
@@ -44,7 +49,7 @@ export default function Houses() {
       <div className="search_container">
         {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <HouseMap />
+          <HouseMap searchForm={searchForm} setSearchForm={setSearchForm} />
         </div>
         <div className="house_list_wrapper">
           <div className="search_wrapper">
@@ -52,15 +57,10 @@ export default function Houses() {
               <input
                 className="search_input"
                 name="searchWord"
-                value={
-                  searchForm.searchWord.length >= 20
-                    ? `${searchForm.searchWord.slice(0, 20)}...`
-                    : searchForm.searchWord
-                }
+                value={searchInput}
                 placeholder="지역명, 대학명, 지하철역으로 검색..."
-                onChange={handleChange}
+                onChange={(e) => setSearchInput(e.target.value)}
               />
-
               <div className="icon_search">
                 <IconButton onClick={handleSubmit}>
                   <SearchIcon />
@@ -72,15 +72,6 @@ export default function Houses() {
                 <TuneIcon />
               </IconButton>
             </div>
-          </div>
-          <div className="filter_wrapper">
-            <ul className="filter_list">
-              <li className="active">전체</li>
-              <li>인기</li>
-              <li>쉐어</li>
-              <li>마이룸</li>
-              <li>기타</li>
-            </ul>
           </div>
           <HouseSearchList
             searchForm={searchForm}

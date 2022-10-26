@@ -23,6 +23,8 @@
 
 .house_name {
   font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
 .house_zonecode {
