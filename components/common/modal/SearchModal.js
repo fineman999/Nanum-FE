@@ -14,7 +14,10 @@ import {
 } from "@mui/material";
 
 import styled from "@emotion/styled";
-import React from "react";
+import React, { useState } from "react";
+import SearchAreaRadioGroup from "../../SearchAreaList";
+import { fireAlert } from "../Alert";
+import { useRouter } from "next/router";
 
 const SearchInput = styled.input`
   border: none;
@@ -35,11 +38,37 @@ const style = {
   borderRadius: "10px",
   bgcolor: "background.paper",
   boxShadow: 24,
-  p: 4,
+  p: 3,
 };
 
 const SearchModal = ({ open, handleClose }) => {
+  const router = useRouter();
+  const [detailSearchForm, setDetailSearchForm] = useState({
+    searchWord: "", // 검색 키워드
+    searchArea: "all", // 지역 검색
+    genderType: "", // 성별타입 검색
+    houseType: "", // 하우스 타입 검색
+  });
+
+  const handleChange = (e) => {
+    setDetailSearchForm({
+      ...detailSearchForm,
+      [e.target.name]: e.target.value,
+    });
+  };
+
   const handleSearch = () => {
+    if (detailSearchForm.searchWord === "") {
+      fireAlert({ icon: "warning", title: "검색어를 입력해주세요." });
+      return null;
+    }
+    console.log(detailSearchForm);
+    router.push({
+      pathname: "/house",
+      query: {
+        ...detailSearchForm,
+      },
+    });
     handleClose();
   };
 
@@ -61,29 +90,27 @@ const SearchModal = ({ open, handleClose }) => {
             id="transition-modal-title"
             variant="subtitle1"
             sx={{ fontWeight: "bold" }}
-            mb={3}
+            mb={1}
           >
             어떤 집에서 <br />
             살고 싶으세요?
           </Typography>
-          <Box mb={5}>
-            <Typography variant="subtitle1" sx={{ fontWeight: "bold" }}>
-              어느 지역에서 살고 싶으세요?
-            </Typography>
+          <Box mb={2}>
             <Paper>
               <SearchInput
+                name="searchWord"
                 type="search"
                 placeholder="지역명, 대학명, 지하철역으로 검색..."
+                onChange={handleChange}
               />
             </Paper>
           </Box>
+          {/* 지역별 검색 키워드 */}
+          {/* <SearchAreaRadioGroup handleChange={handleChange} /> */}
 
-          <Box mb={5}>
-            <Typography mb={3} variant="subtitle1" sx={{ fontWeight: "bold" }}>
-              누구랑 살고 싶으세요?
-            </Typography>
-            <Stack spacing={4}>
-              <Box sx={{ maxWidth: 120 }}>
+          <Box mb={2}>
+            <Stack spacing={1}>
+              <Box>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     성별타입
@@ -93,15 +120,18 @@ const SearchModal = ({ open, handleClose }) => {
                     id="demo-simple-select"
                     autoWidth
                     label="성별타입"
+                    value={detailSearchForm.genderType || ""}
+                    name="genderType"
+                    onChange={handleChange}
                   >
-                    <MenuItem value="c">남녀공용</MenuItem>
-                    <MenuItem value="m">남성전용</MenuItem>
-                    <MenuItem value="f">여성전용</MenuItem>
+                    <MenuItem value="common">남녀공용</MenuItem>
+                    <MenuItem value="male">남성전용</MenuItem>
+                    <MenuItem value="female">여성전용</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
 
-              <Box sx={{ maxWidth: 120 }}>
+              <Box>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
                     주거형태
@@ -111,25 +141,12 @@ const SearchModal = ({ open, handleClose }) => {
                     id="demo-simple-select"
                     autoWidth
                     label="주거형태"
+                    value={detailSearchForm.houseType || ""}
+                    name="houseType"
+                    onChange={handleChange}
                   >
-                    <MenuItem value={10}>빌라</MenuItem>
-                    <MenuItem value={11}>아파트</MenuItem>
-                  </Select>
-                </FormControl>
-              </Box>
-
-              <Box sx={{ maxWidth: 120 }}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">룸형태</InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="룸형태"
-                    autoWidth
-                  >
-                    <MenuItem value={1}>1인실</MenuItem>
-                    <MenuItem value={2}>2인실</MenuItem>
-                    <MenuItem value={3}>3인실</MenuItem>
+                    <MenuItem value="village">빌라</MenuItem>
+                    <MenuItem value="apart">아파트</MenuItem>
                   </Select>
                 </FormControl>
               </Box>

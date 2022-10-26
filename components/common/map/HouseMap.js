@@ -508,13 +508,19 @@ const positions = [
   },
 ];
 
-const HouseMap = () => {
+const HouseMap = ({ setSearchForm }) => {
   const router = useRouter();
   const mapRef = useRef(null);
 
   useEffect(() => {
-    const { kakao } = globalThis;
+    const encodeUri = decodeURIComponent(router.asPath);
+    const encodeUriTokens = encodeUri.split("&");
+    const nextSearchWord = encodeUriTokens[0]
+      .split("=")[1]
+      .split("+")
+      .join(" ");
 
+    const { kakao } = globalThis;
     kakao.maps.load(() => {
       const mapContainer = mapRef.current;
       const mapOptions = {
@@ -538,20 +544,47 @@ const HouseMap = () => {
 
       const geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(
-        router.query.search
-          ? router.query.search
+        nextSearchWord
+          ? nextSearchWord
           : "부산광역시 해운대구 우동 1514 센텀리더스마크 401호",
         function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
             const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-            // 결과값으로 받은 위치를 마커로 표시합니다
             const marker = new kakao.maps.Marker({
               map: map,
               position: coords,
               image: markerImage,
             });
 
-            // 인포윈도우로 장소에 대한 설명을 표시합니다
+            const bounds = map.getBounds(); // 지도의 현재 영역을 얻어옵니다
+            const swLatLng = bounds.getSouthWest(); // 영역의 남서쪽 좌표를 얻어옵니다
+            // const neLatLng = bounds.getNorthEast(); // 영역의 북동쪽 좌표를 얻어옵니다
+
+            // 검색어, 검색 조건(지역, 성별타입, 하우스타입) 추출
+            if (encodeUriTokens.length > 1) {
+              const nextSearchArea = encodeUriTokens[1].split("=")[1];
+              const nextGenderType = encodeUriTokens[2].split("=")[1];
+              const nextHouseType = encodeUriTokens[3].split("=")[1];
+
+              setSearchForm({
+                searchWord: nextSearchWord,
+                searchArea: nextSearchArea,
+                genderType: nextGenderType,
+                houseType: nextHouseType,
+                cPositionY: result[0].y,
+                cPositionX: result[0].x,
+                bPositionY: swLatLng.getLat(),
+                bPositionX: swLatLng.getLng(),
+              });
+            } else {
+              setSearchForm({
+                searchWord: nextSearchWord,
+                cPositionY: result[0].y,
+                cPositionX: result[0].x,
+                bPositionY: swLatLng.getLat(),
+                bPositionX: swLatLng.getLng(),
+              });
+            }
 
             kakao.maps.event.addListener(marker, "click", () => {
               alert("center marker clicked!");
@@ -595,7 +628,7 @@ const HouseMap = () => {
       const zoomControl = new kakao.maps.ZoomControl();
       map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
     });
-  }, [router.query.search]);
+  }, [router.query.searchWord]);
 
   return (
     <>

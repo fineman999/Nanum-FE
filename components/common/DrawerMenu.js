@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Button,
+  Chip,
   Collapse,
   Divider,
   Drawer,
@@ -22,9 +23,69 @@ import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import { logout } from "../../lib/apis/auth";
 
+const areaList = [
+  { id: 1, name: "전국", value: "all", houseNumber: 1700 },
+  { id: 2, name: "서울", value: "seoul", houseNumber: 100 },
+  { id: 3, name: "경기", value: "gyeong-gi", houseNumber: 100 },
+  { id: 4, name: "인천", value: "incheon", houseNumber: 100 },
+  { id: 5, name: "부산", value: "busan", houseNumber: 100 },
+  { id: 6, name: "대구", value: "daegu", houseNumber: 100 },
+  { id: 7, name: "대전", value: "daejeon", houseNumber: 100 },
+  { id: 8, name: "경남", value: "gyeongnam", houseNumber: 100 },
+  { id: 9, name: "전남", value: "jeonnam", houseNumber: 100 },
+  { id: 10, name: "충남", value: "chungnam", houseNumber: 100 },
+  { id: 11, name: "광주", value: "goyang", houseNumber: 100 },
+  { id: 12, name: "울산", value: "ulsan", houseNumber: 100 },
+  { id: 13, name: "경북", value: "gyeongbug", houseNumber: 100 },
+  { id: 14, name: "전북", value: "jeonbug", houseNumber: 100 },
+  { id: 15, name: "충북", value: "chungbug", houseNumber: 100 },
+  { id: 16, name: "강원", value: "gang-won", houseNumber: 100 },
+  { id: 17, name: "제주", value: "jejudo", houseNumber: 100 },
+  { id: 18, name: "세종", value: "sejong", houseNumber: 100 },
+];
+
 const UserMenu = ({ menuList, handleClick }) => {
+  const [onSubMenu, setOnSubMenu] = useState(false);
+
   return (
     <List>
+      <ListItem>
+        <ListItemButton>
+          <ListItemText primary="홈" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem>
+        <ListItemButton>
+          <ListItemText primary="지역별" />
+        </ListItemButton>
+        {/* 하위 메뉴 더보기 */}
+        {onSubMenu ? (
+          <ExpandLess onClick={() => setOnSubMenu(false)} />
+        ) : (
+          <ExpandMore onClick={() => setOnSubMenu(true)} />
+        )}
+      </ListItem>
+      {/* 하위 메뉴 리스트 */}
+      <Collapse in={onSubMenu}>
+        <List component="div" disablePadding>
+          {areaList &&
+            areaList.map((listItem, index) => (
+              <ListItem key={listItem.id}>
+                <ListItemButton sx={{ pl: 4 }}>
+                  <ListItemText primary={listItem.name} />
+                  <Chip
+                    label={listItem.houseNumber}
+                    sx={{
+                      border: "1px solid #f5f5f5",
+                      color: "rgba(0,0,0,0.5)",
+                      fontWeight: "bold",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            ))}
+        </List>
+      </Collapse>
       {menuList &&
         menuList.map((listItem, index) => (
           <Fragment key={listItem.id}>
@@ -42,16 +103,15 @@ const UserMenu = ({ menuList, handleClick }) => {
                 <List component="div" disablePadding>
                   {listItem.sub &&
                     listItem.sub.menuList.map((listItem, index) => (
-                      <ListItem
-                        key={index}
-                        onClick={() => handleClick(listItem, index)}
-                      >
-                        <Link href={listItem.path || ""}>
-                          <ListItemButton sx={{ pl: 4 }}>
-                            <ListItemText primary={listItem.name} />
-                          </ListItemButton>
-                        </Link>
-                      </ListItem>
+                      <Fragment key={index}>
+                        <ListItem onClick={() => handleClick(listItem, index)}>
+                          <Link href={listItem.path || ""}>
+                            <ListItemButton sx={{ pl: 4 }}>
+                              <ListItemText primary={listItem.name} />
+                            </ListItemButton>
+                          </Link>
+                        </ListItem>
+                      </Fragment>
                     ))}
                 </List>
               </Collapse>
@@ -103,7 +163,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
     if (typeof window !== "undefined") {
       setRole(sessionStorage.getItem("role"));
       setMenuList([
-        { id: 1, name: "홈", path: "/" },
+        // { id: 1, name: "홈", path: "/" },
         {
           id: 2,
           name: "커뮤니티",
@@ -188,9 +248,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
         </IconButton>
       </Box>
       <Divider />
-
       <UserMenu menuList={menuList} handleClick={handleClick} />
-
       <Divider />
       {/* 로그아웃 버튼 */}
       <Box p={1} sx={{ display: "flex", justifyContent: "center" }}>

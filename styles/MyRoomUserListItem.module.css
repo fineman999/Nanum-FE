@@ -8,8 +8,19 @@
   padding: 15px;
 }
 
-.user_name {
+.user_profile {
   font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.email {
+  margin-right: 10px;
+}
+
+.email,
+.phone {
+  font-size: 0.6em;
 }
 
 .user_btns {

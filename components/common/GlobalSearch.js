@@ -20,7 +20,7 @@ const GlobalSearch = ({ handleOpen }) => {
     e.preventDefault();
     router.push({
       pathname: "/house",
-      query: { search: searchForm.searchInput },
+      query: { searchWord: searchForm.searchInput },
     });
   };
 
