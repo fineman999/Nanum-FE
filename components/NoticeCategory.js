@@ -3,7 +3,8 @@ import React from "react";
 import styles from "../styles/NoticeCategory.module.css";
 import NoticeList from "./NoticeList";
 
-const NoticeCategory = () => {
+const NoticeCategory = ({ list }) => {
+  console.log("NoticeCategory,,,", list);
   return (
     <div className={styles.category_container}>
       <div className={styles.category_header}>
@@ -15,7 +16,7 @@ const NoticeCategory = () => {
         </span>
       </div>
       <div className="category_body">
-        <NoticeList />
+        <NoticeList list={list} key={1} />
       </div>
     </div>
   );

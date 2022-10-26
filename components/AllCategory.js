@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import styles from "../styles/AllCategory.module.css";
 import NoticeList from "./NoticeList";
-const AllCategory = () => {
+const AllCategory = ({ list }) => {
   return (
     <div className={styles.category_container}>
       <div className={styles.category_header}>
@@ -14,7 +14,7 @@ const AllCategory = () => {
         </span>
       </div>
       <div className="category_body">
-        <NoticeList />
+        <NoticeList list={list} key={2} />
       </div>
     </div>
   );

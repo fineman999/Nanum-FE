@@ -3,7 +3,7 @@ import React from "react";
 import styles from "../styles/InfoCategory.module.css";
 import NoticeList from "./NoticeList";
 
-const InfoCategory = () => {
+const InfoCategory = ({ list }) => {
   return (
     <div className={styles.category_container}>
       <div className={styles.category_header}>
@@ -15,7 +15,7 @@ const InfoCategory = () => {
         </span>
       </div>
       <div className="category_body">
-        <NoticeList />
+        <NoticeList list={list} key={3} />
       </div>
     </div>
   );

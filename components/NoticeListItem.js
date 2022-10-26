@@ -7,14 +7,16 @@ import classNames from "classnames/bind";
 import Link from "next/link";
 const cx = classNames.bind(styles);
 
-const NoticeListItem = () => {
+const NoticeListItem = ({ key, id, date, title, viewCount }) => {
   return (
-    <Link href="/community/board/1">
-      <a style={{ color: "black" }}>
+    // <Link to={`/profile/${userInfo.username}`} state={{ user: userInfo }}> Profile </Link>
+
+    <Link href={`/community/board/${id}`}>
+      <a style={{ color: "black" }} key={key}>
         <li>
           <div className={styles.article_wrapper}>
             <div className={styles.article_content}>
-              <div className={cx("article_header", "new")}>공지사항입니다.</div>
+              <div className={cx("article_header", "new")}>{title}</div>
               <div className={styles.icons}>
                 <span className={styles.icon_views}>
                   <VisibilityIcon
@@ -26,8 +28,8 @@ const NoticeListItem = () => {
                   />
                 </span>
 
-                <span className={styles.icon_text}>20</span>
-                <span className={styles.icon_chats}>
+                <span className={styles.icon_text}>{viewCount}</span>
+                {/* <span className={styles.icon_chats}>
                   <ChatBubbleIcon
                     style={{
                       color: "rgba(0,0,0,0.2)",
@@ -36,11 +38,15 @@ const NoticeListItem = () => {
                     }}
                   />
                 </span>
-                <span className={styles.icon_text}>20</span>
+                <span className={styles.icon_text}>20</span> */}
               </div>
             </div>
             <div className={styles.article_date}>
-              <span className={styles.date_text}>2022/10/06</span>
+              <span className={styles.date_text}>
+                {new Intl.DateTimeFormat("ko", { dateStyle: "medium" }).format(
+                  new Date(date)
+                )}
+              </span>
             </div>
           </div>
         </li>

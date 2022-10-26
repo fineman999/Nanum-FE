@@ -13,6 +13,7 @@ const nextConfig = {
       "cdn-icons-png.flaticon.com",
       "nanum-bucket.s3.ap-northeast-2.amazonaws.com",
       "nanum.s3.ap-northeast-2.amazonaws.com",
+      "myspharosbucket.s3.ap-northeast-2.amazonaws.com",
     ],
   },
   experimental: {

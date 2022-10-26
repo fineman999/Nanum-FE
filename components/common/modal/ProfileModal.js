@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import css from "styled-jsx/css";
-import { TwoButtonOption } from "../Button";
+import { OneButton, TwoButtonOption } from "../Button";
 import CloseIcon from "@mui/icons-material/Close";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -120,6 +120,12 @@ export default function ProfileModal({
               text2="차단하기"
               handleBtn1={goChat}
               handleBtn2={goBlock}
+            />
+          ) : type == 3 ? (
+            <OneButton
+              text1="본인 프로필 입니다."
+              handleBtn1={handleClose}
+              type={1}
             />
           ) : (
             <TwoButtonOption

@@ -4,18 +4,39 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 
 import styles from "../../styles/ContentHeader.module.css";
+import { ProfileImg } from "../common/Profile";
+import { BoardImageProfileModal } from "../common/modal/BoardImageProfileModal";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
 
-const ContentHeader = () => {
+const ContentHeader = ({
+  boardId,
+  boardUserId,
+  nickName,
+  createAt,
+  viewCount,
+  profileImgUrl,
+}) => {
+  const userData = useRecoilState(userState);
   return (
     <div className={styles.content_header}>
-      <Avatar
-        alt="Remy Sharp"
-        src="/images/default.png"
-        sx={{ width: 96, height: 96, marginRight: "10px" }}
+      <BoardImageProfileModal
+        img={profileImgUrl}
+        name={nickName}
+        id={boardUserId}
+        size={8}
+        type={boardUserId === userData[0].id ? 3 : 2}
       />
       <div className={styles.content_info}>
-        <h2 className="author">노숙자</h2>
-        <span className={styles.article_date}>2022.10.06 11:28</span>
+        <h2 className="author">{nickName}</h2>
+        <span className={styles.article_date}>
+          {createAt
+            ? Intl.DateTimeFormat("ko", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              }).format(new Date(createAt))
+            : ""}
+        </span>
         <div className={styles.icons}>
           <span className={styles.icon_views}>
             <VisibilityIcon
@@ -27,7 +48,7 @@ const ContentHeader = () => {
             />
           </span>
 
-          <span className={styles.icon_text}>20</span>
+          <span className={styles.icon_text}>{viewCount}</span>
           <span className={styles.icon_chats}>
             <ChatBubbleIcon
               style={{

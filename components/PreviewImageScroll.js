@@ -2,36 +2,10 @@ import Image from "next/image";
 import React, { useState } from "react";
 
 import styles from "../styles/PreviewImageScroll.module.css";
+import BoardModal from "./common/modal/BoardModal";
 import GalleryModal from "./common/modal/GalleryModal";
 
-const imageList = [
-  {
-    src: "/images/house_image_1.jpg",
-    alt: "house_image_1",
-  },
-  {
-    src: "/images/house_image_2.jpg",
-    alt: "house_image_2",
-  },
-  {
-    src: "/images/house_image_3.jpg",
-    alt: "house_image_3",
-  },
-  {
-    src: "/images/house_image_4.jpg",
-    alt: "house_image_4",
-  },
-  {
-    src: "/images/house_image_5.jpg",
-    alt: "house_image_5",
-  },
-  {
-    src: "/images/house_image_6.jpg",
-    alt: "house_image_6",
-  },
-];
-
-const PreviewImageScroll = () => {
+const PreviewImageScroll = ({ imageList, date }) => {
   const [gallery, setGallery] = useState(false);
 
   const openGallery = () => {
@@ -48,11 +22,25 @@ const PreviewImageScroll = () => {
         {imageList &&
           imageList.map((image, index) => (
             <li key={index} className={styles.image_item} onClick={openGallery}>
-              <Image src={image.src} alt={image.alt} layout="fill" />
+              <img
+                src={image.imgUrl}
+                alt={image.imagId}
+                style={{
+                  width: `10vh`,
+                  height: `10vh`,
+                  borderRadius: "0.5rem",
+                }}
+              />
             </li>
           ))}
       </ul>
-      <GalleryModal open={gallery} onClose={closeGallery} />
+      {/* <GalleryModal open={gallery} onClose={closeGallery} /> */}
+      <BoardModal
+        open={gallery}
+        handleClose={closeGallery}
+        images={imageList}
+        date={date}
+      />
     </div>
   );
 };

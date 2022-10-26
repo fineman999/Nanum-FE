@@ -10,12 +10,6 @@ const CommunityCategoryMenu = () => {
         <li className={styles.list_item}>공지</li>
         <li className={styles.list_item}>자유</li>
         <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
-        <li className={styles.list_item}>정보</li>
       </ul>
     </div>
   );
