@@ -26,7 +26,7 @@ const HostTourContractList = () => {
       .then((res) => res.data)
       .then((data) => {
         console.log(data);
-        setHostTourList([...data.result]);
+        setHostTourList(data.result);
       });
   }, []);
 

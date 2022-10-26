@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import css from "styled-jsx/css";
 import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
-import Header from "../../components/common/Header";
+import SubHeader from "../../components/common/SubHeader";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
@@ -11,49 +11,18 @@ import axios from "axios";
 import { getUserDetail } from "../../lib/apis/auth";
 import * as Api from "../../lib/apis/apiClient";
 import MypageNavList from "../../components/mypage/MypageNavList";
-
+import Image from "next/image";
+import { Link } from "@mui/material";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 const style = css`
-  #mypage {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    align-self: center;
-    min-height: 92.5vh;
-    padding: 5rem 0rem;
-    box-sizing: border-box;
-  }
-  #user_header {
-    display: flex;
-    width: 40vh;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
   #user_profile {
     display: flex;
     align-items: center;
-  }
-  #user_activity {
-    display: flex;
-    justify-content: space-between;
   }
   #user_header img {
     width: 10vh;
     height: 10vh;
     border-radius: 100%;
-  }
-  #user_content {
-    margin-left: 1rem;
-  }
-  h3 {
-    width: 100%;
-  }
-  h4 {
-    margin: 1rem 0 0 0;
-  }
-  #user_profile {
-    height: 4vh;
   }
   #user_btn {
     display: flex;
@@ -103,7 +72,7 @@ const style = css`
     width: 50px;
     height: 50px;
   }
-  .input-file-button {
+  /* .input-file-button {
     background-color: #76c1b2;
     color: white;
     font-size: 1rem;
@@ -114,7 +83,7 @@ const style = css`
     cursor: pointer;
     width: 10rem;
     padding: 0.4rem 0.4rem;
-  }
+  } */
 `;
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -137,9 +106,6 @@ export default function MyPage() {
   });
   const [userData, setUserData] = useRecoilState(userState);
   const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
-  const userDate = "2022.10.31";
-  const userPlace = "부산해운대구";
-  const userTime = "14:00";
   const userId = userData.id;
 
   //이미지 미리보기
@@ -242,19 +208,47 @@ export default function MyPage() {
   };
   return (
     <>
-      <Header title="마이페이지" type="my" />
+      <SubHeader title="마이페이지" type="mypage" />
       <div id="mypage">
-        <section id="user_header">
-          {imageSrc ? (
-            <img src={imageSrc} alt="preview_img" />
-          ) : (
-            <img src="/images/default.png" alt="default IMG" />
-          )}
-          <div id="user_content">
+        <section
+          id="user_header"
+          style={{ display: "flex", width: "100%", marginBottom: "15px" }}
+        >
+          <div
+            className="profile_image"
+            style={{
+              position: "relative",
+              width: "100px",
+              height: "100px",
+              overflow: "hidden",
+              borderRadius: "50px",
+              marginRight: "10px",
+            }}
+          >
+            {imageSrc ? (
+              <Image src={imageSrc} alt="preview_img" layout="fill" />
+            ) : (
+              <Image
+                src="/images/default.png"
+                alt="default IMG"
+                layout="fill"
+              />
+            )}
+          </div>
+          <div id="user_content" style={{ flex: 1 }}>
             <div id="user_profile">
-              <h3>{userData.nickName}</h3>
-              <label className="input-file-button" htmlFor="input-file">
-                프로필 수정
+              <h3 className="user_name" style={{ marginRight: "3px" }}>
+                {userData.nickName}
+              </h3>
+              <label
+                htmlFor="input-file"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <PhotoCameraIcon />
               </label>
               <input
                 type="file"
@@ -268,37 +262,23 @@ export default function MyPage() {
               />
             </div>
             <div id="user_activity">
-              <h4
-                onClick={() => {
-                  router.push("/mypage/posts");
-                }}
-              >
-                게시글 {postCnt}
-              </h4>
-
-              <h4
-                onClick={() => {
-                  router.push("/mypage/comments");
-                }}
-              >
-                댓글 {commentCnt}
-              </h4>
-
-              <h4
-                onClick={() => {
-                  router.push("/like");
-                }}
-              >
-                좋아요 {likeCnt}
-              </h4>
+              <Link href="/mypage/posts">
+                <a>게시글 {postCnt}</a>
+              </Link>
+              <Link href="/mypage/comments">
+                <a>댓글 {commentCnt}</a>
+              </Link>
+              <Link href="/like">
+                <a>좋아요 {likeCnt}</a>
+              </Link>
             </div>
           </div>
         </section>
-        <hr />
+
         <section id="user_state">
           <MypageNavList />
-          <div id="user_move"></div>
         </section>
+
         <section>
           <section id="user_btn">
             <div id="user_unit" onClick={() => router.push("/mail")}>
