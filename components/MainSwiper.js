@@ -63,12 +63,13 @@ const MainMessage = () => {
     <div className={styles.main_message}>
       <div className={styles.main_message_center}>
         <h2 className={styles.main_center_title}>
-          너 빼고
-          <br />다 살고 있음
+          여기에
+          <br />
+          메시지를 추가하세요.
         </h2>
 
-        <h4 className={styles.main_left_message}>나눔이</h4>
-        <h4 className={styles.main_right_message}>답이다</h4>
+        <h4 className={styles.main_left_message}>나눔</h4>
+        <h4 className={styles.main_right_message}>2022</h4>
       </div>
     </div>
   );

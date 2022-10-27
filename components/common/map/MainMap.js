@@ -1,9 +1,20 @@
+import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import styles from "../../../styles/MainMap.module.css";
+import MyLocationIcon from "@mui/icons-material/MyLocation";
 const MainMap = () => {
   useEffect(() => {
     const { kakao } = globalThis;
-    kakao.maps.load(() => {});
+    kakao.maps.load(() => {
+      var mapContainer = document.getElementById("map_container"), // 지도를 표시할 div
+        mapOption = {
+          center: new kakao.maps.LatLng(37.56809, 126.98016), // 지도의 중심좌표
+          level: 5, // 지도의 확대 레벨
+          mapTypeId: kakao.maps.MapTypeId.ROADMAP, // 지도종류
+        };
+      // 지도를 생성한다
+      var map = new kakao.maps.Map(mapContainer, mapOption);
+    });
 
     function getLocation() {
       if (navigator.geolocation) {
@@ -33,11 +44,22 @@ const MainMap = () => {
   return (
     <div className={styles.main_map_wrapper}>
       <div className={styles.main_map_title}>
-        <h2>지역별 하우스 현황</h2>
+        <h2>주변 하우스</h2>
       </div>
 
-      <div id="map_container" className="main_map">
-        <button>현재 위치</button>
+      <div id="map_container" className={styles.main_map_container}>
+        <Button
+          variant="contained"
+          sx={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: "100",
+          }}
+          startIcon={<MyLocationIcon />}
+        >
+          현재 위치
+        </Button>
       </div>
     </div>
   );
