@@ -6,6 +6,7 @@ import Header from "../components/common/Header";
 import SearchModal from "../components/common/modal/SearchModal";
 import HouseListSwiper from "../components/HouseListSwiper";
 import MainSwiper from "../components/MainSwiper";
+import MainMap from "../components/common/map/MainMap";
 
 export default function Home() {
   const [open, setOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Home() {
       <HouseListSwiper title="인기 하우스" />
       <HouseListSwiper title="쉐어 하우스" />
       <HouseListSwiper title="마이룸" />
+      <MainMap />
       <Footer />
       <BottomMenu />
     </>
