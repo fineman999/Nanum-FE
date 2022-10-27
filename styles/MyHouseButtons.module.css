@@ -1,0 +1,28 @@
+.my_house_button_wrapper {
+  width: 100%;
+}
+
+.my_house_edit_wrapper {
+  width: 100%;
+  display: flex;
+}
+
+.addBtn {
+  color: white;
+  background: #76c1b2;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 15px;
+}
+
+.editBtn {
+  color: white;
+  background: #555555;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 15px;
+}

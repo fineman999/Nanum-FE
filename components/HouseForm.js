@@ -15,10 +15,13 @@ import HouseTypeForm from "./HouseTypeForm";
 import PreviewImageForm from "./PreviewImageForm";
 import HousePositionForm from "./HousePositionForm";
 import { fireAlert } from "./common/Alert";
+import { userState } from "../state/atom/authState";
+import { useRecoilValue } from "recoil";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const HouseForm = () => {
+  const userValue = useRecoilValue(userState);
   const router = useRouter();
   const [path, setPath] = useState(router.route.split("/")[3]);
   const [form, setForm] = useState({
@@ -381,7 +384,7 @@ const HouseForm = () => {
 
         const { id, houseName, mainHouseImgPath } = result;
         const data = {
-          userIds: [1],
+          userIds: [userValue.id],
           roomName: `${houseName} 채팅방입니다.`,
           houseId: id,
           houseImg: mainHouseImgPath,
