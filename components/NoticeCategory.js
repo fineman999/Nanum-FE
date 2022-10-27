@@ -16,7 +16,7 @@ const NoticeCategory = ({ list }) => {
         </span>
       </div>
       <div className="category_body">
-        <NoticeList list={list} key={1} />
+        <NoticeList list={list} />
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import { userState } from "../../state/atom/authState";
 import { DeleteRounded } from "@mui/icons-material";
 import { confirmAlert } from "../../components/common/Alert";
 import axios from "axios";
+import { NoData } from "../../components/common/NoData";
 
 const style = css`
   #chatlist {
@@ -102,96 +103,100 @@ export default function ChatList() {
   };
   const getChats = async (cancelToken) => {
     // setChatLists([]);
+    console.log(userData.id);
     try {
       const getChatLists = await Api.getCancelToken(
         `https://nanum.site/web-flux-service/api/v1/rooms/users/`,
         userData.id,
         cancelToken
       );
-
+      console.log("getChatLists", getChatLists);
       if (!getChatLists) {
         throw new Error(`${getChatLists} not allowd`);
       }
-
-      const findUserInfos = [];
-      getChatLists.data.forEach((data) => {
-        const userInfo = data.roomInfo;
-        userInfo.users.forEach((user) => {
-          findUserInfos.push(user.userId);
-        });
-      });
-      const getUserInfos = await Api.getCancelToken(
-        `https://nanum.site/user-service/api/v1/users/particular?param=`,
-        findUserInfos,
-        cancelToken
-      );
-
-      const chats2 = getChatLists.data;
-
-      chats2.forEach((ele) => {
-        let chat = {};
-
-        const userInfo = ele.roomInfo;
-
-        // 두명
-        if (ele.houseId == 0) {
-          if (userInfo.users.length <= 1) {
-            chat = {
-              img: "/images/default.png",
-              username: "알수없음",
-              text: `${
-                userInfo.lastMessage === null ? "" : userInfo.lastMessage
-              }`,
-              id: ele.id,
-              date: displayedAt(ele.updateAt),
-              cnt: `${
-                userInfo.users[0].userId == userData.id
-                  ? userInfo.users[0].readCount
-                  : 0
-              }`,
-            };
-          } else {
-            userInfo.users.forEach((user) => {
-              getUserInfos.data.result.forEach((i, x) => {
-                if (user.userId == i.id && i.id != userData.id) {
-                  chat = {
-                    img: i.profileImgUrl,
-                    username: i.nickName,
-                    text: `${
-                      userInfo.lastMessage === null ? "" : userInfo.lastMessage
-                    }`,
-                    id: ele.id,
-                    date: displayedAt(ele.updateAt),
-                    cnt: `${
-                      userInfo.users[0].userId == userData.id
-                        ? userInfo.users[0].readCount
-                        : userInfo.users[1].readCount
-                    }`,
-                  };
-                }
-              });
-            });
-          }
-        } else if (ele.houseId != 0) {
-          // 채팅 방
+      if (getChatLists && getChatLists.data.length > 0) {
+        const findUserInfos = [];
+        getChatLists.data.forEach((data) => {
+          const userInfo = data.roomInfo;
           userInfo.users.forEach((user) => {
-            if (user.userId == userData.id) {
+            findUserInfos.push(user.userId);
+          });
+        });
+        const getUserInfos = await Api.getCancelToken(
+          `https://nanum.site/user-service/api/v1/users/particular?param=`,
+          findUserInfos,
+          cancelToken
+        );
+
+        const chats2 = getChatLists.data;
+
+        chats2.forEach((ele) => {
+          let chat = {};
+
+          const userInfo = ele.roomInfo;
+
+          // 두명
+          if (ele.houseId == 0) {
+            if (userInfo.users.length <= 1) {
               chat = {
-                img: ele.houseImg,
-                username: ele.roomName,
+                img: "/images/default.png",
+                username: "알수없음",
                 text: `${
-                  userInfo.lastMessage == null ? "" : userInfo.lastMessage
+                  userInfo.lastMessage === null ? "" : userInfo.lastMessage
                 }`,
-                cnt: `${user.readCount}`,
                 id: ele.id,
                 date: displayedAt(ele.updateAt),
+                cnt: `${
+                  userInfo.users[0].userId == userData.id
+                    ? userInfo.users[0].readCount
+                    : 0
+                }`,
               };
+            } else {
+              userInfo.users.forEach((user) => {
+                getUserInfos.data.result.forEach((i, x) => {
+                  if (user.userId == i.id && i.id != userData.id) {
+                    chat = {
+                      img: i.profileImgUrl,
+                      username: i.nickName,
+                      text: `${
+                        userInfo.lastMessage === null
+                          ? ""
+                          : userInfo.lastMessage
+                      }`,
+                      id: ele.id,
+                      date: displayedAt(ele.updateAt),
+                      cnt: `${
+                        userInfo.users[0].userId == userData.id
+                          ? userInfo.users[0].readCount
+                          : userInfo.users[1].readCount
+                      }`,
+                    };
+                  }
+                });
+              });
             }
-          });
-        }
+          } else if (ele.houseId != 0) {
+            // 채팅 방
+            userInfo.users.forEach((user) => {
+              if (user.userId == userData.id) {
+                chat = {
+                  img: ele.houseImg,
+                  username: ele.roomName,
+                  text: `${
+                    userInfo.lastMessage == null ? "" : userInfo.lastMessage
+                  }`,
+                  cnt: `${user.readCount}`,
+                  id: ele.id,
+                  date: displayedAt(ele.updateAt),
+                };
+              }
+            });
+          }
 
-        setChatLists((prev) => [...prev, chat]);
-      });
+          setChatLists((prev) => [...prev, chat]);
+        });
+      }
     } catch (e) {
       console.log("Error" + e);
     }
@@ -424,6 +429,7 @@ export default function ChatList() {
                 )}
               </div>
             ))}
+          <NoData data={chatLists} />
         </div>
       </div>
       <style jsx>{style}</style>

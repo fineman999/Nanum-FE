@@ -1,7 +1,7 @@
 import { useState } from "react";
 import ProfileModal from "./ProfileModal";
 
-export function BoardImageProfileModal({ img, size, name, type, id }) {
+export function BoardImageProfileModal({ img, size, name, type, id, left }) {
   //modal 관리
   const [open, setOpen] = useState(false);
 
@@ -19,7 +19,7 @@ export function BoardImageProfileModal({ img, size, name, type, id }) {
             width: `${size}vh`,
             height: `${size}vh`,
             borderRadius: "100%",
-            marginRight: "2rem",
+            marginRight: `${left ? left : "2rem"}`,
           }}
         />
       </div>

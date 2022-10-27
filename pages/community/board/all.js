@@ -7,7 +7,7 @@ import styles from "../../../styles/All.module.css";
 const all = () => {
   return (
     <>
-      <SubHeader title="전체" type="all" />
+      <SubHeader title="자유게시판" type="all" />
       <section className={styles.contents_section}>
         <NoticeList />
       </section>

@@ -16,8 +16,14 @@ import * as Api from "../../../lib/apis/apiClient";
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
-
+  const [newComment, setNewComment] = useState();
+  const [newReply, setNewReply] = useState();
   const [board, setBoard] = useState({});
+  const [inputCommnet, setInputCommnet] = useState({
+    open: false,
+    commentId: 0,
+    replyName: "",
+  });
   useEffect(() => {
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
@@ -63,9 +69,22 @@ const Article = () => {
           {/* 좋아요, 공유 버튼 */}
           <ContentFooter />
           <Divider />
-          <CommentList />
+          <CommentList
+            boardId={router.query.id}
+            newComment={newComment}
+            setInputCommnet={setInputCommnet}
+            inputCommnet={inputCommnet}
+            newReply={newReply}
+          />
         </div>
-        <CommentToolbar boardId={id} />
+        <CommentToolbar
+          boardId={id}
+          setNewComment={setNewComment}
+          newComment={newComment}
+          inputCommnet={inputCommnet}
+          setInputCommnet={setInputCommnet}
+          setNewReply={setNewReply}
+        />
       </section>
 
       <style jsx>{`

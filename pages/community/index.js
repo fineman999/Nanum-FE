@@ -73,9 +73,9 @@ const Community = () => {
       <CommunityCategoryMenu />
       {/* 커뮤니티 카테고리 */}
       <section className={styles.category_section}>
-        <NoticeCategory list={notice} key={1} />
-        <AllCategory list={all} key={2} />
-        <InfoCategory list={info} key={3} />
+        <NoticeCategory list={notice} />
+        <AllCategory list={all} />
+        <InfoCategory list={info} />
       </section>
       <Footer />
       <BottomMenu />

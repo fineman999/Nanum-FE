@@ -7,16 +7,23 @@ import classNames from "classnames/bind";
 import Link from "next/link";
 const cx = classNames.bind(styles);
 
-const NoticeListItem = ({ key, id, date, title, viewCount }) => {
+const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
   return (
     // <Link to={`/profile/${userInfo.username}`} state={{ user: userInfo }}> Profile </Link>
 
     <Link href={`/community/board/${id}`}>
-      <a style={{ color: "black" }} key={key}>
+      <a style={{ color: "black" }}>
         <li>
           <div className={styles.article_wrapper}>
             <div className={styles.article_content}>
-              <div className={cx("article_header", "new")}>{title}</div>
+              <div>
+                <div className={cx("article_header", "new")}>{title}</div>
+                {type ? (
+                  <div className={styles.content_text}>{content}</div>
+                ) : (
+                  ""
+                )}
+              </div>
               <div className={styles.icons}>
                 <span className={styles.icon_views}>
                   <VisibilityIcon
