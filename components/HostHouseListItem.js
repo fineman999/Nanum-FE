@@ -32,8 +32,8 @@ const HostHouseListItem = ({ item }) => {
                 </Link>
               </div>
             ) : (
-              <div className="">
-                <Chip label="승인완료" />
+              <div className="COMPLETED_APPROVAL">
+                <Chip label="승인완료" sx={{ mr: 1, fontWeight: "bold" }} />
                 <Link href={`/host/house/manage/${item.id}`}>
                   <Chip
                     label="방관리"

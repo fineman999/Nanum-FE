@@ -1,4 +1,8 @@
 .move_list_item {
+  background: white;
+}
+
+.list_item_wrapper {
   display: flex;
   box-sizing: border-box;
   width: 100%;
@@ -14,12 +18,11 @@
 }
 .move_date {
   color: #76c1b2;
+  margin-bottom: 5px;
 }
-
 .move_name {
   margin-bottom: 5px;
 }
-
 .move_house_name {
   margin-right: 8px;
 }
@@ -37,4 +40,6 @@
 .move_btns {
   display: flex;
   justify-content: right;
+  box-sizing: border-box;
+  padding: 0px 10px 10px 10px;
 }

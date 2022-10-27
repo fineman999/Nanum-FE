@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 
 import styles from "../styles/HouseForm.module.css";
-import { fireAlert } from "./common/Alert";
 import HouseFileButton from "./common/HouseFileButton";
 import HostHouseOptions from "./HostHouseOptions";
 import HouseAddressForm from "./HouseAddressForm";
@@ -15,8 +14,14 @@ import HouseMainImage from "./HouseMainImage";
 import HouseTypeForm from "./HouseTypeForm";
 import PreviewImageForm from "./PreviewImageForm";
 import HousePositionForm from "./HousePositionForm";
+import { fireAlert } from "./common/Alert";
+import { userState } from "../state/atom/authState";
+import { useRecoilValue } from "recoil";
+
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const HouseForm = () => {
+  const userValue = useRecoilValue(userState);
   const router = useRouter();
   const [path, setPath] = useState(router.route.split("/")[3]);
   const [form, setForm] = useState({
@@ -349,6 +354,7 @@ const HouseForm = () => {
 
   // 등록 이벤트 핸들러
   const handleAdd = () => {
+    const API_URI = `/houses`;
     const formData = new FormData();
     formData.append(
       "houseRequest",
@@ -361,26 +367,64 @@ const HouseForm = () => {
     formData.append("houseFile", form.houseFile);
     form.houseImgs.forEach((image) => formData.append("houseImgs", image));
 
-    const requestApi = async () => {
-      try {
-        const response = await axios.post(
-          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses`,
-          formData
-        );
-        const { isSuccess, message, result } = response.data;
-        if (isSuccess) {
-          fireAlert({ icon: "success", title: result });
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
+    axios
+      .post(BASE_URL + API_URI, formData, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        console.log("하우스 등록 응답: ", res);
+        const { isSuccess, message, result } = res.data;
+        return result;
+      })
+      .then((result) => {
+        const WEB_FLUX_URL = `${process.env.NANUM_WEBFLUX_SERVICE_BASE_URL}`;
+        const WEB_FLUX_API_URI = `/rooms`;
 
-    requestApi();
-    console.log("form: ", form);
-    for (let entry of formData.entries()) {
-      console.log(entry);
-    }
+        const { id, houseName, mainHouseImgPath } = result;
+        const data = {
+          userIds: [userValue.id],
+          roomName: `${houseName} 채팅방입니다.`,
+          houseId: id,
+          houseImg: mainHouseImgPath,
+        };
+        console.log("채팅방 생성 폼: ", data);
+        axios
+          .post(WEB_FLUX_URL + WEB_FLUX_API_URI, data)
+          .then((res) => {
+            const { status } = res.data;
+            if (status === 201) {
+              fireAlert({ icon: "success", title: "하우스 등록 성공" });
+              router.push({
+                pathname: "/host/house",
+              });
+            }
+          })
+          .catch((err) => console.log("채팅방 생성 에러: ", err));
+      })
+      .catch((err) => console.log(err));
+
+    // // const requestApi = async () => {
+    // //   try {
+    // //     const response = await axios.post(
+    // //       `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses`,
+    // //       formData
+    // //     );
+    // //     const { isSuccess, message, result } = response.data;
+    // //     if (isSuccess) {
+    // //       fireAlert({ icon: "success", title: result });
+    // //     }
+    // //   } catch (err) {
+    // //     console.error(err);
+    // //   }
+    // // };
+
+    // // requestApi();
+    // // console.log("form: ", form);
+    // for (let entry of formData.entries()) {
+    //   console.log(entry);
+    // }
   };
 
   const handleSubmit = (e) => {

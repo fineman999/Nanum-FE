@@ -6,7 +6,6 @@ import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
-import HostNavList from "../../components/mypage/HostNavList";
 import * as Api from "../../lib/apis/apiClient";
 const style = css`
   #mypage {
@@ -266,7 +265,6 @@ export default function MyPage() {
         </section>
         <hr />
         <section id="user_state">
-          <HostNavList />
           <div id="user_move">
             <div id="move_content">
               <div id="move_title">
@@ -281,10 +279,10 @@ export default function MyPage() {
                   onClick={() => {
                     router.push(
                       {
-                        pathname: "/host/movestate",
+                        pathname: "/host/moves",
                         query: { type: 0 },
                       },
-                      `/host/movestate`
+                      `/host/moves`
                     );
                   }}
                 >
@@ -363,10 +361,10 @@ export default function MyPage() {
                   onClick={() =>
                     router.push(
                       {
-                        pathname: "/host/tourstate",
+                        pathname: "/host/tours",
                         query: { type: 0 },
                       },
-                      `/host/tourstate`
+                      `/host/tours`
                     )
                   }
                 >

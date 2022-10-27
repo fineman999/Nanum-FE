@@ -4,6 +4,22 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import HostHouseListItem from "./HostHouseListItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
+const LoadingPageComment = () => {
+  const style = {
+    width: "100%",
+    height: "100%",
+    position: "fixed",
+    top: "0px",
+    left: "0px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+  };
+  return <div style={style}>LOADING...</div>;
+};
+
 const LastPageComment = () => {
   const ScrollToTop = () => {
     window.scrollTo(0, 0);
@@ -84,7 +100,7 @@ const HostHouseList = () => {
         dataLength={houseList.length}
         next={fetchMoreData}
         hasMore={hasMore}
-        loader={<h4>Loading...</h4>}
+        loader={<LoadingPageComment />}
         endMessage={<LastPageComment />}
       >
         {houseList &&

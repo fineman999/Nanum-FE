@@ -1,6 +1,7 @@
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay } from "swiper";
+import styles from "../styles/MainSwiper.module.css";
 
 const itemData = [
   {
@@ -57,39 +58,59 @@ const itemData = [
   },
 ];
 
+const MainMessage = () => {
+  return (
+    <div className={styles.main_message}>
+      <div className={styles.main_message_center}>
+        <h2 className={styles.main_center_title}>
+          여기에
+          <br />
+          메시지를 추가하세요.
+        </h2>
+
+        <h4 className={styles.main_left_message}>나눔</h4>
+        <h4 className={styles.main_right_message}>2022</h4>
+      </div>
+    </div>
+  );
+};
+
 const MainSwiper = () => {
   return (
-    <Swiper
-      effect={"fade"}
-      speed={1000}
-      autoplay={{ delay: 1000, disableOnInteraction: false }}
-      loop={true}
-      fadeEffect={{ crossFade: true }}
-      modules={[EffectFade, Autoplay]}
-      style={{ zIndex: 0 }}
-    >
-      {itemData &&
-        itemData.map((item, index) => {
-          return (
-            <SwiperSlide key={index} className="swiperImage">
-              <div
-                style={{
-                  width: "100%",
-                  height: "560px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
+    <div className={styles.main_swiper_wrapper}>
+      <Swiper
+        effect={"fade"}
+        speed={1000}
+        autoplay={{ delay: 1000, disableOnInteraction: false }}
+        loop={true}
+        fadeEffect={{ crossFade: true }}
+        modules={[EffectFade, Autoplay]}
+        style={{ zIndex: 0 }}
+      >
+        {itemData &&
+          itemData.map((item, index) => {
+            return (
+              <SwiperSlide key={index} className="swiperImage">
+                <div
+                  style={{
+                    width: "100%",
+                    height: "560px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
 
-                  backgroundImage: `url(${item.img})`,
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "100% 100%",
-                }}
-              ></div>
-            </SwiperSlide>
-          );
-        })}
-    </Swiper>
+                    backgroundImage: `url(${item.img})`,
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    backgroundSize: "100% 100%",
+                  }}
+                ></div>
+              </SwiperSlide>
+            );
+          })}
+      </Swiper>
+      <MainMessage />
+    </div>
   );
 };
 

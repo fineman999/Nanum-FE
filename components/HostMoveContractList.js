@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { userState } from "../state/atom/authState";
 import { get, put } from "../lib/apis/apiClient";
 import { useRecoilValue } from "recoil";
 import HostMoveContractListItem from "./HostMoveContractListItem";
+import { Divider } from "@mui/material";
+import LastPageComment from "./LastPageComment";
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
 const HostMoveContractList = () => {
@@ -75,14 +77,17 @@ const HostMoveContractList = () => {
     <div className="host_move_list_wrapper">
       <ul className="move_list">
         {moveList &&
-          moveList.map((listItem) => (
-            <HostMoveContractListItem
-              key={listItem.id}
-              listItem={listItem}
-              handleContract={handleContract}
-              handleComplete={handleComplete}
-            />
+          moveList.map((listItem, index) => (
+            <Fragment key={listItem.id}>
+              <HostMoveContractListItem
+                listItem={listItem}
+                handleContract={handleContract}
+                handleComplete={handleComplete}
+              />
+              {index !== moveList.length ? <Divider /> : ""}
+            </Fragment>
           ))}
+        <LastPageComment />
       </ul>
     </div>
   );

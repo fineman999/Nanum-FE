@@ -55,7 +55,7 @@ const UserMenu = ({ menuList, handleClick }) => {
         </ListItemButton>
       </ListItem>
       <ListItem>
-        <ListItemButton>
+        <ListItemButton onClick={() => setOnSubMenu(!onSubMenu)}>
           <ListItemText primary="지역별" />
         </ListItemButton>
         {/* 하위 메뉴 더보기 */}
