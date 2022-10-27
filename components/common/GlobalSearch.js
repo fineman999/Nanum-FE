@@ -26,7 +26,7 @@ const GlobalSearch = ({ handleOpen }) => {
 
   return (
     <div className="container">
-      <div className="realock_form_content">
+      <div className="realock_form_content" style={{ zIndex: 1001 }}>
         <form className="search_form_realock" onSubmit={handleSubmit}>
           <div className="city_icon">
             <div className="svg_icon">
