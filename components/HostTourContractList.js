@@ -21,7 +21,7 @@ const HostTourContractList = () => {
   useEffect(() => {
     // const API_URI = `/tours/hosts/${userStateValue.id}`;
     const API_URI = `/tours/hosts/1`;
-
+    console.log(filteredHostTourList);
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
