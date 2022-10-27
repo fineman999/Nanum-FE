@@ -296,8 +296,97 @@ export default function MyPage() {
         </section>
         <hr />
         <section id="user_state">
-          <MypageNavList />
-          <div id="user_move"></div>
+          <div id="user_move">
+            <div id="move_content">
+              <div id="move_title">
+                <p>마이룸 </p>
+                <p
+                  style={{
+                    marginLeft: "0.5rem",
+                    color: "red",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                  }}
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/mypage/myroom",
+                        query: { type: 1 },
+                      },
+                      `/mypage/myroom`
+                    );
+                  }}
+                >
+                  더보기
+                </p>
+              </div>
+              <p>
+                {userDate} {userPlace} {userTime}
+              </p>
+            </div>
+            <img src="/images/house.png" />
+          </div>
+          <div id="user_move">
+            <div id="move_content">
+              <div id="move_title">
+                <p>입주 신청 현황 </p>
+                <p
+                  style={{
+                    marginLeft: "0.5rem",
+                    color: "red",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                  }}
+                  onClick={() => {
+                    router.push(
+                      {
+                        pathname: "/mypage/moves",
+                        query: { type: 1 },
+                      },
+                      `/mypage/moves`
+                    );
+                  }}
+                >
+                  더보기
+                </p>
+              </div>
+              <p>
+                {userDate} {userPlace} {userTime}
+              </p>
+            </div>
+            <img src="/images/house.png" />
+          </div>
+          <div id="user_move">
+            <div id="move_content">
+              <div id="move_title">
+                <p>투어 신청 현황</p>
+                <p
+                  style={{
+                    marginLeft: "0.5rem",
+                    color: "red",
+                    fontWeight: "normal",
+                    fontSize: "12px",
+                  }}
+                  onClick={() =>
+                    router.push(
+                      {
+                        pathname: "/mypage/tours",
+                        query: { type: 2 },
+                      },
+                      `/mypage/tours`
+                    )
+                  }
+                >
+                  더보기
+                </p>
+              </div>
+
+              <p>
+                {userDate} {userPlace} {userTime}
+              </p>
+            </div>
+            <img src="/images/house.png" />
+          </div>
         </section>
         <section>
           <section id="user_btn">
