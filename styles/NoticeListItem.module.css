@@ -51,3 +51,11 @@
   font-size: 0.7em;
   color: #76c1b2;
 }
+.content_text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 말줄임 적용 */
+  width: 14rem;
+  font-size: 0.8rem;
+  color: gray;
+}

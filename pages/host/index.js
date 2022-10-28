@@ -6,7 +6,7 @@ import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
-
+import * as Api from "../../lib/apis/apiClient";
 const style = css`
   #mypage {
     display: flex;
@@ -156,6 +156,7 @@ export default function MyPage() {
     go: 0,
     done: 0,
   });
+  const userId = userData.id;
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
     const reader = new FileReader();
@@ -197,6 +198,7 @@ export default function MyPage() {
           throw new Error(`${getChatLists} not allowd`);
         }
         setCount((current) => {
+          console.log(userCountNote);
           let newCondition = { ...current };
           newCondition["chatCount"] = userCountNote.data.count;
           return newCondition;
@@ -431,20 +433,20 @@ export default function MyPage() {
         <section>
           <section id="user_btn">
             <div id="user_unit" onClick={() => router.push("/mail")}>
-              <StyledBadge badgeContent={2} color="error">
+              <StyledBadge badgeContent={count.noteCount} color="error">
                 <img src="/icons/mail.png" />
               </StyledBadge>
               <p>쪽지함</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/chat")}>
-              <StyledBadge badgeContent={100} color="error">
+              <StyledBadge badgeContent={count.chatCount} color="error">
                 <img src="/icons/chat.png" style={{ padding: "5px" }} />
               </StyledBadge>
 
               <p>채팅</p>
             </div>
             <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
-              <StyledBadge badgeContent={4} color="error">
+              <StyledBadge badgeContent={count.alertCount} color="error">
                 <img src="/icons/alarm.png" />
               </StyledBadge>
 

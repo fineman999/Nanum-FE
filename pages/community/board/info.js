@@ -8,7 +8,7 @@ import styles from "../../../styles/Info.module.css";
 const info = () => {
   return (
     <>
-      <SubHeader title="정보" type="info" />
+      <SubHeader title="정보게시판" type="info" />
       <section className={styles.contents_section}>
         <NoticeList />
       </section>

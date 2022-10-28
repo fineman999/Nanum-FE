@@ -2,11 +2,11 @@ import Link from "next/link";
 import React from "react";
 import styles from "../styles/AllCategory.module.css";
 import NoticeList from "./NoticeList";
-const AllCategory = () => {
+const AllCategory = ({ list }) => {
   return (
     <div className={styles.category_container}>
       <div className={styles.category_header}>
-        <h2 className={styles.title}>전체</h2>
+        <h2 className={styles.title}>자유게시판</h2>
         <span className={styles.more_btn}>
           <Link href="/community/board/all">
             <a style={{ color: "#76c1b2" }}>더보기</a>
@@ -14,7 +14,7 @@ const AllCategory = () => {
         </span>
       </div>
       <div className="category_body">
-        <NoticeList />
+        <NoticeList list={list} />
       </div>
     </div>
   );

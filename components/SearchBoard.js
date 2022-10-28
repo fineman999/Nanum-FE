@@ -1,8 +1,8 @@
 import React from "react";
 
-import styles from "../styles/CommunityCategoryMenu.module.css";
+import styles from "../styles/SearchBoard.module.css";
 
-const CommunityCategoryMenu = () => {
+const SearchBoard = () => {
   return (
     <div className="category_menu_wrapper">
       <ul className={styles.category_menu_list}>
@@ -14,4 +14,4 @@ const CommunityCategoryMenu = () => {
   );
 };
 
-export default CommunityCategoryMenu;
+export default SearchBoard;

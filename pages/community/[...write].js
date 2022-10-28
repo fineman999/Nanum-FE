@@ -1,14 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SubHeader from "../../components/common/SubHeader";
 import { TextField } from "@mui/material";
 import PreviewImageForm from "../../components/PreviewImageForm";
+import { useRouter } from "next/router";
+import { fireAlert } from "../../components/common/Alert";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom/authState";
+import axios from "axios";
 
+const category = {
+  notice: 1,
+  all: 2,
+  info: 3,
+};
 const Write = () => {
+  const router = useRouter();
+  const check = router.query;
   const [form, setForm] = useState({
     title: "",
     content: "",
     images: [],
   });
+  const userData = useRecoilState(userState);
 
   const handleChange = (e) => {
     setForm({
@@ -45,9 +58,64 @@ const Write = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
+
+    if (form.title.length < 1) {
+      fireAlert({ icon: "error", title: "제목을 입력해주세요." });
+      return;
+    }
+
+    if (form.content.length < 1) {
+      fireAlert({ icon: "error", title: "내용을 입력해주세요." });
+      return;
+    }
+    if (userData !== undefined || userData !== null) {
+      // 시작
+      const boardRequest = {
+        title: form.title,
+        content: form.content,
+        boardCategoryId: category[check.write[0]],
+      };
+      const formData = new FormData();
+      console.log("duhihi", form.images.length);
+      if (form.images.length < 1) {
+        formData.append("boardImages", null);
+      } else {
+        form.images.forEach((image) => {
+          formData.append("boardImages", image);
+        });
+      }
+
+      const uploaderString = JSON.stringify(boardRequest);
+      formData.append(
+        "boardRequest",
+        new Blob([uploaderString], { type: "application/json" })
+      );
+      const res = await axios.post(
+        `https://nanum.site/board-service/api/v1/posts/${userData[0].id}`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      console.log(res);
+      if (res.status == 201) {
+        fireAlert({
+          icon: "success",
+          title: "성공적으로 게시글을 작성하였습니다.",
+        });
+        router.push(`board/${check.write[0]}`);
+      } else {
+        fireAlert({
+          icon: "error",
+          title: "게시글 생성을 실패했습니다.",
+        });
+      }
+    }
   };
 
   return (

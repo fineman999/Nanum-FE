@@ -5,7 +5,49 @@ import styles from "../../styles/MyHouseInfo.module.css";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import PeopleIcon from "@mui/icons-material/People";
 import { IconButton } from "@mui/material";
+import { getHouseChat, putChat } from "../../lib/apis/chat";
+import { fireAlert } from "../common/Alert";
+import { useRecoilValue } from "recoil";
+import { userState } from "../../state/atom/authState";
+import { useRouter } from "next/router";
 const MyHouseInfo = ({ roomInfo }) => {
+  const userData = useRecoilValue(userState);
+  const router = useRouter();
+  const handleChat = async () => {
+    console.log(roomInfo);
+    const houseId = roomInfo.houseId;
+    try {
+      const getChat = await getHouseChat({ houseId });
+      if (!getChat.data) {
+        fireAlert({ icon: "error", title: "채팅방이 존재하지 않습니다." });
+        return;
+      }
+      console.log(getChat);
+      // 기존에 채팅방에 없는 경우
+      let { id } = getChat.data;
+      if (!findUserInChat(getChat.data)) {
+        const userId = userData.id;
+        const getResult = await putChat({ id, userId });
+        id = getResult.data.id;
+      }
+      await goChat(id);
+    } catch (e) {
+      console.log("Errror", e);
+    }
+  };
+  const findUserInChat = async (data) => {
+    console.log(data);
+    data.roomInfo.users.filter((user) => {
+      if (user.userId + "" === userData.id) {
+        return true;
+      }
+    });
+    return false;
+  };
+
+  const goChat = async (room) => {
+    router.push(`/chat/${room}`);
+  };
   return (
     <div className="house_room_info_wrapper">
       <div className={styles.house_info}>
@@ -15,7 +57,7 @@ const MyHouseInfo = ({ roomInfo }) => {
         <div className={styles.house_desc}>
           <div className={styles.house_name}>
             {roomInfo.houseName}
-            <IconButton>
+            <IconButton onClick={handleChat}>
               <PeopleIcon />
             </IconButton>
           </div>

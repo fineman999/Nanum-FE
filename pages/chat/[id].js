@@ -15,6 +15,7 @@ import { postS3 } from "../../lib/apis/image";
 import FriendModal from "../../components/common/modal/FriendModal";
 
 import WaveModal from "../../components/common/modal/WaveModal";
+import { fireAlert } from "../../components/common/Alert";
 
 const style = css`
   #chat_body {
@@ -164,6 +165,10 @@ export default function Chat() {
 
   //이미지 하나 s3에 보내고 소켓 이미지 보내기
   const sendS3 = () => {
+    if (!imageFile) {
+      fireAlert({ icon: "error", title: "이미지 입력" });
+      return;
+    }
     postS3({ imgFile: imageFile })
       .then((res) => {
         let obj = {
@@ -174,9 +179,7 @@ export default function Chat() {
           createAt: new Date(),
           img: userData[0].profileImgUrl,
         };
-
         ws.current.send(JSON.stringify(obj));
-
         setSendMsg(!sendMsg);
         handleClose();
       })

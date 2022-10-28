@@ -90,14 +90,12 @@ export default function ImageModal({
               }}
             />
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            <TwoButtonOption
-              text1="전송"
-              text2="취소"
-              handleBtn1={sendS3}
-              handleBtn2={handleClose}
-            />
-          </Typography>
+          <TwoButtonOption
+            text1="전송"
+            text2="취소"
+            handleBtn1={sendS3}
+            handleBtn2={handleClose}
+          />
         </Box>
       </Modal>
       <style jsx>{mystyle}</style>
