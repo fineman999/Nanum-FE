@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import MapsHomeWorkIcon from "@mui/icons-material/MapsHomeWork";
 import TuneIcon from "@mui/icons-material/Tune";
+import AutoComplete from "./AutoComplete";
 
 const GlobalSearch = ({ handleOpen }) => {
   const router = useRouter();
@@ -40,7 +41,9 @@ const GlobalSearch = ({ handleOpen }) => {
               type="text"
               placeholder="지역명, 대학교, 지하철 역으로 검색..."
               onChange={handleChange}
+              autoComplete="off"
             />
+            <AutoComplete searchForm={searchForm} />
           </div>
           <div className="filter_icon" onClick={handleOpen}>
             <div className="svg_icon">
@@ -101,6 +104,7 @@ const GlobalSearch = ({ handleOpen }) => {
 
           .search_form_realock .realock_form_placeholder {
             width: 70%;
+            position: relative;
           }
 
           .search_form_realock .realock_form_placeholder .form_placeholder {
@@ -115,9 +119,9 @@ const GlobalSearch = ({ handleOpen }) => {
           .search_form_realock
             .realock_form_placeholder
             .form_placeholder:focus {
-            outline: 2px solid #76c1b2;
             border-radius: 5px;
             color: #000000;
+            outline: none;
           }
 
           .search_form_realock .filter_icon {

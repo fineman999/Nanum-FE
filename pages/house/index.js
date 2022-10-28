@@ -10,23 +10,57 @@ import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
+import { get } from "../../lib/apis/apiClient";
+
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(router.query.searchWord);
-  const [searchForm, setSearchForm] = useState({
-    searchWord: "",
-    searchArea: "",
-    genderType: "",
-    houseType: "",
-    cPositionY: "", // 중심 좌표 값 (위도, 경도)
-    cPositionX: "",
-    bPositionY: "", // 경계 좌표 값 (위도, 경도)
-    bPositionX: "",
+  const [houseList, setHouseList] = useState([]);
+
+  const [mapDefault, setMapDefault] = useState({
+    lat: 35.1659659088957,
+    lng: 129.132374315529,
   });
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const encodeUri = decodeURIComponent(router.asPath);
+    const encodeUriTokens = encodeUri.split("&");
+    const nextSearchWord = encodeUriTokens[0]
+      .split("=")[1]
+      .split("+")
+      .join(" ");
+    setSearchInput(nextSearchWord);
+
+    if (encodeUriTokens.length > 1) {
+      const nextSearchArea = encodeUriTokens[1].split("=")[1];
+      const nextGenderType = encodeUriTokens[2].split("=")[1];
+      const nextHouseType = encodeUriTokens[3].split("=")[1];
+
+      const API_URI = `/houses/search/map?sk=${nextSearchWord}&ar=${nextSearchArea}&gt=${nextGenderType}&ht=${nextHouseType}&cX=${
+        result[0].x
+      }&cY=${result[0].y}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
+
+      get(BASE_URL, API_URI)
+        .then((res) => {
+          const { isSuccess, message, result } = res.data;
+          if (isSuccess) {
+            setHouseList(result);
+          }
+        })
+        .catch((err) => console.log(err));
+    } else {
+      const API_URI = `/houses/search/elastic?searchWord=${nextSearchWord}`;
+      get(BASE_URL, API_URI)
+        .then((res) => {
+          const { isSuccess, message, result } = res.data;
+          if (isSuccess) setHouseList(result);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [router]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -49,18 +83,27 @@ export default function Houses() {
       <div className="search_container">
         {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <HouseMap searchForm={searchForm} setSearchForm={setSearchForm} />
+          <HouseMap
+            mapDefault={mapDefault}
+            setMapDefault={setMapDefault}
+            searchInput={searchInput}
+            houseList={houseList}
+            setHouseList={setHouseList}
+          />
         </div>
         <div className="house_list_wrapper">
           <div className="search_wrapper">
             <div className="search_inp_wrapper">
-              <input
-                className="search_input"
-                name="searchWord"
-                value={searchInput}
-                placeholder="지역명, 대학명, 지하철역으로 검색..."
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
+              <div>
+                <input
+                  className="search_input"
+                  name="searchWord"
+                  value={searchInput}
+                  placeholder="지역명, 대학명, 지하철역으로 검색..."
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  autoComplete="off"
+                />
+              </div>
               <div className="icon_search">
                 <IconButton onClick={handleSubmit}>
                   <SearchIcon />
@@ -73,10 +116,7 @@ export default function Houses() {
               </IconButton>
             </div>
           </div>
-          <HouseSearchList
-            searchForm={searchForm}
-            setSearchForm={setSearchForm}
-          />
+          <HouseSearchList houseList={houseList} setHouseList={setHouseList} />
         </div>
       </div>
       <SearchModal open={open} handleClose={handleClose} />

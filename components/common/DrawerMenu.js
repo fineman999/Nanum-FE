@@ -22,6 +22,9 @@ import { useRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import { logout } from "../../lib/apis/auth";
+import { get } from "../../lib/apis/apiClient";
+
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const areaList = [
   { id: 1, name: "전국", value: "all", houseNumber: 1700 },
@@ -44,7 +47,7 @@ const areaList = [
   { id: 18, name: "세종", value: "sejong", houseNumber: 100 },
 ];
 
-const UserMenu = ({ menuList, handleClick }) => {
+const UserMenu = ({ menuList, handleClick, areaList, handleRegion }) => {
   const [onSubMenu, setOnSubMenu] = useState(false);
 
   return (
@@ -71,10 +74,13 @@ const UserMenu = ({ menuList, handleClick }) => {
           {areaList &&
             areaList.map((listItem, index) => (
               <ListItem key={listItem.id}>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemText primary={listItem.name} />
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => handleRegion(listItem.region)}
+                >
+                  <ListItemText primary={listItem.region} />
                   <Chip
-                    label={listItem.houseNumber}
+                    label={listItem.houseCount}
                     sx={{
                       border: "1px solid #f5f5f5",
                       color: "rgba(0,0,0,0.5)",
@@ -129,6 +135,12 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const [role, setRole] = useState("");
   const isLogin = authData.isLogin;
   const [menuList, setMenuList] = useState([]);
+  const [areaList, setAreaList] = useState([]);
+
+  useEffect(() => {
+    const API_URI = `/houses/search/regions`;
+    get(BASE_URL, API_URI).then((res) => setAreaList(res.data.result));
+  }, []);
 
   const handleClick = (listItem, index) => {
     if (listItem.sub) {
@@ -159,6 +171,9 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
     toggleDrawer();
   };
 
+  const handleRegion = (region) => {
+    const API_URI = `/houses/search/region?region=${region}`;
+  };
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(sessionStorage.getItem("role"));
@@ -248,7 +263,12 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
         </IconButton>
       </Box>
       <Divider />
-      <UserMenu menuList={menuList} handleClick={handleClick} />
+      <UserMenu
+        menuList={menuList}
+        handleClick={handleClick}
+        areaList={areaList}
+        handleRegion={handleRegion}
+      />
       <Divider />
       {/* 로그아웃 버튼 */}
       <Box p={1} sx={{ display: "flex", justifyContent: "center" }}>

@@ -8,24 +8,24 @@ import React from "react";
 import styles from "../styles/SearchAreaRadioGroup.module.css";
 
 const areaList = [
-  { name: "전국", value: "all" },
-  { name: "서울", value: "seoul" },
-  { name: "경기", value: "gyeong-gi" },
-  { name: "인천", value: "incheon" },
-  { name: "부산", value: "busan" },
-  { name: "대구", value: "daegu" },
-  { name: "대전", value: "daejeon" },
-  { name: "경남", value: "gyeongnam" },
-  { name: "전남", value: "jeonnam" },
-  { name: "충남", value: "chungnam" },
-  { name: "광주", value: "goyang" },
-  { name: "울산", value: "ulsan" },
-  { name: "경북", value: "gyeongbug" },
-  { name: "전북", value: "jeonbug" },
-  { name: "충북", value: "chungbug" },
-  { name: "강원", value: "gang-won" },
-  { name: "제주", value: "jejudo" },
-  { name: "세종", value: "sejong" },
+  { name: "전국", value: "전국" },
+  { name: "서울", value: "서울" },
+  { name: "경기", value: "경기" },
+  { name: "인천", value: "인천" },
+  { name: "부산", value: "부산" },
+  { name: "대구", value: "대구" },
+  { name: "대전", value: "대전" },
+  { name: "경남", value: "경남" },
+  { name: "전남", value: "전남" },
+  { name: "충남", value: "충남" },
+  { name: "광주", value: "광주" },
+  { name: "울산", value: "울산" },
+  { name: "경북", value: "경북" },
+  { name: "전북", value: "전북" },
+  { name: "충북", value: "충북" },
+  { name: "강원", value: "강원" },
+  { name: "제주", value: "제주" },
+  { name: "세종", value: "세종" },
 ];
 
 const SearchAreaRadioGroup = ({ handleChange }) => {
@@ -34,7 +34,7 @@ const SearchAreaRadioGroup = ({ handleChange }) => {
       <FormControl variant="outlined">
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="all"
+          defaultValue="전국"
           sx={{
             display: "flex",
             flexDirection: "row",

@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
+import { get } from "../../../lib/apis/apiClient";
+import MarkerContent from "./MarkerContent";
 
 const positions = [
   {
@@ -508,28 +510,22 @@ const positions = [
   },
 ];
 
-const HouseMap = ({ setSearchForm }) => {
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
+
+const HouseMap = ({ mapDefault, searchInput, houseList }) => {
   const router = useRouter();
   const mapRef = useRef(null);
-
   useEffect(() => {
-    const encodeUri = decodeURIComponent(router.asPath);
-    const encodeUriTokens = encodeUri.split("&");
-    const nextSearchWord = encodeUriTokens[0]
-      .split("=")[1]
-      .split("+")
-      .join(" ");
-
+    console.log("하우스 맵: ", houseList);
     const { kakao } = globalThis;
     kakao.maps.load(() => {
       const mapContainer = mapRef.current;
       const mapOptions = {
-        center: new kakao.maps.LatLng(35.1659659088957, 129.132374315529),
+        center: new kakao.maps.LatLng(mapDefault.lat, mapDefault.lng),
         level: 4,
       };
 
       const map = new kakao.maps.Map(mapContainer, mapOptions);
-
       // 마커 이미지
       const imageSrc =
         "https://cdn-icons-png.flaticon.com/512/3477/3477419.png"; // 마커이미지의 주소입니다
@@ -544,8 +540,8 @@ const HouseMap = ({ setSearchForm }) => {
 
       const geocoder = new kakao.maps.services.Geocoder();
       geocoder.addressSearch(
-        nextSearchWord
-          ? nextSearchWord
+        searchInput
+          ? searchInput
           : "부산광역시 해운대구 우동 1514 센텀리더스마크 401호",
         function (result, status) {
           if (status === kakao.maps.services.Status.OK) {
@@ -554,40 +550,11 @@ const HouseMap = ({ setSearchForm }) => {
               map: map,
               position: coords,
               image: markerImage,
+              title: "나눔 컴퍼니",
             });
 
-            const bounds = map.getBounds(); // 지도의 현재 영역을 얻어옵니다
-            const swLatLng = bounds.getSouthWest(); // 영역의 남서쪽 좌표를 얻어옵니다
-            // const neLatLng = bounds.getNorthEast(); // 영역의 북동쪽 좌표를 얻어옵니다
-
-            // 검색어, 검색 조건(지역, 성별타입, 하우스타입) 추출
-            if (encodeUriTokens.length > 1) {
-              const nextSearchArea = encodeUriTokens[1].split("=")[1];
-              const nextGenderType = encodeUriTokens[2].split("=")[1];
-              const nextHouseType = encodeUriTokens[3].split("=")[1];
-
-              setSearchForm({
-                searchWord: nextSearchWord,
-                searchArea: nextSearchArea,
-                genderType: nextGenderType,
-                houseType: nextHouseType,
-                cPositionY: result[0].y,
-                cPositionX: result[0].x,
-                bPositionY: swLatLng.getLat(),
-                bPositionX: swLatLng.getLng(),
-              });
-            } else {
-              setSearchForm({
-                searchWord: nextSearchWord,
-                cPositionY: result[0].y,
-                cPositionX: result[0].x,
-                bPositionY: swLatLng.getLat(),
-                bPositionX: swLatLng.getLng(),
-              });
-            }
-
             kakao.maps.event.addListener(marker, "click", () => {
-              alert("center marker clicked!");
+              alert(marker.getTitle());
             });
 
             // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
@@ -603,15 +570,20 @@ const HouseMap = ({ setSearchForm }) => {
         minLevel: 4, // 클러스터 할 최소 지도 레벨
       });
 
-      const markers = positions.map((position) => {
+      const markers = houseList.map((listItem) => {
+        const position = new kakao.maps.LatLng(
+          Number(listItem.lat), // Y
+          Number(listItem.lon) // X
+        );
         const marker = new kakao.maps.Marker({
           map: map,
-          position: new kakao.maps.LatLng(position.lat, position.lng),
+          position: position,
           image: markerImage,
+          title: listItem.houseName,
         });
 
         kakao.maps.event.addListener(marker, "click", function () {
-          alert("marker click!");
+          alert(marker.getTitle());
         });
 
         return marker;
@@ -620,15 +592,40 @@ const HouseMap = ({ setSearchForm }) => {
       // 클러스터러에 마커들을 추가합니다
       clusterer.addMarkers(markers);
 
-      kakao.maps.event.addListener(map, "dragend", () => {
-        const position = map.getCenter();
-        alert(`현재 위치${position}를 기준으로 하우스 목록을 불러옵니다...`);
-      });
+      // // // 드래그 이벤트 핸들러
+      // kakao.maps.event.addListener(map, "dragend", () => {
+      //   const position = map.getCenter();
+      //   const bounds = map.getBounds();
+      //   // 영역의 남서쪽 좌표를 얻어옵니다
+      //   const swLatLng = bounds.getSouthWest();
+      //   const API_URI = `/houses/search/map?cX=${position.getLng()}&cY=${position.getLat()}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
+      //   console.log(`드래그 이벤트: `, API_URI);
 
-      const zoomControl = new kakao.maps.ZoomControl();
-      map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+      //   get(BASE_URL, API_URI).then((res) => {
+      //     setHouseList(() => {
+      //       return res.data.result;
+      //     });
+      //   });
+      // });
+
+      // // 확대/축소 이벤트 핸들러
+      // kakao.maps.event.addListener(map, "zoom_changed", function () {
+      //   const position = map.getCenter();
+      //   const bounds = map.getBounds();
+      //   // 영역의 남서쪽 좌표를 얻어옵니다
+      //   const swLatLng = bounds.getSouthWest();
+      //   const API_URI = `/houses/search/map?cX=${position.getLng()}&cY=${position.getLat()}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
+      //   console.log(`드래그 이벤트: `, API_URI);
+
+      //   get(BASE_URL, API_URI).then((res) => {
+      //     setHouseList(res.data.result);
+      //   });
+      // });
+
+      // const zoomControl = new kakao.maps.ZoomControl();
+      // map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
     });
-  }, [router.query.searchWord]);
+  }, [router, houseList]);
 
   return (
     <>
