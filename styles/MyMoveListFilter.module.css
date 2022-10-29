@@ -1,0 +1,14 @@
+.filter_list {
+  display: flex;
+}
+
+.filter_list .filter_list_item {
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.filter_list .filter_list_item.active {
+  color: rgba(215, 110, 144, 1);
+  font-weight: bold;
+  text-decoration: underline;
+}
