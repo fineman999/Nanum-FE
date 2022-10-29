@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import HouseSearchFilterList from "./HouseSearchFilterList";
 import HouseSearchListItem from "./HouseSearchListItem";
+import filteredHouseSearchListState from "../state/selector/filteredHouseSearchListState";
 
-const HouseSearchList = ({ houseList, setHouseList }) => {
+const HouseSearchList = ({ houseList }) => {
+  const filteredHouseList = useRecoilValue(filteredHouseSearchListState);
   return (
     <>
       <HouseSearchFilterList />
       <ul className="house_list">
-        {houseList &&
-          houseList.map((listItem) => (
+        {filteredHouseList &&
+          filteredHouseList.map((listItem) => (
             <li className="house_list_item" key={listItem.id}>
               <HouseSearchListItem listItem={listItem} />
             </li>

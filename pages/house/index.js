@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
 import { get } from "../../lib/apis/apiClient";
+import houseSearchListState from "../../state/atom/houseSearchListState";
+import { useRecoilState } from "recoil";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
@@ -18,7 +20,7 @@ export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(router.query.searchWord);
-  const [houseList, setHouseList] = useState([]);
+  const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
   useEffect(() => {
     const encodeUri = decodeURIComponent(router.asPath);

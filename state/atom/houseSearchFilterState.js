@@ -9,9 +9,9 @@ import { atom } from "recoil";
 // 최고가(MAXIMUM)
 // 좋아요(LIKE)
 
-const houseFilterState = atom({
-  key: "houseFilterState",
+const houseSearchFilterState = atom({
+  key: "houseSearchFilterState",
   default: "ALL",
 });
 
-export default houseFilterState;
+export default houseSearchFilterState;
