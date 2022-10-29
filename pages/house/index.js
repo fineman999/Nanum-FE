@@ -20,11 +20,6 @@ export default function Houses() {
   const [searchInput, setSearchInput] = useState(router.query.searchWord);
   const [houseList, setHouseList] = useState([]);
 
-  const [mapDefault, setMapDefault] = useState({
-    lat: 35.1659659088957,
-    lng: 129.132374315529,
-  });
-
   useEffect(() => {
     const encodeUri = decodeURIComponent(router.asPath);
     const encodeUriTokens = encodeUri.split("&");
@@ -49,14 +44,6 @@ export default function Houses() {
           if (isSuccess) {
             setHouseList(result);
           }
-        })
-        .catch((err) => console.log(err));
-    } else {
-      const API_URI = `/houses/search/elastic?searchWord=${nextSearchWord}`;
-      get(BASE_URL, API_URI)
-        .then((res) => {
-          const { isSuccess, message, result } = res.data;
-          if (isSuccess) setHouseList(result);
         })
         .catch((err) => console.log(err));
     }
@@ -84,8 +71,6 @@ export default function Houses() {
         {/* 지도 맵 API */}
         <div className="map_wrapper">
           <HouseMap
-            mapDefault={mapDefault}
-            setMapDefault={setMapDefault}
             searchInput={searchInput}
             houseList={houseList}
             setHouseList={setHouseList}
