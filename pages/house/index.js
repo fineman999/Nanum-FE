@@ -20,6 +20,7 @@ export default function Houses() {
   const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
   useEffect(() => {
+    console.log("houseList ", houseList);
     setSearchInput(router.query.searchWord);
   }, [router]);
 

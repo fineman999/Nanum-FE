@@ -42,6 +42,8 @@ const region = () => {
           get(BASE_URL, API_URI).then((res) => {
             const { status } = res;
             const { isSuccess, message, result } = res.data;
+
+            console.log(result);
             if (status === 200 && isSuccess) {
               // 마커 클러스터러를 생성합니다
               const clusterer = new kakao.maps.MarkerClusterer({
@@ -59,11 +61,13 @@ const region = () => {
                   map: map,
                   position: position,
                   // image: markerImage,
-                  title: listItem.houseName,
+                  title: listItem.id,
                 });
 
                 kakao.maps.event.addListener(marker, "click", function () {
-                  alert(marker.getTitle());
+                  router.push({
+                    pathname: `/house/${marker.getTitle()}`,
+                  });
                 });
 
                 return marker;
