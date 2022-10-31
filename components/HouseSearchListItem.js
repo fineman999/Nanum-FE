@@ -65,7 +65,7 @@ const HouseSearchListItem = ({ listItem }) => {
             </span>
           </div>
           {/* 좋아요 버튼 */}
-          <LikeButton isLike={wishId ? true : false} wishCount={wishCount} />
+          <LikeButton isLike={wishId ? true : false} listItem={listItem} />
         </div>
         <div className="house_info_body">
           <div className="house_type_wrapper">

@@ -28,6 +28,7 @@ const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const UserMenu = ({ menuList, handleClick, areaList, handleRegion }) => {
   const [onSubMenu, setOnSubMenu] = useState(false);
+  const router = useRouter();
 
   return (
     <List>
@@ -151,8 +152,15 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   };
 
   const handleRegion = (region) => {
-    const API_URI = `/houses/search/region?region=${region}`;
+    router.push({
+      pathname: "/house/region",
+      query: {
+        region: region,
+      },
+    });
+    toggleDrawer();
   };
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       setRole(sessionStorage.getItem("role"));

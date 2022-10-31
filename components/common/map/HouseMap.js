@@ -57,12 +57,19 @@ const HouseMap = ({ setHouseList }) => {
 
             const position = map.getCenter();
             const bounds = map.getBounds();
-            // 영역의 남서쪽 좌표를 얻어옵니다
             const swLatLng = bounds.getSouthWest();
+
             let API_URI;
+
+            // 일반 검색
+
             if (searchInput !== undefined) {
               API_URI = `/houses/search/map?sk=${searchInput}&cX=${position.getLng()}&cY=${position.getLat()}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
+            } else {
+              // 검색어 없는 경우
             }
+
+            // 상세 검색
             if (queryStrings !== undefined) {
               API_URI = `/houses/search/map?sk=${searchInput}&ar=${
                 queryStrings.searchArea
