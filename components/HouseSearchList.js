@@ -1,31 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { get } from "../lib/apis/apiClient";
+import React, { useEffect } from "react";
+import { useRecoilValue } from "recoil";
 import HouseSearchFilterList from "./HouseSearchFilterList";
 import HouseSearchListItem from "./HouseSearchListItem";
+import filteredHouseSearchListState from "../state/selector/filteredHouseSearchListState";
 
-const HouseSearchList = ({ searchForm }) => {
-  const [houseList, setHouseList] = useState([]);
-  const { cPositionY, cPositionX } = searchForm;
-  useEffect(() => {
-    console.log("하우스 목록 검색: ", searchForm);
-
-    if (cPositionY !== "" && cPositionX !== "") {
-      const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
-      const API_URI = `/houses/search?searchWord=${searchForm.searchWord}`;
-
-      get(BASE_URL, API_URI)
-        .then((res) => res.data)
-        .then((data) => setHouseList([...data.result]))
-        .catch((err) => console.log(err));
-    }
-  }, [searchForm]);
-
+const HouseSearchList = ({ houseList }) => {
+  const filteredHouseList = useRecoilValue(filteredHouseSearchListState);
   return (
     <>
       <HouseSearchFilterList />
       <ul className="house_list">
-        {houseList &&
-          houseList.map((listItem) => (
+        {filteredHouseList &&
+          filteredHouseList.map((listItem) => (
             <li className="house_list_item" key={listItem.id}>
               <HouseSearchListItem listItem={listItem} />
             </li>

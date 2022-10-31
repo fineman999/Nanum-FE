@@ -3,8 +3,14 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { pink } from "@mui/material/colors";
 import { Favorite } from "@mui/icons-material";
 import { fireAlert } from "./Alert";
+import { userState } from "../../state/atom/authState";
+import { useRecoilValue } from "recoil";
+import { post } from "../../lib/apis/apiClient";
 
-const LikeButton = ({ isLike = false }) => {
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
+
+const LikeButton = ({ isLike = false, listItem }) => {
+  const userValue = useRecoilValue(userState);
   const [like, setLike] = useState(isLike);
   const [likeClicked, setLikeClicked] = useState(false);
 
@@ -14,14 +20,21 @@ const LikeButton = ({ isLike = false }) => {
       return null;
     }
 
-    setLike(!like);
-    setLikeClicked(true);
+    // setLike(!like);
+    // setLikeClicked(true);
 
     if (!like) {
-      setTimeout(() => {
-        fireAlert({ icon: "success", title: "좋아요 하우스 추가" });
-        setLikeClicked(false);
-      }, 0);
+      const API_URI = `/users/${userValue.id}/wishes`;
+      const { id } = listItem;
+
+      post(BASE_URL, API_URI, {
+        houseId: id,
+      }).then((res) => console.log(res));
+      // setTimeout(() => {
+      //   fireAlert({ icon: "success", title: "좋아요 하우스 추가" });
+
+      //   setLikeClicked(false);
+      // }, 0);
     } else {
       setTimeout(() => {
         fireAlert({ icon: "success", title: "좋아요 하우스 삭제" });

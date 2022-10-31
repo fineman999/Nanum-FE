@@ -45,7 +45,7 @@ const SearchModal = ({ open, handleClose }) => {
   const router = useRouter();
   const [detailSearchForm, setDetailSearchForm] = useState({
     searchWord: "", // 검색 키워드
-    searchArea: "all", // 지역 검색
+    searchArea: "전국", // 지역 검색
     genderType: "", // 성별타입 검색
     houseType: "", // 하우스 타입 검색
   });
@@ -102,11 +102,12 @@ const SearchModal = ({ open, handleClose }) => {
                 type="search"
                 placeholder="지역명, 대학명, 지하철역으로 검색..."
                 onChange={handleChange}
+                autoComplete="off"
               />
             </Paper>
           </Box>
           {/* 지역별 검색 키워드 */}
-          {/* <SearchAreaRadioGroup handleChange={handleChange} /> */}
+          <SearchAreaRadioGroup handleChange={handleChange} />
 
           <Box mb={2}>
             <Stack spacing={1}>
@@ -124,9 +125,9 @@ const SearchModal = ({ open, handleClose }) => {
                     name="genderType"
                     onChange={handleChange}
                   >
-                    <MenuItem value="common">남녀공용</MenuItem>
-                    <MenuItem value="male">남성전용</MenuItem>
-                    <MenuItem value="female">여성전용</MenuItem>
+                    <MenuItem value="COMMON">남녀공용</MenuItem>
+                    <MenuItem value="MALE">남성전용</MenuItem>
+                    <MenuItem value="FEMALE">여성전용</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
@@ -145,8 +146,9 @@ const SearchModal = ({ open, handleClose }) => {
                     name="houseType"
                     onChange={handleChange}
                   >
-                    <MenuItem value="village">빌라</MenuItem>
-                    <MenuItem value="apart">아파트</MenuItem>
+                    <MenuItem value="원룸형">원룸형</MenuItem>
+                    <MenuItem value="빌라">빌라형</MenuItem>
+                    <MenuItem value="아파트형">아파트형</MenuItem>
                   </Select>
                 </FormControl>
               </Box>

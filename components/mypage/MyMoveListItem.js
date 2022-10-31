@@ -6,22 +6,22 @@ import MoveButton from "./MoveButton";
 
 const messages = {
   WAITING: "대기중",
-  APPROVED: "승인됨",
-  REJECTED: "거부됨",
-  CANCELED: "취소됨",
-  TOUR_COMPLETED: "완료됨",
+  REJECTED: "거부",
+  CANCELED: "취소",
+  CONTRACTING: "계약 중",
+  CONTRACT_COMPLETED: "계약 완료",
 };
 
 const MyMoveListItem = ({ listItem }) => {
-  const { moveInStatus } = listItem;
+  const { houseName, roomName, moveInStatus } = listItem;
   return (
     <li className={styles.move_list_item}>
       <div className={styles.move_status}>
         <h3>입주 신청 {messages[moveInStatus]}</h3>
         <div className={styles.move_date}>{listItem.moveDate}</div>
         <div className={styles.move_name}>
-          <span className={styles.move_house_name}>하우스_이름</span>
-          <span className="tour_room_name">방_이름</span>
+          <span className={styles.move_house_name}>{houseName}</span>
+          <span className="tour_room_name">{roomName}</span>
         </div>
         <div className={styles.move_btns}>
           <MoveButton houseMoveStatus={moveInStatus} />

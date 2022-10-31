@@ -1,6 +1,11 @@
+import { useEffect } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 import css from "styled-jsx/css";
 import Header from "../components/common/Header";
 import HouseListItem from "../components/HouseListItem";
+import { get } from "../lib/apis/apiClient";
+import { userState } from "../state/atom/authState";
+import wishListState from "../state/atom/wishListState";
 
 const style = css`
   #like {
@@ -77,15 +82,30 @@ const itemData = [
   },
 ];
 
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
+
 export default function Like() {
+  const userValue = useRecoilValue(userState);
+  const [wishList, setWishList] = useRecoilState(wishListState);
+  useEffect(() => {
+    const API_URI = `/users/${userValue.id}/wishes`;
+
+    get(BASE_URL, API_URI).then((res) => {
+      console.log(res);
+      const { status } = res;
+      const { isSuccess, message, result } = res.data;
+
+      setWishList(result.content);
+    });
+  }, []);
   return (
     <>
       <div id="like">
         <Header title="좋아요" type="like" />
         <div className="house_list_wrapper">
           <ul className="house_list">
-            {itemData &&
-              itemData.map((item, index) => (
+            {wishList &&
+              wishList.map((item, index) => (
                 <li className="house_list_item" key={index}>
                   <HouseListItem item={item} />
                 </li>
