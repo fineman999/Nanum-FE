@@ -13,6 +13,8 @@ import { getBoard } from "../../../lib/apis/board";
 import { useRouter } from "next/router";
 import axios from "axios";
 import * as Api from "../../../lib/apis/apiClient";
+import { useRecoilState } from "recoil";
+import { userState } from "../../../state/atom/authState";
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -24,6 +26,7 @@ const Article = () => {
     commentId: 0,
     replyName: "",
   });
+
   useEffect(() => {
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
@@ -34,6 +37,7 @@ const Article = () => {
         );
         setBoard(getBoards.data.result);
         console.log("HIHIHI", getBoards);
+
         if (!getBoards) {
           throw new Error(`${getBoards} not allowd`);
         }
@@ -63,6 +67,8 @@ const Article = () => {
             createAt={board.updateAt}
             viewCount={board.viewCount}
             profileImgUrl={board.profileImgUrl}
+            userId={board.userId}
+            categoryId={board.categoryId}
           />
           <ContentBody title={board.title} content={board.content} />
           <PreviewImageScroll imageList={board.imgUrls} date={board.updateAt} />

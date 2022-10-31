@@ -1,5 +1,5 @@
 import { Divider } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 import CommentListItem from "../community/CommentListItem";
 import * as Api from "../../lib/apis/apiClient";
@@ -121,9 +121,8 @@ const CommentList = ({
           >
             {commentList &&
               commentList.map((comment, idx) => (
-                <>
+                <Fragment key={idx}>
                   <CommentListItem
-                    key={idx}
                     nickName={comment.nickName}
                     imgUrl={comment.imgUrl}
                     date={comment.createAt}
@@ -136,7 +135,7 @@ const CommentList = ({
                     newReply={newReply}
                   />
                   <Divider />
-                </>
+                </Fragment>
               ))}
           </InfiniteScroll>
         ) : (

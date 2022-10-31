@@ -1,0 +1,17 @@
+.board_serach_filter {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  overflow: auto;
+  background-color: white;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.board_serach_filter::-webkit-scrollbar {
+  display: none;
+}
+
+.board_serach_filter .list_item:hover {
+  background: #555555;
+}

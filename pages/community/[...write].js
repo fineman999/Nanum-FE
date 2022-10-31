@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SubHeader from "../../components/common/SubHeader";
 import { TextField } from "@mui/material";
 import PreviewImageForm from "../../components/PreviewImageForm";
@@ -7,6 +7,8 @@ import { fireAlert } from "../../components/common/Alert";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
 import axios from "axios";
+import { getBoard } from "../../lib/apis/board";
+import PreviewImageFixForm from "../../components/PreviewImageFixForm";
 
 const category = {
   notice: 1,
@@ -21,8 +23,43 @@ const Write = () => {
     content: "",
     images: [],
   });
+  const [fixImg, setFixImg] = useState([]);
+  const [deleteImg, setDeleteImg] = useState([]);
+  const boardId = useRef(null);
   const userData = useRecoilState(userState);
+  const [fixValue, setFixVale] = useState(false);
+  const [categoryId, setCategoryId] = useState(0);
+  useEffect(() => {
+    console.log(router.asPath.split("/"));
+    setCategoryId([...router.asPath.split("/")][3]);
+    boardId.current = [...router.asPath.split("/")][4];
+    console.log(" boardId.current", boardId.current);
+    setFixVale(!isNaN(boardId.current));
 
+    const cancleToken = axios.CancelToken.source();
+    async function reactive() {
+      try {
+        const response = await getBoard(boardId.current, cancleToken);
+        const { content, imgUrls, title } = response.data.result;
+        console.log(response.data.result);
+        setForm({
+          ...form,
+          content: content,
+          title: title,
+        });
+
+        setFixImg(imgUrls);
+      } catch (e) {
+        console.log("Error" + e);
+      }
+    }
+    if (boardId.current !== undefined && !isNaN(boardId.current)) {
+      reactive();
+    }
+    return () => {
+      cancleToken.cancel();
+    };
+  }, []);
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -50,6 +87,13 @@ const Write = () => {
       images: nextImages,
     });
   };
+  const removeImagesFix = (index) => {
+    console.log("remove image");
+    setDeleteImg([...deleteImg, fixImg[index]]);
+    const nextImages = [...fixImg.slice(0, index), ...fixImg.slice(index + 1)];
+
+    setFixImg(nextImages);
+  };
 
   const handleReset = () => {
     setForm({
@@ -57,10 +101,16 @@ const Write = () => {
       content: "",
     });
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (fixValue) {
+      console.log("hihi");
+      await handleSubmitFix();
+      return;
+    }
+    await handleSubmitCreate();
+  };
+  const handleSubmitCreate = async () => {
     if (form.title.length < 1) {
       fireAlert({ icon: "error", title: "제목을 입력해주세요." });
       return;
@@ -78,7 +128,7 @@ const Write = () => {
         boardCategoryId: category[check.write[0]],
       };
       const formData = new FormData();
-      console.log("duhihi", form.images.length);
+
       if (form.images.length < 1) {
         formData.append("boardImages", null);
       } else {
@@ -92,6 +142,7 @@ const Write = () => {
         "boardRequest",
         new Blob([uploaderString], { type: "application/json" })
       );
+
       const res = await axios.post(
         `https://nanum.site/board-service/api/v1/posts/${userData[0].id}`,
         formData,
@@ -117,10 +168,77 @@ const Write = () => {
       }
     }
   };
+  const handleSubmitFix = async () => {
+    console.log("deleteImg", deleteImg);
+    const imgId = deleteImg.map((ele) => ele.imgId);
+    if (form.title.length < 1) {
+      fireAlert({ icon: "error", title: "제목을 입력해주세요." });
+      return;
+    }
+
+    if (form.content.length < 1) {
+      fireAlert({ icon: "error", title: "내용을 입력해주세요." });
+      return;
+    }
+    if (userData !== undefined || userData !== null) {
+      // 시작
+      const boardUpdateRequest = {
+        title: form.title,
+        content: form.content,
+        boardId: boardId.current,
+        imgId: imgId,
+        categoryId: categoryId,
+        userId: userData[0].id,
+      };
+      const formData = new FormData();
+
+      if (form.images.length < 1) {
+        formData.append("updateImg", null);
+      } else {
+        form.images.forEach((image) => {
+          formData.append("updateImg", image);
+        });
+      }
+
+      const uploaderString = JSON.stringify(boardUpdateRequest);
+      formData.append(
+        "boardUpdateRequest",
+        new Blob([uploaderString], { type: "application/json" })
+      );
+
+      const res = await axios.put(
+        `https://nanum.site/board-service/api/v1/posts`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      console.log(res);
+      if (res.status == 200) {
+        fireAlert({
+          icon: "success",
+          title: "성공적으로 게시글을 수정하였습니다.",
+        });
+        router.back();
+      } else {
+        fireAlert({
+          icon: "error",
+          title: "게시글 수정을 실패했습니다.",
+        });
+      }
+    }
+  };
 
   return (
     <>
-      <SubHeader title="게시글 작성" type="edit" />
+      <SubHeader
+        title={`${fixValue ? "게시판 수정" : "게시판 작성"}`}
+        type="edit"
+      />
+
       <section className="form_section">
         <form className="form_wrapper" onSubmit={handleSubmit}>
           <div className="form_header">
@@ -145,6 +263,11 @@ const Write = () => {
             />
           </div>
           <div className="form_images">
+            <PreviewImageFixForm
+              removeImagesFix={removeImagesFix}
+              size={10}
+              defaultImages={fixImg}
+            />
             <PreviewImageForm
               addImages={addImages}
               removeImages={removeImages}
