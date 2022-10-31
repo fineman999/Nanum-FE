@@ -9,19 +9,23 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-
+import SearchIcon from "@mui/icons-material/Search";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import MenuIcon from "@mui/icons-material/Menu";
 import DrawerMenu from "./DrawerMenu";
 
-const SubHeader = ({ title = "제목", type = "main" }) => {
+const SubHeader = ({ title = "제목", type = "main", board = false }) => {
   const router = useRouter();
   const [onToggle, setOnToggle] = useState(false);
 
   const toggleDrawer = () => {
     setOnToggle(!onToggle);
   };
-
+  const handleSearch = () => {
+    router.push({
+      pathname: `/community/search`,
+    });
+  };
   return (
     <header>
       <Box
@@ -52,22 +56,48 @@ const SubHeader = ({ title = "제목", type = "main" }) => {
             ) : (
               ""
             )}
+            {board ? (
+              <>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    flexGrow: 1,
+                    color: "#555555",
+                    fontWeight: "bold",
+                    textAlign: `${type !== "main" ? "center" : "left"}`,
+                    marginLeft: "2rem",
+                  }}
+                >
+                  {title}
+                </Typography>
 
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                flexGrow: 1,
-                color: "#555555",
-                fontWeight: "bold",
-                textAlign: `${type !== "main" ? "center" : "left"}`,
-              }}
-            >
-              {title}
-            </Typography>
-            <IconButton aria-label="menu" onClick={toggleDrawer}>
-              <MenuIcon />
-            </IconButton>
+                <IconButton aria-label="add an alarm" onClick={handleSearch}>
+                  <SearchIcon />
+                </IconButton>
+                <IconButton aria-label="menu" onClick={toggleDrawer}>
+                  <MenuIcon />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <Typography
+                  variant="h6"
+                  component="div"
+                  sx={{
+                    flexGrow: 1,
+                    color: "#555555",
+                    fontWeight: "bold",
+                    textAlign: `${type !== "main" ? "center" : "left"}`,
+                  }}
+                >
+                  {title}
+                </Typography>
+                <IconButton aria-label="menu" onClick={toggleDrawer}>
+                  <MenuIcon />
+                </IconButton>
+              </>
+            )}
           </Toolbar>
         </AppBar>
       </Box>

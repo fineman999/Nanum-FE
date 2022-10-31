@@ -17,7 +17,16 @@ const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
           <div className={styles.article_wrapper}>
             <div className={styles.article_content}>
               <div>
-                <div className={cx("article_header", "new")}>{title}</div>
+                {new Intl.DateTimeFormat("ko", { dateStyle: "medium" }).format(
+                  new Date(date)
+                ) ===
+                new Intl.DateTimeFormat("ko", { dateStyle: "medium" }).format(
+                  Date.now()
+                ) ? (
+                  <div className={cx("article_header", "new")}>{title}</div>
+                ) : (
+                  <div className={styles.article_header}>{title}</div>
+                )}
                 {type ? (
                   <div className={styles.content_text}>{content}</div>
                 ) : (

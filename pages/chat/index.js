@@ -296,7 +296,8 @@ export default function ChatList() {
     reactive();
     if (!listening) {
       eventSource.current = new EventSource(
-        `https://nanum.site/web-flux-service/api/v1/alerts/users?param=${userData.id}`
+        // `https://nanum.site/web-flux-service/api/v1/alerts/users?param=${userData.id}`
+        `https://ssghot.shop/api/v1/alerts/users?param=${userData.id}`
       ); //구독
       // const  eventSource = new EventSource(`http://localhost:8080/api/v1/alerts/users?param=${userId}`); //구독
 
@@ -313,6 +314,7 @@ export default function ChatList() {
       };
 
       eventSource.current.onerror = (event) => {
+        console.log(event);
         if (event.target.readyState === EventSource.CLOSED) {
           console.log("eventsource closed (" + event.target.readyState + ")");
         }
@@ -322,6 +324,7 @@ export default function ChatList() {
       setListening(true);
     }
     return () => {
+      console.log("eventsource close");
       eventSource.current.close();
 
       cancleToken.cancel();

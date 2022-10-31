@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SubHeader from "../../../components/common/SubHeader";
 import NoticeList from "../../../components/NoticeList";
 import WriteButton from "../../../components/WriteButton";
@@ -12,7 +12,9 @@ const notice = () => {
   const [notice, setNotice] = useState({});
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const role = useRef(null);
   useEffect(() => {
+    role.current = sessionStorage.getItem("role");
     const cancelToken = axios.CancelToken.source();
     async function reactive() {
       try {
@@ -39,8 +41,7 @@ const notice = () => {
   }, []);
   return (
     <>
-      <SearchBoard />
-      <SubHeader title="공지" type="notice" />
+      <SubHeader title="공지" type="notice" board={true} />
       <section className={styles.contents_section}>
         <NoticeList
           list={notice}
@@ -52,7 +53,7 @@ const notice = () => {
           category={1}
         />
       </section>
-      <WriteButton />
+      {role.current === "HOST" ? <WriteButton /> : ""}
     </>
   );
 };

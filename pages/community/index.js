@@ -68,7 +68,7 @@ const Community = () => {
   }, []);
   return (
     <>
-      <SubHeader title="커뮤니티" type="community" />
+      <SubHeader title="커뮤니티" type="community" board={true} />
       {/* 카테고리 메뉴 */}
       <CommunityCategoryMenu />
       {/* 커뮤니티 카테고리 */}

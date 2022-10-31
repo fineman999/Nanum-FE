@@ -6,23 +6,21 @@ import { fireAlert } from "./common/Alert";
 import addIcon from "../public/icons/ico_preview_image_add.png";
 import deleteIcon from "../public/icons/ico_preview_image_delete.png";
 
-const PreviewImageForm = ({
+const PreviewImageFixForm = ({
   defaultImages,
   addImages,
-  removeImages,
+  removeImagesFix,
   size = 4,
   type,
 }) => {
   const [previewImages, setPreviewImages] = useState([]);
   const imgInpRef = useRef(null);
 
-  // useEffect(() => {
-  //   console.log("hihi", defaultImages);
-  //   if (type) {
-  //     setPreviewImages([...defaultImages.map((image) => image.imgUrl)]);
-  //   }
-  //   return () => {};
-  // }, [type]);
+  useEffect(() => {
+    if (defaultImages) {
+      setPreviewImages([...defaultImages.map((image) => image.imgUrl)]);
+    }
+  }, [defaultImages]);
 
   // 이미지 파일 유효성 검사
   const fileValidate = (filePath) => {
@@ -34,34 +32,6 @@ const PreviewImageForm = ({
     }
   };
 
-  // 이미지 업로드
-  const uploadImage = (e) => {
-    if (previewImages.length >= size) {
-      fireAlert({
-        icon: "warning",
-        title: `이미지는 최대 ${size}개까지 업로드할 수 있습니다.`,
-      });
-      return null;
-    }
-
-    if (!fileValidate(e.target.value)) {
-      fireAlert({
-        icon: "warning",
-        title: "유효하지 않은 파일입니다.",
-      });
-      return null;
-    }
-
-    const [file] = e.target.files;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setPreviewImages([...previewImages, reader.result]);
-    };
-    reader.readAsDataURL(file);
-
-    addImages(file);
-  };
-
   //   이미지 삭제
   const deleteImage = (index) => {
     const nextPreviewImages = [
@@ -70,7 +40,7 @@ const PreviewImageForm = ({
     ];
     // previewImages.filter(idx=>idx===index)
     setPreviewImages([...nextPreviewImages]);
-    removeImages(index);
+    removeImagesFix(index);
     console.log("previewImages", previewImages);
   };
 
@@ -97,22 +67,8 @@ const PreviewImageForm = ({
             ))}
         </ul>
       </div>
-      <div className={styles.image_inp}>
-        <input
-          type="file"
-          name="reviewImgs"
-          className={styles.image_input}
-          accept="image/*"
-          multiple
-          onChange={uploadImage}
-          ref={imgInpRef}
-        />
-        <div className={styles.image_upload_button} onClick={handleDialog}>
-          <Image src={addIcon} alt="temp" layout="fill" />
-        </div>
-      </div>
     </div>
   );
 };
 
-export default PreviewImageForm;
+export default PreviewImageFixForm;
