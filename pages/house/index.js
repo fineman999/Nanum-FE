@@ -10,11 +10,8 @@ import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
-import { get } from "../../lib/apis/apiClient";
 import houseSearchListState from "../../state/atom/houseSearchListState";
 import { useRecoilState } from "recoil";
-
-const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 export default function Houses() {
   const router = useRouter();
@@ -23,32 +20,7 @@ export default function Houses() {
   const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
   useEffect(() => {
-    const encodeUri = decodeURIComponent(router.asPath);
-    const encodeUriTokens = encodeUri.split("&");
-    const nextSearchWord = encodeUriTokens[0]
-      .split("=")[1]
-      .split("+")
-      .join(" ");
-    setSearchInput(nextSearchWord);
-
-    if (encodeUriTokens.length > 1) {
-      const nextSearchArea = encodeUriTokens[1].split("=")[1];
-      const nextGenderType = encodeUriTokens[2].split("=")[1];
-      const nextHouseType = encodeUriTokens[3].split("=")[1];
-
-      const API_URI = `/houses/search/map?sk=${nextSearchWord}&ar=${nextSearchArea}&gt=${nextGenderType}&ht=${nextHouseType}&cX=${
-        result[0].x
-      }&cY=${result[0].y}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
-
-      get(BASE_URL, API_URI)
-        .then((res) => {
-          const { isSuccess, message, result } = res.data;
-          if (isSuccess) {
-            setHouseList(result);
-          }
-        })
-        .catch((err) => console.log(err));
-    }
+    setSearchInput(router.query.searchWord);
   }, [router]);
 
   const handleOpen = () => setOpen(true);
@@ -72,11 +44,7 @@ export default function Houses() {
       <div className="search_container">
         {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <HouseMap
-            searchInput={searchInput}
-            houseList={houseList}
-            setHouseList={setHouseList}
-          />
+          <HouseMap setHouseList={setHouseList} />
         </div>
         <div className="house_list_wrapper">
           <div className="search_wrapper">
@@ -85,7 +53,7 @@ export default function Houses() {
                 <input
                   className="search_input"
                   name="searchWord"
-                  value={searchInput}
+                  value={searchInput || ""}
                   placeholder="지역명, 대학명, 지하철역으로 검색..."
                   onChange={(e) => setSearchInput(e.target.value)}
                   autoComplete="off"

@@ -31,7 +31,7 @@ const areaList = [
 const SearchAreaRadioGroup = ({ handleChange }) => {
   return (
     <div className={styles.search_area_radio_group}>
-      <FormControl variant="outlined">
+      <FormControl variant="outlined" sx={{ width: "100%", padding: "10px" }}>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
           defaultValue="전국"
@@ -40,6 +40,8 @@ const SearchAreaRadioGroup = ({ handleChange }) => {
             flexDirection: "row",
             width: "100%",
             height: "200px",
+            margin: "0 auto",
+            boxSizing: "border-box",
             overflow: "auto",
           }}
           onChange={handleChange}
@@ -53,7 +55,6 @@ const SearchAreaRadioGroup = ({ handleChange }) => {
                 control={<Radio />}
                 label={listItem.name}
                 labelPlacement="bottom"
-                sx={{ flexGrow: 1 }}
               />
             ))}
         </RadioGroup>
