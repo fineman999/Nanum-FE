@@ -2,6 +2,10 @@
   width: 100%;
 }
 
+.main_map_layout {
+  width: 100%;
+  margin: 0 auto;
+}
 .main_map_title {
   width: 100%;
   text-align: center;
@@ -25,4 +29,16 @@
   right: 10px;
   z-index: 100;
   border: none;
+}
+
+@media (min-width: 1200px) {
+  .main_map_layout {
+    max-width: 1200px;
+  }
+}
+@media (min-width: 600px) {
+  .main_map_layout {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
