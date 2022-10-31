@@ -22,30 +22,13 @@ import { useRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import { logout } from "../../lib/apis/auth";
+import { get } from "../../lib/apis/apiClient";
 
-const areaList = [
-  { id: 1, name: "전국", value: "all", houseNumber: 1700 },
-  { id: 2, name: "서울", value: "seoul", houseNumber: 100 },
-  { id: 3, name: "경기", value: "gyeong-gi", houseNumber: 100 },
-  { id: 4, name: "인천", value: "incheon", houseNumber: 100 },
-  { id: 5, name: "부산", value: "busan", houseNumber: 100 },
-  { id: 6, name: "대구", value: "daegu", houseNumber: 100 },
-  { id: 7, name: "대전", value: "daejeon", houseNumber: 100 },
-  { id: 8, name: "경남", value: "gyeongnam", houseNumber: 100 },
-  { id: 9, name: "전남", value: "jeonnam", houseNumber: 100 },
-  { id: 10, name: "충남", value: "chungnam", houseNumber: 100 },
-  { id: 11, name: "광주", value: "goyang", houseNumber: 100 },
-  { id: 12, name: "울산", value: "ulsan", houseNumber: 100 },
-  { id: 13, name: "경북", value: "gyeongbug", houseNumber: 100 },
-  { id: 14, name: "전북", value: "jeonbug", houseNumber: 100 },
-  { id: 15, name: "충북", value: "chungbug", houseNumber: 100 },
-  { id: 16, name: "강원", value: "gang-won", houseNumber: 100 },
-  { id: 17, name: "제주", value: "jejudo", houseNumber: 100 },
-  { id: 18, name: "세종", value: "sejong", houseNumber: 100 },
-];
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
-const UserMenu = ({ menuList, handleClick }) => {
+const UserMenu = ({ menuList, handleClick, areaList, handleRegion }) => {
   const [onSubMenu, setOnSubMenu] = useState(false);
+  const router = useRouter();
 
   return (
     <List>
@@ -70,11 +53,14 @@ const UserMenu = ({ menuList, handleClick }) => {
         <List component="div" disablePadding>
           {areaList &&
             areaList.map((listItem, index) => (
-              <ListItem key={listItem.id}>
-                <ListItemButton sx={{ pl: 4 }}>
-                  <ListItemText primary={listItem.name} />
+              <ListItem key={index}>
+                <ListItemButton
+                  sx={{ pl: 4 }}
+                  onClick={() => handleRegion(listItem.region)}
+                >
+                  <ListItemText primary={listItem.region} />
                   <Chip
-                    label={listItem.houseNumber}
+                    label={listItem.houseCount}
                     sx={{
                       border: "1px solid #f5f5f5",
                       color: "rgba(0,0,0,0.5)",
@@ -129,6 +115,12 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const [role, setRole] = useState("");
   const isLogin = authData.isLogin;
   const [menuList, setMenuList] = useState([]);
+  const [areaList, setAreaList] = useState([]);
+
+  useEffect(() => {
+    const API_URI = `/houses/search/regions`;
+    get(BASE_URL, API_URI).then((res) => setAreaList(res.data.result));
+  }, []);
 
   const handleClick = (listItem, index) => {
     if (listItem.sub) {
@@ -156,6 +148,16 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const handleLogout = () => {
     logout();
     setAuthData({ isLogin: false });
+    toggleDrawer();
+  };
+
+  const handleRegion = (region) => {
+    router.push({
+      pathname: "/house/region",
+      query: {
+        region: region,
+      },
+    });
     toggleDrawer();
   };
 
@@ -248,7 +250,12 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
         </IconButton>
       </Box>
       <Divider />
-      <UserMenu menuList={menuList} handleClick={handleClick} />
+      <UserMenu
+        menuList={menuList}
+        handleClick={handleClick}
+        areaList={areaList}
+        handleRegion={handleRegion}
+      />
       <Divider />
       {/* 로그아웃 버튼 */}
       <Box p={1} sx={{ display: "flex", justifyContent: "center" }}>

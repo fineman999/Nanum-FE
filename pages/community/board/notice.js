@@ -8,7 +8,7 @@ import * as Api from "../../../lib/apis/apiClient";
 import axios from "axios";
 import SearchBoard from "../../../components/SearchBoard";
 
-const notice = () => {
+const Notice = () => {
   const [notice, setNotice] = useState({});
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -58,4 +58,4 @@ const notice = () => {
   );
 };
 
-export default notice;
+export default Notice;

@@ -10,23 +10,19 @@ import SearchModal from "../../components/common/modal/SearchModal";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
+import houseSearchListState from "../../state/atom/houseSearchListState";
+import { useRecoilState } from "recoil";
 
 export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(router.query.searchWord);
-  const [searchForm, setSearchForm] = useState({
-    searchWord: "",
-    searchArea: "",
-    genderType: "",
-    houseType: "",
-    cPositionY: "", // 중심 좌표 값 (위도, 경도)
-    cPositionX: "",
-    bPositionY: "", // 경계 좌표 값 (위도, 경도)
-    bPositionX: "",
-  });
+  const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log("houseList ", houseList);
+    setSearchInput(router.query.searchWord);
+  }, [router]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -49,18 +45,21 @@ export default function Houses() {
       <div className="search_container">
         {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <HouseMap searchForm={searchForm} setSearchForm={setSearchForm} />
+          <HouseMap setHouseList={setHouseList} />
         </div>
         <div className="house_list_wrapper">
           <div className="search_wrapper">
             <div className="search_inp_wrapper">
-              <input
-                className="search_input"
-                name="searchWord"
-                value={searchInput}
-                placeholder="지역명, 대학명, 지하철역으로 검색..."
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
+              <div>
+                <input
+                  className="search_input"
+                  name="searchWord"
+                  value={searchInput || ""}
+                  placeholder="지역명, 대학명, 지하철역으로 검색..."
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  autoComplete="off"
+                />
+              </div>
               <div className="icon_search">
                 <IconButton onClick={handleSubmit}>
                   <SearchIcon />
@@ -73,10 +72,7 @@ export default function Houses() {
               </IconButton>
             </div>
           </div>
-          <HouseSearchList
-            searchForm={searchForm}
-            setSearchForm={setSearchForm}
-          />
+          <HouseSearchList houseList={houseList} setHouseList={setHouseList} />
         </div>
       </div>
       <SearchModal open={open} handleClose={handleClose} />

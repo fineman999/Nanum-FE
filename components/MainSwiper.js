@@ -109,7 +109,7 @@ const MainSwiper = () => {
             );
           })}
       </Swiper>
-      <MainMessage />
+      {/* <MainMessage /> */}
     </div>
   );
 };
