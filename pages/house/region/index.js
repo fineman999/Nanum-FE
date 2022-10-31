@@ -7,7 +7,7 @@ import { get } from "../../../lib/apis/apiClient";
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 const { kakao } = globalThis;
 
-const region = () => {
+const Region = () => {
   const router = useRouter();
   const [region, setRegion] = useState("");
   const mapRef = useRef(null);
@@ -105,4 +105,4 @@ const region = () => {
   );
 };
 
-export default region;
+export default Region;
