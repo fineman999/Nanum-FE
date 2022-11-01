@@ -1,5 +1,5 @@
 import SubHeader from "../components/common/SubHeader";
-import LikeList from "../components/like/likeList";
+import LikeList from "../components/like/LikeList";
 
 const like = () => {
   return (
