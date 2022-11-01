@@ -173,8 +173,9 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
             open: false,
             menuList: [
               { name: "전체", path: "/community" },
-              { name: "자유 게시판" },
-              { name: "정보 게시판", path: "/community/info" },
+              { name: "공지 게시판", path: "/community/board/notice" },
+              { name: "자유 게시판", path: "/community/board/all" },
+              { name: "정보 게시판", path: "/community/board/info" },
             ],
           },
         },

@@ -21,12 +21,17 @@ const CommentToolbar = ({
     setForm(e.target.value);
   };
   const handleClose = () => {
-    setInputCommnet((current) => {
-      let newCondition = { ...current };
-      newCondition.open = false;
-      newCondition.commentId = 0;
-      newCondition.replyName = "";
-      return newCondition;
+    // setInputCommnet((current) => {
+    //   let newCondition = { ...current };
+    //   newCondition.open = false;
+    //   newCondition.commentId = 0;
+    //   newCondition.replyName = "";
+    //   return newCondition;
+    // });
+    setInputCommnet({
+      open: false,
+      commentId: 0,
+      replyName: "",
     });
   };
   const handleReplySend = async () => {

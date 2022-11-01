@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
-
 import {
   AppBar,
   Box,
@@ -101,7 +100,6 @@ const SubHeader = ({ title = "제목", type = "main", board = false }) => {
           </Toolbar>
         </AppBar>
       </Box>
-
       <DrawerMenu onToggle={onToggle} toggleDrawer={toggleDrawer} />
     </header>
   );

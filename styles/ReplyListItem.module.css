@@ -28,3 +28,10 @@
   font-size: 0.5em;
   color: #76c1b2;
 }
+.comment_info {
+  display: "flex";
+  /* justify-content: space-between; */
+}
+.reply_content_wrapper {
+  width: 100%;
+}

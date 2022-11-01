@@ -38,7 +38,7 @@ const MyHouseInfo = ({ roomInfo }) => {
   const findUserInChat = async (data) => {
     console.log(data);
     data.roomInfo.users.filter((user) => {
-      if (user.userId + "" === userData.id) {
+      if (user.userId + "" === userData.id + "") {
         return true;
       }
     });
