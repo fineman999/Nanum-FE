@@ -1,0 +1,27 @@
+.house_item_wrapper {
+  cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid #f5f5f5;
+}
+
+.house_review {
+  display: flex;
+  align-items: center;
+}
+
+.skeleton_house_name {
+  width: 100%;
+  display: flex;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.skeleton_house_info_header {
+  width: 100%;
+  justify-content: space-between;
+  box-sizing: border-box;
+  color: #76c1b2;
+  margin-bottom: 15px;
+}
