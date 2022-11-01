@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
+  Badge,
   BottomNavigation,
   BottomNavigationAction,
   Box,
@@ -14,7 +15,6 @@ import FloatingButton from "./FloatingButton";
 
 const BottomMenu = () => {
   const matches = useMediaQuery("(min-width: 600px");
-
   if (matches) {
     return null;
   }
@@ -25,7 +25,14 @@ const BottomMenu = () => {
         <BottomNavigation>
           <BottomNavigationAction label="Home" icon={<HomeIcon />} />
           <BottomNavigationAction label="Email" icon={<EmailIcon />} />
-          <BottomNavigationAction label="Favorite" icon={<FavoriteIcon />} />
+          <BottomNavigationAction
+            label="Favorite"
+            icon={
+              <Badge badgeContent={10} color="primary" max={10}>
+                <FavoriteIcon />
+              </Badge>
+            }
+          />
           <BottomNavigationAction label="Chat" icon={<ChatIcon />} />
         </BottomNavigation>
       </Paper>

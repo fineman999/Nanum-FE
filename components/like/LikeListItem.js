@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
-import LikeButton from "./common/LikeButton";
 import StarIcon from "@mui/icons-material/Star";
 import { useRouter } from "next/router";
 
-import styles from "../styles/HouseSearchListItem.module.css";
 import { Skeleton } from "@mui/material";
-import { get } from "../lib/apis/apiClient";
+
+import styles from "../../styles/LikeListItem.module.css";
+import LikeButton from "../common/LikeButton";
 
 const genderType = {
   COMMON: "남녀공용",
@@ -17,26 +17,15 @@ const genderType = {
 const HOUSE_NAME_LENGTH_SIZE = 8;
 const HOUSE_ADDRESS_LENGTH_SIZE = 10;
 
-const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
+const HouseInfo = ({ listItem, loading = false }) => {
   const {
-    id: houseId,
-    houseName: name,
-    houseGender: gender,
-    houseType: type = "쉐어",
-    mainHouseImgPath: img,
-    streetAddress: roadAddress,
-    lotAddress: jibunAddress,
-  } = listItem;
-
-  const {
-    id,
-    maxMonthlyRent,
-    minMonthlyRent,
-    reviewAvg,
-    reviewCount,
-    wishCount,
+    userId,
+    houseId,
     wishId,
-  } = houseInfo;
+    houseName,
+    lotAddress: jibunAddress,
+    mainHouseImgPath: mainImage,
+  } = listItem;
   return (
     <>
       <div
@@ -48,7 +37,7 @@ const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
         }}
       >
         {!loading ? (
-          <Image src={img} alt={name} layout="fill" />
+          <Image src={mainImage} alt={houseName} layout="fill" />
         ) : (
           <Skeleton
             variant="rectangular"
@@ -62,15 +51,15 @@ const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
           <div className="house_info_header">
             <div className="house_name_wrapper">
               <div className="house_name">
-                {name.length > HOUSE_NAME_LENGTH_SIZE
+                {houseName.length > HOUSE_NAME_LENGTH_SIZE
                   ? `${name.slice(0, HOUSE_NAME_LENGTH_SIZE)}...`
-                  : name}
+                  : houseName}
               </div>
 
               <span className="house_address">
-                {roadAddress.length > HOUSE_ADDRESS_LENGTH_SIZE
-                  ? `${roadAddress.slice(0, HOUSE_ADDRESS_LENGTH_SIZE)}...`
-                  : roadAddress}
+                {jibunAddress.length > HOUSE_ADDRESS_LENGTH_SIZE
+                  ? `${jibunAddress.slice(0, HOUSE_ADDRESS_LENGTH_SIZE)}...`
+                  : jibunAddress}
               </span>
             </div>
             {/* 좋아요 버튼 */}
@@ -82,8 +71,8 @@ const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
           </div>
           <div className="house_info_body">
             <div className="house_type_wrapper">
-              <div className="gender_type">{genderType[gender]}</div>
-              <span className="house_type">{type}</span>
+              <div className="gender_type">성별타입</div>
+              <span className="house_type">주거타입</span>
             </div>
             <div className="house_state">
               <div className="capacity">신청가능</div>
@@ -91,10 +80,10 @@ const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
             </div>
           </div>
           <div className="house_info_bottom">
-            <div className="house_price">최대값: {maxMonthlyRent}</div>
-            <div className="house_price">최저값: {minMonthlyRent}</div>
+            <div className="house_price">최대값: 0원</div>
+            <div className="house_price">최저값: 0원</div>
             <div className={styles.house_review}>
-              <StarIcon fontSize="16" /> {reviewAvg} {reviewCount}개
+              <StarIcon fontSize="16" /> 0.0 0개
             </div>
           </div>
         </div>
@@ -190,36 +179,14 @@ const HouseInfo = ({ listItem, houseInfo, loading = false }) => {
   );
 };
 
-const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
-
-const HouseSearchListItem = ({ listItem }) => {
-  const { id: houseId } = listItem;
-
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [houseInfo, setHouseInfo] = useState({});
-  const handleClick = () => {
-    router.push(`/house/${houseId}`);
-  };
-
-  useEffect(() => {
-    const API_URI = `/houses/house/${houseId}/total`;
-    get(BASE_URL, API_URI).then((res) => {
-      console.log(res);
-      const { status } = res;
-      const { isSuccess, message, result } = res.data;
-      if (status === 200 && isSuccess) {
-        setHouseInfo(result);
-        setLoading(false);
-      }
-    });
-  }, []);
-
+const LikeListItem = ({ listItem, loading }) => {
   return (
-    <div className={styles.house_item_wrapper} onClick={handleClick}>
-      <HouseInfo listItem={listItem} houseInfo={houseInfo} loading={loading} />
-    </div>
+    <li className={styles.house_list_item}>
+      <div className={styles.house_item_wrapper}>
+        <HouseInfo listItem={listItem} loading={loading} />
+      </div>
+    </li>
   );
 };
 
-export default HouseSearchListItem;
+export default LikeListItem;

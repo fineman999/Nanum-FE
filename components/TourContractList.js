@@ -11,6 +11,7 @@ import tourListState from "../state/atom/tourListState";
 import filteredTourListState from "../state/selector/filteredTourListState";
 import { useRouter } from "next/router";
 import LastPageComment from "./LastPageComment";
+import Swal from "sweetalert2";
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
@@ -61,13 +62,22 @@ const TourContractList = () => {
   };
 
   const handleMove = (houseId, roomId) => {
-    alert("하우스 아이디: " + houseId + " 룸 아이디: " + roomId);
-    router.push({
-      pathname: "/move",
-      query: {
-        houseId: houseId,
-        roomId: roomId,
-      },
+    Swal.fire({
+      title: "입주 신청 <br/>하시겠습니까?",
+      showDenyButton: true,
+      confirmButtonText: "네",
+      denyButtonText: "아니오",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        router.push({
+          pathname: "/move",
+          query: {
+            houseId: houseId,
+            roomId: roomId,
+          },
+        });
+      }
     });
   };
 

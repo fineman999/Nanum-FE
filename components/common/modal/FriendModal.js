@@ -75,7 +75,7 @@ export default function FriendModal({ roomNum }) {
     if (
       event &&
       event.type === "keydown" &&
-      (React.KeyboardEvent.key === "Tab" || React.KeyboardEvent.key === "Shift")
+      (KeyboardEvent.key === "Tab" || KeyboardEvent.key === "Shift")
     ) {
       return;
     }

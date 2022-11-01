@@ -1,15 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { pink } from "@mui/material/colors";
 import { Favorite } from "@mui/icons-material";
 import { fireAlert } from "./Alert";
 import { userState } from "../../state/atom/authState";
 import { useRecoilValue } from "recoil";
-import { post } from "../../lib/apis/apiClient";
+import { del, post } from "../../lib/apis/apiClient";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
-const LikeButton = ({ isLike = false, listItem }) => {
+const LikeButton = ({ isLike = false, listItem, wishId }) => {
   const userValue = useRecoilValue(userState);
   const [like, setLike] = useState(isLike);
   const [likeClicked, setLikeClicked] = useState(false);
@@ -20,8 +20,8 @@ const LikeButton = ({ isLike = false, listItem }) => {
       return null;
     }
 
-    // setLike(!like);
-    // setLikeClicked(true);
+    setLike(!like);
+    setLikeClicked(true);
 
     if (!like) {
       const API_URI = `/users/${userValue.id}/wishes`;
@@ -29,17 +29,21 @@ const LikeButton = ({ isLike = false, listItem }) => {
 
       post(BASE_URL, API_URI, {
         houseId: id,
-      }).then((res) => console.log(res));
-      // setTimeout(() => {
-      //   fireAlert({ icon: "success", title: "좋아요 하우스 추가" });
-
-      //   setLikeClicked(false);
-      // }, 0);
+      })
+        .then((res) => {
+          console.log("좋아요 추가", res);
+          fireAlert({ icon: "success", title: "좋아요 추가" });
+          setLikeClicked(false);
+        })
+        .catch((err) => console.log(err));
     } else {
-      setTimeout(() => {
-        fireAlert({ icon: "success", title: "좋아요 하우스 삭제" });
+      const API_URI = `/users/${userValue.id}/wishes/${wishId}`;
+
+      del(BASE_URL, API_URI).then((res) => {
+        console.log("좋아요 삭제", res);
+        fireAlert({ icon: "success", title: "좋아요 삭제" });
         setLikeClicked(false);
-      }, 0);
+      });
     }
   };
 
