@@ -6,7 +6,7 @@ import WriteButton from "../../../components/WriteButton";
 import * as Api from "../../../lib/apis/apiClient";
 import styles from "../../../styles/Info.module.css";
 
-const info = () => {
+const Info = () => {
   const [notice, setNotice] = useState({});
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -56,4 +56,4 @@ const info = () => {
   );
 };
 
-export default info;
+export default Info;

@@ -5,15 +5,7 @@ import { useRouter } from "next/router";
 
 const HouseListItem = ({ item }) => {
   const router = useRouter();
-  const {
-    id,
-    mainHouseImgPath: img,
-    houseName: name,
-    isLike,
-    gender,
-    type,
-    wishId,
-  } = item;
+  const { id, img, name, isLike, gender, type, wishId } = item;
 
   const handleClick = () => {
     router.push(`/house/${id}`);
@@ -37,7 +29,7 @@ const HouseListItem = ({ item }) => {
             <span className="house_address">(해운대구)</span>
           </div>
           {/* 좋아요 버튼 */}
-          {wishId !== null ? (
+          {wishId ? (
             <LikeButton isLike={true} />
           ) : (
             <LikeButton isLike={false} />

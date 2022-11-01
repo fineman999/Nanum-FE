@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../../../styles/MainMap.module.css";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { get } from "../../../lib/apis/apiClient";
@@ -8,6 +8,35 @@ import Swal from "sweetalert2";
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const MainMap = () => {
+  const [defaultPosition, setDefaultPosition] = useState({
+    lat: 35.1659659088957,
+    lng: 129.132374315529,
+  });
+
+  const handlePosition = () => {
+    if (navigator.geolocation) {
+      // GPS를 지원하면
+      navigator.geolocation.getCurrentPosition(
+        function (position) {
+          setDefaultPosition({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        function (error) {
+          console.error(error);
+        },
+        {
+          enableHighAccuracy: false,
+          maximumAge: 0,
+          timeout: Infinity,
+        }
+      );
+    } else {
+      console.log("GPS를 지원하지 않습니다");
+    }
+  };
+
   useEffect(() => {
     const { kakao } = globalThis;
     kakao.maps.load(() => {
@@ -25,15 +54,15 @@ const MainMap = () => {
 
       let mapContainer = document.getElementById("map_container");
       let mapOption = {
-        center: new kakao.maps.LatLng(35.1659659088957, 129.132374315529), // 지도의 중심좌표
+        center: new kakao.maps.LatLng(defaultPosition.lat, defaultPosition.lng), // 지도의 중심좌표
         level: 5, // 지도의 확대 레벨
         mapTypeId: kakao.maps.MapTypeId.ROADMAP, // 지도종류
       }; // 지도를 표시할 div
 
       // 마커가 표시될 위치입니다
       let markerPosition = new kakao.maps.LatLng(
-        35.1659659088957,
-        129.132374315529
+        defaultPosition.lat,
+        defaultPosition.lng
       );
 
       // 마커를 생성합니다
@@ -132,7 +161,7 @@ const MainMap = () => {
         clusterer.addMarkers(markers);
       });
     });
-  }, []);
+  }, [defaultPosition]);
 
   return (
     <div className={styles.main_map_wrapper}>
@@ -151,6 +180,7 @@ const MainMap = () => {
               zIndex: "100",
             }}
             startIcon={<MyLocationIcon />}
+            onClick={handlePosition}
           >
             현재 위치
           </Button>

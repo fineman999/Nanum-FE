@@ -48,6 +48,7 @@ const MyHouseInfo = ({ roomInfo }) => {
   const goChat = async (room) => {
     router.push(`/chat/${room}`);
   };
+
   return (
     <div className="house_room_info_wrapper">
       <div className={styles.house_info}>
