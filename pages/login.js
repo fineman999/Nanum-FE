@@ -5,6 +5,11 @@ import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
 import { fireAlert } from "../components/common/Alert";
 import { getUserDetail, postLogin } from "../lib/apis/auth";
+import {
+  GOOGLE_AUTH_URL,
+  KAKAO_AUTH_URL,
+  NAVER_AUTH_URL,
+} from "../lib/apis/login";
 import { authState, userState } from "../state/atom/authState";
 
 const style = css`
@@ -229,18 +234,24 @@ export default function Login() {
             <button onClick={goLogin}>로그인</button>
           </form>
           <article id="social_btn">
-            <button id="naver">
-              <img src="/images/naver.png" alt="naver" />
-              <p>Naver로 로그인</p>
-            </button>
-            <button id="kakao">
-              <img src="/images/kakao.png" alt="kakao" />
-              <p>Kakao로 로그인</p>
-            </button>
-            <button id="google">
-              <img src="/images/google.png" alt="google" />
-              <p>Google로 로그인</p>
-            </button>
+            <Link href={NAVER_AUTH_URL}>
+              <button id="naver">
+                <img src="/images/naver.png" alt="naver" />
+                <p>Naver로 로그인</p>
+              </button>
+            </Link>
+            <Link href={KAKAO_AUTH_URL}>
+              <button id="kakao">
+                <img src="/images/kakao.png" alt="kakao" />
+                <p>Kakao로 로그인</p>
+              </button>
+            </Link>
+            <Link href={GOOGLE_AUTH_URL}>
+              <button id="google">
+                <img src="/images/google.png" alt="google" />
+                <p>Google로 로그인</p>
+              </button>
+            </Link>
           </article>
         </div>
       </div>

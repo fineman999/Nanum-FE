@@ -18,7 +18,6 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
           if (!getReplyList) {
             throw new Error(`${getBoards} not allowd`);
           }
-          console.log("getReplyList", getReplyList);
           setReplyList(getReplyList.data.result);
         } catch (e) {
           console.log("Error" + e);
@@ -30,10 +29,22 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
       cancleToken.cancel();
     };
   }, []);
+  const handleDeleteReplyNest = async (id) => {
+    setReplyList(
+      replyList.map((reply) => {
+        if (reply.id === id) {
+          reply.imgUrl = "/images/default.png";
+          reply.nickName = null;
+          reply.content = "삭제된 댓글입니다";
+        }
+        return reply;
+      })
+    );
+  };
   useEffect(() => {
-    if (newReply != undefined) {
-      const newReplyList = [newReply, ...replyList];
-      setReplyList(newReplyList);
+    if (newReply != undefined && newReply.replyId === commentId) {
+      // const newReplyList = [newReply, ...replyList];
+      setReplyList((prev) => [...prev, newReply]);
       const anchor = document.querySelector("#back-to-top-anchor");
       if (anchor) {
         anchor.scrollIntoView({
@@ -57,6 +68,8 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
                 nickName={reply.nickName}
                 replyId={reply.replyId}
                 userId={reply.userId}
+                handleDeleteReplyNest={handleDeleteReplyNest}
+                id={reply.id}
               />
             ))}
         </ul>

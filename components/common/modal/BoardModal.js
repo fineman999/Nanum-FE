@@ -88,6 +88,10 @@ export default function BoardModal({ open, handleClose, images, date }) {
                         alt="temp"
                         layout="fill"
                         priority
+                        // style={{
+                        //   height: "auto",
+                        //   minHeight: "none",
+                        // }}
                       />
                     </div>
                   </SwiperSlide>

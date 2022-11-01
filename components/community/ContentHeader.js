@@ -11,7 +11,8 @@ import { userState } from "../../state/atom/authState";
 import Button from "@mui/material/Button";
 import { useRouter } from "next/router";
 import { deleteBoard } from "../../lib/apis/board";
-import { fireAlert } from "../common/Alert";
+import { confirmAlert, confirmAlertV2, fireAlert } from "../common/Alert";
+import { displayedAtV2 } from "../../lib/utils/useful-functions";
 const ContentHeader = ({
   boardId,
   boardUserId,
@@ -33,20 +34,29 @@ const ContentHeader = ({
     });
   };
   const handleDelete = async () => {
-    console.log("boardId", boardId);
-    const result = await deleteBoard(boardId);
-    if (result.status === 200) {
-      fireAlert({
-        icon: "success",
-        title: "성공적으로 게시글을 삭제하였습니다.",
-      });
-      router.back();
-    } else {
-      fireAlert({
-        icon: "error",
-        title: "게시글 삭제를 실패했습니다.",
-      });
-    }
+    confirmAlertV2({
+      icon: "warning",
+      title: "게시판 삭제",
+      text: "해당 게시판을 삭제하시겠습니까?",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const result = await deleteBoard(boardId);
+        if (result.status === 200) {
+          fireAlert({
+            icon: "success",
+            title: "성공적으로 게시글을 삭제하였습니다.",
+          });
+          router.back();
+        } else {
+          fireAlert({
+            icon: "error",
+            title: "게시글 삭제를 실패했습니다.",
+          });
+        }
+        return true;
+      }
+      return false;
+    });
   };
   return (
     <div className={styles.content_header}>
@@ -60,12 +70,7 @@ const ContentHeader = ({
       <div className={styles.content_info}>
         <h2 className="author">{nickName}</h2>
         <span className={styles.article_date}>
-          {createAt
-            ? Intl.DateTimeFormat("ko", {
-                dateStyle: "medium",
-                timeStyle: "short",
-              }).format(new Date(createAt))
-            : ""}
+          {createAt ? displayedAtV2(createAt) : ""}
         </span>
         <div className={styles.icons}>
           <span className={styles.icon_views}>
@@ -78,7 +83,7 @@ const ContentHeader = ({
             />
           </span>
           <span className={styles.icon_text}>{viewCount}</span>
-          <span className={styles.icon_chats}>
+          {/* <span className={styles.icon_chats}>
             <ChatBubbleIcon
               style={{
                 color: "rgba(0,0,0,0.2)",
@@ -87,7 +92,7 @@ const ContentHeader = ({
               }}
             />
           </span>
-          <span className={styles.icon_text}>20</span>
+          <span className={styles.icon_text}>20</span> */}
         </div>
       </div>
       {userData.id + "" === userId + "" ? (

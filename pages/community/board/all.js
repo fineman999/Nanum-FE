@@ -6,7 +6,7 @@ import WriteButton from "../../../components/WriteButton";
 import styles from "../../../styles/All.module.css";
 import * as Api from "../../../lib/apis/apiClient";
 
-const all = () => {
+const All = () => {
   const [notice, setNotice] = useState({});
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
@@ -56,4 +56,4 @@ const all = () => {
   );
 };
 
-export default all;
+export default All;

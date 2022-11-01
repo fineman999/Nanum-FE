@@ -3,7 +3,7 @@ import BoardSearchFilter from "../../components/BoardSearchFilter";
 
 import SearchHeader from "../../components/common/SearchHeader";
 import NoticeList from "../../components/NoticeList";
-import WriteButton from "../../components/WriteButton";
+import Slide from "@mui/material/Slide";
 import { getSearch } from "../../lib/apis/board";
 import styles from "../../styles/Notice.module.css";
 const Search = () => {
@@ -13,10 +13,8 @@ const Search = () => {
   const [list, setList] = useState([]);
   const [curPage, setCurPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
+  const [slideState, setSlideState] = useState(true);
   const handleSendSearch = async () => {
-    // 초기화
-    // setCategory(0);
-    // setBoard(0);
     setList([]);
     setCurPage(0);
     setTotalPages(0);
@@ -54,36 +52,39 @@ const Search = () => {
   };
 
   return (
-    <>
-      <SearchHeader
-        title="검색"
-        type="search"
-        board={true}
-        setSearch={setSearch}
-        search={search}
-        handleSendSearch={handleSendSearch}
-      />
-      <BoardSearchFilter
-        category={category}
-        setCategory={setCategory}
-        board={board}
-        setBoard={setBoard}
-      />
-      <section className={styles.contents_section}>
-        <NoticeList
-          list={list}
-          searchType={true}
-          type={true}
-          curPage={curPage}
-          setCurPage={setCurPage}
-          totalPages={totalPages}
-          setTotalPages={setTotalPages}
+    <Slide direction="left" in={slideState} mountOnEnter unmountOnExit>
+      <div>
+        <SearchHeader
+          title="검색"
+          type="search"
+          board={true}
+          setSearch={setSearch}
           search={search}
-          categoryId={category}
-          board={board}
+          handleSendSearch={handleSendSearch}
+          setSlideState={setSlideState}
         />
-      </section>
-    </>
+        <BoardSearchFilter
+          category={category}
+          setCategory={setCategory}
+          board={board}
+          setBoard={setBoard}
+        />
+        <section className={styles.contents_section}>
+          <NoticeList
+            list={list}
+            searchType={true}
+            type={true}
+            curPage={curPage}
+            setCurPage={setCurPage}
+            totalPages={totalPages}
+            setTotalPages={setTotalPages}
+            search={search}
+            categoryId={category}
+            board={board}
+          />
+        </section>
+      </div>
+    </Slide>
   );
 };
 

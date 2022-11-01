@@ -67,6 +67,7 @@ const SearchHeader = ({
   setSearch,
   search,
   handleSendSearch,
+  setSlideState,
 }) => {
   const router = useRouter();
   const [onToggle, setOnToggle] = useState(false);
@@ -103,7 +104,13 @@ const SearchHeader = ({
             {type !== "main" ? (
               <IconButton
                 sx={{ padding: "0px", marginRight: "10px" }}
-                onClick={() => router.back()}
+                onClick={() => {
+                  setSlideState(false);
+                  setTimeout(() => {
+                    router.back();
+                  }, 200);
+                  //
+                }}
               >
                 <ArrowBackIcon />
               </IconButton>
