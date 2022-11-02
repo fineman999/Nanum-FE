@@ -1,0 +1,52 @@
+.user_move {
+  width: 100%;
+}
+.move_content {
+  width: 100%;
+}
+
+.move_title {
+  box-sizing: border-box;
+  padding-bottom: 5px;
+}
+
+.my_room_status {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 5px;
+  display: flex;
+}
+
+.my_house_name {
+  width: 100%;
+  font-size: 0.8em;
+  flex: 1;
+  /* background: rgba(118, 193, 178, 0.5); */
+}
+
+.my_room_name {
+  width: 100%;
+  font-size: 0.8em;
+  flex: 1;
+}
+
+.my_room_date {
+  width: 100%;
+  font-size: 0.8em;
+}
+
+.my_move_status {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 5px;
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.my_tour_status {
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 5px;
+  display: flex;
+  margin-bottom: 5px;
+}
