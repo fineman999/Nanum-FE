@@ -4,8 +4,9 @@ import HouseSearchFilterList from "./HouseSearchFilterList";
 import HouseSearchListItem from "./HouseSearchListItem";
 import filteredHouseSearchListState from "../state/selector/filteredHouseSearchListState";
 
-const HouseSearchList = ({ houseList }) => {
+const HouseSearchList = () => {
   const filteredHouseList = useRecoilValue(filteredHouseSearchListState);
+
   return (
     <>
       <HouseSearchFilterList />

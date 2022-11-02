@@ -35,7 +35,7 @@ const filteredHouseSearchListState = selector({
         return [];
         break;
       case "LIKE":
-        return [];
+        return houseSearchList.filter((listItem) => listItem.wishId !== null);
         break;
       default:
         return houseSearchList;
