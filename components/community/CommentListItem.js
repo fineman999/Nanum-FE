@@ -84,6 +84,7 @@ const CommentListItem = ({
                 alt={userId}
                 img={imgUrl}
                 name={nickName}
+                id={userId}
                 size={4}
                 type={userId === userData.id ? 3 : 2}
               />

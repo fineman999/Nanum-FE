@@ -10,7 +10,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { Textarea, Typography } from "@mui/joy";
 import { TwoButtonOption } from "../../components/common/Button";
 import PreviewImageForm from "../../components/PreviewImageForm";
-import { postMail } from "../../lib/apis/mail";
+import { postMail, sendAlert } from "../../lib/apis/mail";
 import axios from "axios";
 import { fireAlert } from "../../components/common/Alert";
 const style = css`
@@ -56,6 +56,7 @@ export default function Send() {
       formData.append("images", image);
     });
     const uploaderString = JSON.stringify(noteDetails);
+    console.log(uploaderString);
     formData.append(
       "noteDetails",
       new Blob([uploaderString], { type: "application/json" })
@@ -76,6 +77,12 @@ export default function Send() {
       fireAlert({
         icon: "success",
         title: "성공적으로 쪽지를 보냈습니다.",
+      });
+      sendAlert({
+        title: "NOTE",
+        content: "쪽지가 왔습니다.",
+        userIds: [router.query.receiverId],
+        url: "http://localhost:3000/mail",
       });
       router.push("/mail");
     } else {

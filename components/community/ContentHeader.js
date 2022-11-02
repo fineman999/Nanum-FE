@@ -25,6 +25,7 @@ const ContentHeader = ({
 }) => {
   const [userData, setUserData] = useRecoilState(userState);
   const router = useRouter();
+
   const handleFix = () => {
     console.log("userData.id", userData.id, "userId", userId);
     console.log("boardId", boardId);
