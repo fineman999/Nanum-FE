@@ -99,6 +99,7 @@ export default function Chat() {
 
   //소켓 열기
   const onOpen = async () => {
+    console.log(userId, "userId", roomNum);
     // const uri = `wss://nanum.site/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
     const uri = `wss://ssghot.shop/chat?room=${roomNum}&userId=${userId}`;
     ws.current = new WebSocket(uri);
