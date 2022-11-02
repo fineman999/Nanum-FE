@@ -40,8 +40,8 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
       const API_URI = `/users/${userValue.id}/wishes/${wishId}`;
 
       del(BASE_URL, API_URI).then((res) => {
-        console.log("좋아요 삭제", res);
-        fireAlert({ icon: "success", title: "좋아요 삭제" });
+        console.log("좋아요 제거", res);
+        fireAlert({ icon: "success", title: "좋아요 제거" });
         setLikeClicked(false);
       });
     }
