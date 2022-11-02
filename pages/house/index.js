@@ -22,7 +22,7 @@ export default function Houses() {
   useEffect(() => {
     console.log("houseList ", houseList);
     setSearchInput(router.query.searchWord);
-  }, [router, houseList]);
+  }, [router]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

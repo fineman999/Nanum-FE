@@ -119,7 +119,6 @@ const HouseMap = ({ setHouseList }) => {
                 }
               })
               .then((data) => {
-                console.log(data);
                 Promise.all(
                   data.map((listItem) => {
                     const { id: houseId } = listItem;
@@ -135,8 +134,8 @@ const HouseMap = ({ setHouseList }) => {
                     );
                   })
                 ).then((values) => {
-                  console.log("하우스 목록 조회: ", data);
-                  console.log("하우스 리뷰 조회: ", values);
+                  // console.log("하우스 목록 조회: ", data);
+                  // console.log("하우스 리뷰 조회: ", values);
                   const valueList = values.map((value) => {
                     return { ...value.data.result };
                   });
@@ -168,11 +167,9 @@ const HouseMap = ({ setHouseList }) => {
         // 영역의 남서쪽 좌표를 얻어옵니다
         const swLatLng = bounds.getSouthWest();
         const API_URI = `/houses/search/map?cX=${position.getLng()}&cY=${position.getLat()}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
-        console.log(`드래그 이벤트: `, API_URI);
 
         get(BASE_URL, API_URI)
           .then((res) => {
-            console.log(res);
             const { status } = res;
             const { isSuccess, message, result } = res.data;
 
@@ -209,7 +206,6 @@ const HouseMap = ({ setHouseList }) => {
             }
           })
           .then((data) => {
-            console.log(data);
             Promise.all(
               data.map((listItem) => {
                 const { id: houseId } = listItem;
@@ -222,8 +218,8 @@ const HouseMap = ({ setHouseList }) => {
                 });
               })
             ).then((values) => {
-              console.log("하우스 목록 조회: ", data);
-              console.log("하우스 리뷰 조회: ", values);
+              // console.log("하우스 목록 조회: ", data);
+              // console.log("하우스 리뷰 조회: ", values);
               const valueList = values.map((value) => {
                 return { ...value.data.result };
               });
@@ -253,11 +249,9 @@ const HouseMap = ({ setHouseList }) => {
         // 영역의 남서쪽 좌표를 얻어옵니다
         const swLatLng = bounds.getSouthWest();
         const API_URI = `/houses/search/map?cX=${position.getLng()}&cY=${position.getLat()}&swX=${swLatLng.getLng()}&swY=${swLatLng.getLat()}`;
-        console.log(`줌 이벤트: `, API_URI);
 
         get(BASE_URL, API_URI)
           .then((res) => {
-            console.log("줌! ", res);
             const { status } = res;
             const { isSuccess, message, result } = res.data;
 
@@ -292,7 +286,6 @@ const HouseMap = ({ setHouseList }) => {
             }
           })
           .then((data) => {
-            console.log(data);
             Promise.all(
               data.map((listItem) => {
                 const { id: houseId } = listItem;
