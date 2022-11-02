@@ -11,6 +11,7 @@ import {
 } from "../../lib/apis/auth";
 import * as Api from "../../lib/apis/apiClient";
 import axios from "axios";
+import SubHeader from "../../components/common/SubHeader";
 const style = css`
   #signup {
     display: flex;
@@ -452,6 +453,7 @@ export default function Signup() {
 
   return (
     <>
+      <SubHeader title="회원가입" type="signup" />
       <div id="signup">
         <div id="signup_innercontainer">
           <section id="signup_header">

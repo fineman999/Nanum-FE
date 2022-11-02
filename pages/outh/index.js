@@ -5,7 +5,8 @@ import { fireAlert } from "../../components/common/Alert";
 
 import * as Api from "../../lib/apis/apiClient";
 import axios from "axios";
-import { postPhone, postPhoneValid } from "../../lib/apis/auth";
+import { getNickname, postPhone, postPhoneValid } from "../../lib/apis/auth";
+import SubHeader from "../../components/common/SubHeader";
 const style = css`
   #signup {
     display: flex;
@@ -215,8 +216,6 @@ export default function SignupOuth() {
 
   //유효성 검사
   const [emailTest, setEmailTest] = useState(false);
-  const [pwTest, setPwTest] = useState(false);
-  const [pwConfirmTest, setPwConfirmTest] = useState(false);
   const [nameTest, setNameTest] = useState(true);
 
   //이메일 중복 검사
@@ -260,19 +259,21 @@ export default function SignupOuth() {
   //닉네임 중복 체크
   const checkNameValid = () => {
     console.log("hihi");
-    getNickname(userInfo.nickname)
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200) {
-          setNameValid(true);
-        }
-        if (res.status == 204) {
+    if (userInfo) {
+      getNickname(userInfo.nickname)
+        .then((res) => {
+          console.log(res);
+          if (res.status == 200) {
+            setNameValid(true);
+          }
+          if (res.status == 204) {
+            setNameValid(false);
+          }
+        })
+        .catch((err) => {
           setNameValid(false);
-        }
-      })
-      .catch((err) => {
-        setNameValid(false);
-      });
+        });
+    }
   };
 
   //휴대폰 - 자동 입력
@@ -302,7 +303,7 @@ export default function SignupOuth() {
   };
   //성별 선택
   const handleSex = (e) => {
-    setUserInfo(() => ({ ...userInfo, sex: e.target.value }));
+    setUserInfo(() => ({ ...userInfo, gender: e.target.value }));
   };
 
   //이미지 미리보기
@@ -374,12 +375,12 @@ export default function SignupOuth() {
       email: userInfo.email,
       nickname: userInfo.nickname,
       role: router.query.role,
-      phone: userInfo.phone,
+      phone: myPhone,
       gender: userInfo.gender,
       socialType: userInfo.socialType,
     };
-
-    if (nameTest && nameValid && userInfo.gender) {
+    console.log(nameTest, nameValid, userInfo.gender);
+    if (nameTest && nameValid && userInfo.gender && phoneValid && phoneExist) {
       const formData = new FormData();
       formData.append("profileImg", userInfo.imgFile);
       const uploaderString = JSON.stringify(userRequest);
@@ -387,7 +388,7 @@ export default function SignupOuth() {
         "userRequest",
         new Blob([uploaderString], { type: "application/json" })
       );
-
+      console.log(userRequest);
       const res = await axios.post(
         "https://nanum.site/user-service/api/v1/oauth/signup",
         formData,
@@ -398,16 +399,18 @@ export default function SignupOuth() {
         }
       );
       console.log(res);
-      if (res.status == 201) {
+      if (res.status == 200) {
         fireAlert({
           icon: "success",
-          title: "축하합니다! 회원가입이 성공했습니다.",
+          title: "축하합니다! 회원가입이 성공했습니다. 다시 로그인 해주세요.",
         });
+        router.push("/");
       } else {
         fireAlert({
           icon: "error",
           title: "회원가입에 실패했습니다.",
         });
+        router.push("/");
       }
     } else {
       fireAlert({ icon: "warning", title: "입력을 확인해주세요." });
@@ -416,6 +419,7 @@ export default function SignupOuth() {
 
   return (
     <>
+      <SubHeader title="회원가입" type="signup" />
       <div id="signup">
         <div id="signup_innercontainer">
           <section id="signup_header">
