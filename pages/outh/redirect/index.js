@@ -1,6 +1,10 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
+import { fireAlert } from "../../../components/common/Alert";
+import { getUserDetail } from "../../../lib/apis/auth";
+import { authState, userState } from "../../../state/atom/authState";
 
 const style = css`
   #signup_check {
@@ -80,7 +84,8 @@ const style = css`
 `;
 export default function RedirectOuth() {
   const router = useRouter();
-
+  const [authData, setAuthData] = useRecoilState(authState);
+  const [userData, setUserData] = useRecoilState(userState);
   const [userInfo, setUserInfo] = useState({
     email: "",
     nickname: "",
@@ -92,26 +97,22 @@ export default function RedirectOuth() {
     // 인가코드
     const userId = new URL(window.location.href).searchParams.get("userId");
     if (userId) {
-      const result = {
-        role: new URL(window.location.href).searchParams.get("role"),
-        token: new URL(window.location.href).searchParams.get("token"),
-        socialType: "naver",
-        mobile: new URL(window.location.href).searchParams.get("mobile"),
-        gender: new URL(window.location.href).searchParams.get("gender"),
-      };
-      router.push(
-        {
-          pathname: "/outh/check",
-          query: {
-            email: result.email,
-            nickname: result.nickname,
-            socialType: result.socialType,
-            mobile: result.mobile,
-            gender: result.gender,
-          },
-        },
-        "/outh/check"
-      );
+      const role = new URL(window.location.href).searchParams.get("role");
+      const token = new URL(window.location.href).searchParams.get("token");
+
+      localStorage.setItem("accessToken", token);
+      sessionStorage.setItem("userId", userId);
+      sessionStorage.setItem("role", role);
+      fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
+      setAuthData({ isLogin: true });
+      getUserDetail({ userId })
+        .then((res) => {
+          setUserData(res.data.result);
+          router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       const socialType = new URL(window.location.href).searchParams.get(
         "socialType"

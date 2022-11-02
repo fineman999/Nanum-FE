@@ -48,7 +48,13 @@ const SubHeader = ({ title = "제목", type = "main", board = false }) => {
             {type !== "main" ? (
               <IconButton
                 sx={{ padding: "0px", marginRight: "10px" }}
-                onClick={() => router.back()}
+                onClick={() => {
+                  if (type === "chooseType") {
+                    router.push("/");
+                  } else {
+                    router.back();
+                  }
+                }}
               >
                 <ArrowBackIcon />
               </IconButton>

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
 import { fireAlert } from "../components/common/Alert";
+import SubHeader from "../components/common/SubHeader";
 import { getUserDetail, postLogin } from "../lib/apis/auth";
 import {
   GOOGLE_AUTH_URL,
@@ -183,6 +184,7 @@ export default function Login() {
   };
   return (
     <>
+      <SubHeader title="로그인" type="login" />
       <div id="login">
         <div id="login_header">
           <img
@@ -221,10 +223,10 @@ export default function Login() {
               />
             </article>
             <div id="link">
-              <Link href="">
+              <Link href="/find-account">
                 <a>이메일 찾기</a>
               </Link>
-              <Link href="">
+              <Link href="/find-account/pw">
                 <a>비밀번호 찾기</a>
               </Link>
               <Link href="/signup/check">

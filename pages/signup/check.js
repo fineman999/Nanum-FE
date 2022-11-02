@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import css from "styled-jsx/css";
+import SubHeader from "../../components/common/SubHeader";
 
 const style = css`
   #signup_check {
@@ -84,6 +85,7 @@ export default function SignUpCheck() {
 
   return (
     <>
+      <SubHeader title="선택" type="choose" />
       <div id="signup_check">
         <section id="check_header">
           <h1>당신은</h1>
