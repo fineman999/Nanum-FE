@@ -72,14 +72,13 @@ export default function Houses() {
               </IconButton>
             </div>
           </div>
-          <HouseSearchList houseList={houseList} setHouseList={setHouseList} />
+          <HouseSearchList />
         </div>
       </div>
       <SearchModal open={open} handleClose={handleClose} />
       <BottomMenu />
       <Footer />
       <style jsx>{`
-        // mobile first
         .search_container {
           display: flex;
           flex-direction: column;

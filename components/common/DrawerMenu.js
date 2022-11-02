@@ -33,7 +33,7 @@ const UserMenu = ({ menuList, handleClick, areaList, handleRegion }) => {
   return (
     <List>
       <ListItem>
-        <ListItemButton>
+        <ListItemButton onClick={() => router.push("/")}>
           <ListItemText primary="홈" />
         </ListItemButton>
       </ListItem>

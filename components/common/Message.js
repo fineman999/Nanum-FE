@@ -124,7 +124,7 @@ export function GetMessage({
     <>
       <div id="get" className="message">
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <ProfileImg img={profileImgUrl} name={nickName} size={5} type={1} />
+          <ProfileImg img={profileImgUrl} name={nickName} size={5} type={2} />
           <p>{nickName}</p>
         </div>
 

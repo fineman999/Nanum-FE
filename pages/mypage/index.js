@@ -10,7 +10,9 @@ import { fireAlert } from "../../components/common/Alert";
 import axios from "axios";
 import { getUserDetail } from "../../lib/apis/auth";
 import * as Api from "../../lib/apis/apiClient";
-import MypageNavList from "../../components/mypage/MypageNavList";
+
+import styles from "../../styles/MyPage.module.css";
+import { Divider } from "@mui/material";
 
 const style = css`
   #mypage {
@@ -124,6 +126,8 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
+
 export default function MyPage() {
   const router = useRouter();
 
@@ -141,6 +145,24 @@ export default function MyPage() {
   const userPlace = "부산해운대구";
   const userTime = "14:00";
   const userId = userData.id;
+
+  // 마이룸, 입주, 투어 신청 현황
+  const [houseStatus, setHouseStatus] = useState({
+    myHouseId: "",
+    myHouseImg: "",
+    myHouseName: "",
+    myRoomName: "",
+    tourHouseId: "",
+    tourDate: "",
+    tourHouseImg: "",
+    tourHouseName: "",
+    tourRoomName: "",
+    moveInHouseId: "",
+    moveInDate: "",
+    moveInHouseImg: "",
+    moveInHouseName: "",
+    moveInRoomName: "",
+  });
 
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
@@ -194,6 +216,18 @@ export default function MyPage() {
       } catch (e) {
         console.log("Error" + e);
       }
+      const API_URI = `/tours/moveIn/users/${userData.id}`;
+      Api.get(BASE_URL, API_URI)
+        .then((res) => {
+          console.log("마이페이지 마이룸/입주/투어 현황: ", res);
+          const { status } = res;
+          const { isSuccess, message, result } = res.data;
+
+          if (status === 200 && isSuccess) {
+            setHouseStatus({ ...result });
+          }
+        })
+        .catch((err) => console.log(err));
     }
     reactive();
   }, []);
@@ -296,9 +330,9 @@ export default function MyPage() {
         </section>
         <hr />
         <section id="user_state">
-          <div id="user_move">
-            <div id="move_content">
-              <div id="move_title">
+          <div id="user_move" className={styles.user_move}>
+            <div id="move_content" className={styles.move_content}>
+              <div id="move_title" className={styles.move_title}>
                 <p>마이룸 </p>
                 <p
                   style={{
@@ -306,6 +340,7 @@ export default function MyPage() {
                     color: "red",
                     fontWeight: "normal",
                     fontSize: "12px",
+                    cursor: "pointer",
                   }}
                   onClick={() => {
                     router.push(
@@ -320,15 +355,23 @@ export default function MyPage() {
                   더보기
                 </p>
               </div>
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
+              <Divider />
+              <div className={styles.my_room_status}>
+                <div className={styles.my_house_name}>
+                  <strong>하우스</strong> <br />
+                  {houseStatus.myHouseName}
+                </div>
+                <div className={styles.my_room_name}>
+                  <strong>룸</strong> <br />
+                  {houseStatus.myRoomName}
+                </div>
+              </div>
             </div>
-            <img src="/images/house.png" />
+            <img src={houseStatus.myHouseImg} />
           </div>
-          <div id="user_move">
-            <div id="move_content">
-              <div id="move_title">
+          <div id="user_move" className={styles.user_move}>
+            <div id="move_content" className={styles.move_content}>
+              <div id="move_title" className={styles.move_title}>
                 <p>입주 신청 현황 </p>
                 <p
                   style={{
@@ -336,6 +379,7 @@ export default function MyPage() {
                     color: "red",
                     fontWeight: "normal",
                     fontSize: "12px",
+                    cursor: "pointer",
                   }}
                   onClick={() => {
                     router.push(
@@ -350,15 +394,29 @@ export default function MyPage() {
                   더보기
                 </p>
               </div>
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
+              <Divider />
+              <div className={styles.my_move_status}>
+                <div className={styles.my_house_name}>
+                  <strong>하우스</strong>
+                  <br />
+                  {houseStatus.moveInHouseName}
+                </div>
+                <div className={styles.my_room_name}>
+                  <strong>룸</strong>
+                  <br />
+                  {houseStatus.moveInRoomName}
+                </div>
+              </div>
+              <div className={styles.my_room_date}>
+                <strong>계약 날짜: </strong>
+                {houseStatus.moveInDate}
+              </div>
             </div>
-            <img src="/images/house.png" />
+            <img src={houseStatus.moveInHouseImg} />
           </div>
-          <div id="user_move">
-            <div id="move_content">
-              <div id="move_title">
+          <div id="user_move" className={styles.user_move}>
+            <div id="move_content" className={styles.move_content}>
+              <div id="move_title" className={styles.move_title}>
                 <p>투어 신청 현황</p>
                 <p
                   style={{
@@ -366,6 +424,7 @@ export default function MyPage() {
                     color: "red",
                     fontWeight: "normal",
                     fontSize: "12px",
+                    cursor: "pointer",
                   }}
                   onClick={() =>
                     router.push(
@@ -380,12 +439,25 @@ export default function MyPage() {
                   더보기
                 </p>
               </div>
-
-              <p>
-                {userDate} {userPlace} {userTime}
-              </p>
+              <Divider />
+              <div className={styles.my_tour_status}>
+                <div className={styles.my_house_name}>
+                  <strong>하우스</strong>
+                  <br />
+                  {houseStatus.tourHouseName}
+                </div>
+                <div className={styles.my_room_name}>
+                  <strong>룸</strong>
+                  <br />
+                  {houseStatus.tourRoomName}
+                </div>
+              </div>
+              <div className={styles.my_room_date}>
+                <strong>신청 날짜: </strong>
+                {houseStatus.tourDate}
+              </div>
             </div>
-            <img src="/images/house.png" />
+            <img src={houseStatus.tourHouseImg} />
           </div>
         </section>
         <section>
