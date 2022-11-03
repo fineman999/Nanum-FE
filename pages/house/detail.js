@@ -39,7 +39,12 @@ const House = () => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    const { id: houseId } = router.query;
+    console.log(router);
+    const { asPath } = router;
+    console.log(asPath);
+
+    console.log(asPath.split("?"));
+    const houseId = asPath.split("?")[1].split("=")[1];
     const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
     const API_URI = `/houses/house/${houseId}`;
 
@@ -92,7 +97,7 @@ const House = () => {
               ref={swiperRef}
             >
               {houseData.houseImgs &&
-                houseData.houseImgs.map((image, index) => (
+                houseData.houseImgs.map((image) => (
                   <SwiperSlide key={image.id}>
                     <div className="house_image_wrapper">
                       <Image

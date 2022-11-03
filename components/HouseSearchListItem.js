@@ -163,7 +163,7 @@ const HouseSearchListItem = ({ listItem }) => {
   const router = useRouter();
   const [houseInfo, setHouseInfo] = useState({});
   const handleClick = () => {
-    router.push(`/house/${houseId}`);
+    router.push(`/house/detail?id=${houseId}`);
   };
 
   return (

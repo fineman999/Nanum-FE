@@ -23,10 +23,10 @@ import { getChatCount, getNoteCount } from "../../lib/apis/bottom";
 const LIKE_BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
 const BottomMenu = () => {
+  const router = useRouter();
   const userValue = useRecoilValue(userState);
   const [likeCount, setLikeCount] = useRecoilState(likeCountState);
   const matches = useMediaQuery("(min-width: 600px");
-  const router = useRouter();
   const [userData, setUserData] = useRecoilState(userState);
   const eventSource = useRef(null);
   const [userInfo, setUserInfo] = useState({
@@ -136,6 +136,8 @@ const BottomMenu = () => {
     return null;
   }
 
+  const goToLike = () => {};
+
   return (
     <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}>
       <FloatingButton />
@@ -159,7 +161,12 @@ const BottomMenu = () => {
             label="Favorite"
             icon={
               likeCount >= 0 ? (
-                <Badge badgeContent={likeCount} color="primary" max={10}>
+                <Badge
+                  badgeContent={likeCount}
+                  color="primary"
+                  max={10}
+                  onClick={goToLike}
+                >
                   <FavoriteIcon />
                 </Badge>
               ) : (

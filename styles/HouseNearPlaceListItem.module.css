@@ -1,0 +1,38 @@
+.place_list_item {
+  width: 100%;
+}
+
+.place_info_wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 15px;
+}
+
+.category_wrapper {
+  display: flex;
+  font-size: 0.7em;
+  color: #888;
+  margin-bottom: 3px;
+  box-sizing: border-box;
+}
+
+.place_info_header {
+  width: 100%;
+
+  font-size: 0.9em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.phone {
+  font-size: 0.6em;
+}
+
+.place_name {
+  margin-right: 10px;
+}
+
+.place_info_body {
+  width: 100%;
+  font-size: 0.8em;
+}
