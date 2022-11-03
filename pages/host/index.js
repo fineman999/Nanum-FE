@@ -135,6 +135,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 
+const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 export default function MyPage() {
   const router = useRouter();
 
@@ -148,7 +149,7 @@ export default function MyPage() {
     chatCount: 0,
     alertCount: 0,
   });
-  const [moveState, setMovieState] = useState({
+  const [moveState, setMoveState] = useState({
     wait: 0,
     go: 0,
     done: 0,
@@ -158,6 +159,7 @@ export default function MyPage() {
     go: 0,
     done: 0,
   });
+
   const userId = userData.id;
   //이미지 미리보기
   const encodeFileToBase64 = (fileBob) => {
@@ -211,6 +213,29 @@ export default function MyPage() {
       }
     }
     reactive();
+
+    // https://nanum.site/enroll-service/api/v1/tours/moveIn/status/host/:hostId
+    const API_URI = `/tours/moveIn/status/host/${userData.id}`;
+    Api.get(BASE_URL, API_URI)
+      .then((res) => {
+        console.log(res);
+
+        const { status } = res;
+        const { isSuccess, message, result } = res.data;
+        if (status === 200 && isSuccess) {
+          setTourState({
+            wait: result.tourWait,
+            go: result.tourProgress,
+            done: result.tourComplete,
+          });
+          setMoveState({
+            wait: result.moveInWait,
+            go: result.moveInProgress,
+            done: result.moveInComplete,
+          });
+        }
+      })
+      .catch((err) => console.log(err));
   }, []);
   return (
     <>
@@ -292,54 +317,21 @@ export default function MyPage() {
                 </p>
               </div>
               <section id="progress">
-                <div
-                  id="wait"
-                  onClick={() => {
-                    router.push(
-                      {
-                        pathname: "/host/movestate",
-                        query: { type: 0 },
-                      },
-                      `/host/movestate`
-                    );
-                  }}
-                >
+                <div id="wait">
                   <img src="/icons/wait.png" />
                   <span>
                     <p>대기</p>
                     {moveState.wait}
                   </span>
                 </div>
-                <div
-                  id="go"
-                  onClick={() => {
-                    router.push(
-                      {
-                        pathname: "/host/movestate",
-                        query: { type: 1 },
-                      },
-                      `/host/movestate`
-                    );
-                  }}
-                >
+                <div id="go">
                   <img src="/icons/going.png" />
                   <span>
                     <p>진행</p>
                     {moveState.go}
                   </span>
                 </div>
-                <div
-                  id="done"
-                  onClick={() => {
-                    router.push(
-                      {
-                        pathname: "/host/movestate",
-                        query: { type: 2 },
-                      },
-                      `/host/movestate`
-                    );
-                  }}
-                >
+                <div id="done">
                   <img src="/icons/done.png" />
                   <span>
                     <p>완료</p>
@@ -374,54 +366,21 @@ export default function MyPage() {
                 </p>
               </div>
               <section id="progress">
-                <div
-                  id="wait"
-                  onClick={() =>
-                    router.push(
-                      {
-                        pathname: "/host/tourstate",
-                        query: { type: 0 },
-                      },
-                      `/host/tourstate`
-                    )
-                  }
-                >
+                <div id="wait">
                   <img src="/icons/wait.png" />
                   <span>
                     <p>대기</p>
                     {tourState.wait}
                   </span>
                 </div>
-                <div
-                  id="go"
-                  onClick={() =>
-                    router.push(
-                      {
-                        pathname: "/host/tourstate",
-                        query: { type: 1 },
-                      },
-                      `/host/tourstate`
-                    )
-                  }
-                >
+                <div id="go">
                   <img src="/icons/going.png" />
                   <span>
                     <p>진행</p>
                     {tourState.go}
                   </span>
                 </div>
-                <div
-                  id="done"
-                  onClick={() =>
-                    router.push(
-                      {
-                        pathname: "/host/tourstate",
-                        query: { type: 2 },
-                      },
-                      `/host/tourstate`
-                    )
-                  }
-                >
+                <div id="done">
                   <img src="/icons/done.png" />
                   <span>
                     <p>완료</p>

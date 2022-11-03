@@ -33,7 +33,7 @@ const HostMoveContractListItem = ({
             <span className={styles.move_house_name}>{houseName}</span>
             <span className="move_room_name">{roomName}</span>
           </div>
-          <div className="move_inquiry">문의: {inquiry}</div>
+          <div className="move_inquiry">{inquiry}</div>
         </div>
         <div className={styles.move_image}>
           <Image
