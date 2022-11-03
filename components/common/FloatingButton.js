@@ -1,7 +1,16 @@
 import { Box, Fab, Fade, useScrollTrigger } from "@mui/material";
 import React from "react";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-
+const style = {
+  position: "absolute",
+  left: "95%",
+  transform: "translate(-95%,0)",
+  bottom: "80px",
+  backgroundColor: "#fff",
+  width: "2.3rem",
+  height: "2rem",
+  borderRadius: "2rem",
+};
 const ScrollTop = (props) => {
   const { children } = props;
   const trigger = useScrollTrigger({
@@ -24,22 +33,20 @@ const ScrollTop = (props) => {
 
   return (
     <Fade in={trigger}>
-      <Box onClick={handleClick} role="presentation" p={2}>
-        {children}
-      </Box>
+      <Fab onClick={handleClick} sx={style}>
+        <KeyboardArrowUpIcon />
+      </Fab>
     </Fade>
   );
 };
 
 const FloatingButton = () => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "right" }}>
-      <ScrollTop>
-        <Fab size="small" aria-label="scroll back to top">
-          <KeyboardArrowUpIcon />
-        </Fab>
-      </ScrollTop>
-    </Box>
+    <ScrollTop />
+    //   <Fab size="small" aria-label="scroll back to top" sx={style}>
+    //     <KeyboardArrowUpIcon />
+    //   </Fab>
+    // </ScrollTop>
   );
 };
 

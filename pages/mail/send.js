@@ -13,6 +13,7 @@ import PreviewImageForm from "../../components/PreviewImageForm";
 import { postMail, sendAlert } from "../../lib/apis/mail";
 import axios from "axios";
 import { fireAlert } from "../../components/common/Alert";
+import { getBlockByBlockerIdAndBlockedUserId } from "../../lib/apis/block";
 const style = css`
   #send_mail {
     padding: 5rem 1rem;
@@ -44,6 +45,17 @@ export default function Send() {
   //쪽지보내기
   const sendMail = async () => {
     console.log(images);
+    const checkBlock = await getBlockByBlockerIdAndBlockedUserId({
+      blockerId: router.query.receiverId,
+      blockedUserId: router.query.senderId,
+    });
+    if (checkBlock.data.result.valid === true) {
+      fireAlert({
+        icon: "warning",
+        title: "차단당하셨습니다.",
+      });
+      return;
+    }
     const noteDetails = {
       title: "title",
       content: text,
@@ -80,9 +92,9 @@ export default function Send() {
       });
       sendAlert({
         title: "NOTE",
-        content: "쪽지가 왔습니다.",
+        content: text,
         userIds: [router.query.receiverId],
-        url: "http://localhost:3000/mail",
+        url: "/mail",
       });
       router.push("/mail");
     } else {

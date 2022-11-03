@@ -19,7 +19,7 @@ const style = css`
     padding: 2rem 0rem;
   }
   #signup_innercontainer {
-    width: 50%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;
@@ -312,7 +312,7 @@ export default function Account() {
           <section id="signup_header">
             <h1 style={{ marginBottom: "2rem" }}>NANUM</h1>
           </section>
-          <section id="signup_header">
+          <section id="signup_header2" style={{ textAlign: "center" }}>
             <h2>{emailValid}</h2>
           </section>
           <section id="signup_htmlForm">

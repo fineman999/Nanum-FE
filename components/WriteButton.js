@@ -12,6 +12,7 @@ const WriteButton = () => {
   }, []);
 
   const goToWrite = () => {
+    console.log("hihi");
     router.push({
       pathname: `/community/${params[3]}/write`,
     });
@@ -21,13 +22,14 @@ const WriteButton = () => {
     <Box
       sx={{
         display: "flex",
-        justifyContent: "right",
+        justifyContent: "left",
         position: "fixed",
-        bottom: "20px",
-        right: "20px",
+        bottom: "70px",
+        left: "2rem",
       }}
+      onClick={goToWrite}
     >
-      <Fab aria-label="edit" onClick={goToWrite}>
+      <Fab aria-label="edit" sx={{ backgroundColor: "#fff" }}>
         <EditIcon />
       </Fab>
     </Box>

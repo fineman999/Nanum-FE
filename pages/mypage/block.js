@@ -6,6 +6,7 @@ import { deleteBlock, getBlock } from "../../lib/apis/block";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { NoData } from "../../components/common/NoData";
+import BottomMenu from "../../components/common/BottomMenu";
 
 const style = css`
   #blocklist {
@@ -158,6 +159,7 @@ export default function Block() {
           </div>
         )}
       </div>
+      <BottomMenu />
       <style jsx>{style}</style>
     </>
   );

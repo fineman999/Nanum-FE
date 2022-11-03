@@ -149,6 +149,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
     logout();
     setAuthData({ isLogin: false });
     toggleDrawer();
+    router.push("/");
   };
 
   const handleRegion = (region) => {

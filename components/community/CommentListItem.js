@@ -113,16 +113,12 @@ const CommentListItem = ({
         </div>
         <div className={styles.comment_content}>{content}</div>
       </div>
-      {/* 대댓글 */}
-      {nestedCount > 0 ? (
-        <ReplyList
-          nestedCount={nestedCount}
-          commentId={id}
-          newReply={newReply}
-        />
-      ) : (
-        ""
-      )}
+      <ReplyList
+        nestedCount={nestedCount}
+        commentId={id}
+        newReply={newReply}
+        inputCommnet={inputCommnet}
+      />
     </li>
   );
 };

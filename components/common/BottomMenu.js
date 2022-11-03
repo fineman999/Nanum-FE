@@ -19,9 +19,20 @@ import likeCountState from "../../state/atom/likeCountState";
 import axios from "axios";
 import { get } from "../../lib/apis/apiClient";
 import { getChatCount, getNoteCount } from "../../lib/apis/bottom";
-
+import Alert from "@mui/material/Alert";
+import Stack from "@mui/material/Stack";
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import AlertTitle from "@mui/material/AlertTitle";
+import { styled } from "@mui/material/styles";
+import css from "styled-jsx/css";
 const LIKE_BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
-
+const style = css`
+  .overlay {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
 const BottomMenu = () => {
   const router = useRouter();
   const userValue = useRecoilValue(userState);
@@ -33,7 +44,19 @@ const BottomMenu = () => {
     chatCount: 0,
     noteCount: 0,
   });
+
+  const [alertState, setAlertState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    title: "",
+    content: "",
+    url: "",
+  });
+
   const [listening, setListening] = useState(false);
+  const timerId = useRef(null);
+  const { vertical, horizontal, open, title, content, url } = alertState;
   const getChat = async (cancelToken) => {
     try {
       const getChat = await getChatCount({ userId: userData.id, cancelToken });
@@ -82,17 +105,45 @@ const BottomMenu = () => {
 
         eventSource.current.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
+          const result = JSON.parse(sseMessage.content);
           console.log(sseMessage);
           if (sseMessage.title === "CHAT") {
+            if (timerId.current !== null) {
+              clearTimeout(timerId.current);
+            }
+
             setUserInfo((prev) => ({
               ...prev,
               chatCount: prev.chatCount + 1,
             }));
+            setAlertState((prev) => ({
+              ...prev,
+              open: true,
+              title: "채팅이 왔습니다.",
+              content: result.lastMessage,
+              url: sseMessage.url,
+            }));
+            timerId.current = setTimeout(() => {
+              setAlertState({ ...alertState, open: false });
+            }, 2000);
           } else if (sseMessage.title === "NOTE") {
+            if (timerId.current !== null) {
+              clearTimeout(timerId.current);
+            }
             setUserInfo((prev) => ({
               ...prev,
               noteCount: prev.noteCount + 1,
             }));
+            setAlertState((prev) => ({
+              ...prev,
+              open: true,
+              title: "쪽지가 왔습니다.",
+              content: sseMessage.content,
+              url: sseMessage.url,
+            }));
+            timerId.current = setTimeout(() => {
+              setAlertState({ ...alertState, open: false });
+            }, 2000);
           }
         };
 
@@ -135,57 +186,82 @@ const BottomMenu = () => {
   if (matches) {
     return null;
   }
-
-  const goToLike = () => {};
-
+  const handleClick = () => () => {
+    setAlertState((prev) => ({ ...prev, open: true }));
+  };
+  const handleClose = () => {
+    setAlertState({ ...alertState, open: false });
+  };
+  const handleUrl = () => {
+    router.push(url);
+  };
   return (
-    <Box sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}>
-      <FloatingButton />
-      <Paper elevation={5}>
-        <BottomNavigation>
-          <BottomNavigationAction
-            label="Home"
-            icon={<HomeIcon />}
-            onClick={() => router.push("/")}
-          />
-          <BottomNavigationAction
-            label="Email"
-            onClick={() => router.push("/mail")}
-            icon={
-              <Badge badgeContent={userInfo.noteCount} color="primary" max={10}>
-                <EmailIcon />
-              </Badge>
-            }
-          />
-          <BottomNavigationAction
-            label="Favorite"
-            icon={
-              likeCount >= 0 ? (
+    <>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        key={vertical + horizontal}
+        onClick={handleUrl}
+      >
+        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+          <AlertTitle>{title}</AlertTitle>
+          {content}
+        </Alert>
+      </Snackbar>
+      <Box
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
+      >
+        <FloatingButton />
+        <Paper elevation={5}>
+          <BottomNavigation>
+            <BottomNavigationAction
+              label="Home"
+              icon={<HomeIcon />}
+              onClick={() => router.push("/")}
+            />
+            <BottomNavigationAction
+              label="Email"
+              onClick={() => router.push("/mail")}
+              icon={
                 <Badge
-                  badgeContent={likeCount}
+                  badgeContent={userInfo.noteCount}
                   color="primary"
-                  max={10}
-                  onClick={goToLike}
+                  max={100}
                 >
-                  <FavoriteIcon />
+                  <EmailIcon />
                 </Badge>
-              ) : (
-                <FavoriteIcon />
-              )
-            }
-          />
-          <BottomNavigationAction
-            label="Chat"
-            onClick={() => router.push("/chat")}
-            icon={
-              <Badge badgeContent={userInfo.chatCount} color="primary" max={10}>
-                <ChatIcon />
-              </Badge>
-            }
-          />
-        </BottomNavigation>
-      </Paper>
-    </Box>
+              }
+            />
+            <BottomNavigationAction
+              label="Favorite"
+              icon={
+                likeCount >= 0 ? (
+                  <Badge badgeContent={likeCount} color="primary" max={10}>
+                    <FavoriteIcon />
+                  </Badge>
+                ) : (
+                  <FavoriteIcon />
+                )
+              }
+            />
+            <BottomNavigationAction
+              label="Chat"
+              onClick={() => router.push("/chat")}
+              icon={
+                <Badge
+                  badgeContent={userInfo.chatCount}
+                  color="primary"
+                  max={100}
+                >
+                  <ChatIcon />
+                </Badge>
+              }
+            />
+          </BottomNavigation>
+        </Paper>
+      </Box>
+    </>
   );
 };
 
