@@ -9,7 +9,7 @@ const ContentBody = ({ title, content }) => {
         <h3>{title}</h3>
       </div>
       <div className={styles.content_wrapper}>
-        <p>{content}</p>
+        <p className={styles.overlay}>{content}</p>
       </div>
     </div>
   );

@@ -6,3 +6,6 @@
 .title_wrapper {
   margin-bottom: 15px;
 }
+.overlay {
+  word-break: break-word;
+}

@@ -141,10 +141,10 @@ export default function MyPage() {
     alertCount: 0,
   });
   const [userData, setUserData] = useRecoilState(userState);
-  const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
-  const userDate = "2022.10.31";
-  const userPlace = "부산해운대구";
-  const userTime = "14:00";
+  const [imageSrc, setImageSrc] = useState("");
+  // const userDate = "2022.10.31";
+  // const userPlace = "부산해운대구";
+  // const userTime = "14:00";
   const userId = userData.id;
 
   // 마이룸, 입주, 투어 신청 현황
@@ -181,6 +181,7 @@ export default function MyPage() {
 
   // 개수 가져오기
   useEffect(() => {
+    setImageSrc(userData.profileImgUrl);
     async function reactive() {
       try {
         const userCountNote = await Api.get(
@@ -500,8 +501,8 @@ export default function MyPage() {
             </div>
           </section>
         </section>
-        <BottomMenu />
       </div>
+      <BottomMenu />
       <style jsx>{style}</style>
     </>
   );
