@@ -7,6 +7,7 @@ import styles from "../../../styles/Notice.module.css";
 import * as Api from "../../../lib/apis/apiClient";
 import axios from "axios";
 import SearchBoard from "../../../components/SearchBoard";
+import BottomMenu from "../../../components/common/BottomMenu";
 
 const Notice = () => {
   const [notice, setNotice] = useState({});
@@ -54,6 +55,7 @@ const Notice = () => {
         />
       </section>
       {role.current === "HOST" ? <WriteButton /> : ""}
+      <BottomMenu />
     </>
   );
 };

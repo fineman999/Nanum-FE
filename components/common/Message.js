@@ -117,6 +117,7 @@ export function GetMessage({
   profileImgUrl,
   type,
   count,
+  id,
 }) {
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
@@ -124,7 +125,13 @@ export function GetMessage({
     <>
       <div id="get" className="message">
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <ProfileImg img={profileImgUrl} name={nickName} size={5} type={2} />
+          <ProfileImg
+            img={profileImgUrl}
+            name={nickName}
+            size={5}
+            type={2}
+            id={id}
+          />
           <p>{nickName}</p>
         </div>
 

@@ -7,6 +7,8 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
 import * as Api from "../../lib/apis/apiClient";
+import NoteAltIcon from "@mui/icons-material/NoteAltOutlined";
+import BottomMenu from "../../components/common/BottomMenu";
 const style = css`
   #mypage {
     display: flex;
@@ -445,12 +447,12 @@ export default function MyPage() {
 
               <p>채팅</p>
             </div>
-            <div id="user_unit" onClick={() => router.push("/mypage/alarm")}>
+            <div id="user_unit" onClick={() => router.push("/mypage/mynote")}>
               <StyledBadge badgeContent={count.alertCount} color="error">
-                <img src="/icons/alarm.png" />
+                <NoteAltIcon sx={{ fontSize: "3rem" }} />
               </StyledBadge>
 
-              <p>알림</p>
+              <p>나의 글</p>
             </div>
           </section>
           <section id="user_btn">
@@ -469,6 +471,7 @@ export default function MyPage() {
           </section>
         </section>
       </div>
+      <BottomMenu />
       <style jsx>{style}</style>
     </>
   );

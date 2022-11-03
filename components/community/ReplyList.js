@@ -41,10 +41,27 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
       })
     );
   };
+  async function reactive(cancleToken) {
+    try {
+      const getReplyList = await Api.getCancelToken(
+        "https://nanum.site/board-service/api/v1/board/reply/nest/",
+        commentId,
+        cancleToken
+      );
+      if (!getReplyList) {
+        throw new Error(`${getBoards} not allowd`);
+      }
+      setReplyList(getReplyList.data.result);
+    } catch (e) {
+      console.log("Error" + e);
+    }
+  }
   useEffect(() => {
-    if (newReply != undefined && newReply.replyId === commentId) {
+    const cancleToken = axios.CancelToken.source();
+    if (newReply != undefined) {
       // const newReplyList = [newReply, ...replyList];
-      setReplyList((prev) => [...prev, newReply]);
+      // setReplyList((prev) => [...prev, newReply]);
+      reactive(cancleToken);
       const anchor = document.querySelector("#back-to-top-anchor");
       if (anchor) {
         anchor.scrollIntoView({
@@ -53,27 +70,35 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
         });
       }
     }
+    return () => {
+      cancleToken.cancel();
+    };
   }, [newReply]);
   return (
     <>
-      <div className="reply_list_wrapper">
-        <ul>
-          {replyList &&
-            replyList.map((reply, idx) => (
-              <ReplyListItem
-                key={idx}
-                content={reply.content}
-                date={reply.createAt}
-                profileImgUrl={reply.imgUrl}
-                nickName={reply.nickName}
-                replyId={reply.replyId}
-                userId={reply.userId}
-                handleDeleteReplyNest={handleDeleteReplyNest}
-                id={reply.id}
-              />
-            ))}
-        </ul>
-      </div>
+      {replyList && replyList.length > 0 ? (
+        <div className="reply_list_wrapper">
+          <ul>
+            {replyList &&
+              replyList.map((reply, idx) => (
+                <ReplyListItem
+                  key={idx}
+                  content={reply.content}
+                  date={reply.createAt}
+                  profileImgUrl={reply.imgUrl}
+                  nickName={reply.nickName}
+                  replyId={reply.replyId}
+                  userId={reply.userId}
+                  handleDeleteReplyNest={handleDeleteReplyNest}
+                  id={reply.id}
+                />
+              ))}
+          </ul>
+        </div>
+      ) : (
+        ""
+      )}
+
       <style jsx>{`
         .reply_list_wrapper {
           background: #f5f5f5;

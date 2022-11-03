@@ -15,9 +15,11 @@ import * as Api from "../../lib/apis/apiClient";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { DeleteRounded } from "@mui/icons-material";
-import { confirmAlert } from "../../components/common/Alert";
+import { confirmAlert, fireAlert } from "../../components/common/Alert";
 import axios from "axios";
 import { NoData } from "../../components/common/NoData";
+import { getBlockByBlockerIdAndBlockedUserId } from "../../lib/apis/block";
+import BottomMenu from "../../components/common/BottomMenu";
 
 const style = css`
   #chatlist {
@@ -98,8 +100,24 @@ export default function ChatList() {
   let eventSource = useRef(null);
   const [listening, setListening] = useState(false);
   const [deleteState, setDeleteState] = useState(true);
-  const goChat = (id) => {
-    router.push(`/chat/${id}`);
+  const goChat = async (id, anotherUserId) => {
+    console.log(anotherUserId);
+    if (!anotherUserId) {
+      router.push(`/chat/${id}`);
+    } else {
+      const checkBlock = await getBlockByBlockerIdAndBlockedUserId({
+        blockerId: anotherUserId,
+        blockedUserId: userData.id,
+      });
+      if (checkBlock.data.result.valid === true) {
+        fireAlert({
+          icon: "warning",
+          title: "차단당하셨습니다.",
+        });
+        return;
+      }
+      router.push(`/chat/${id}`);
+    }
   };
   const getChats = async (cancelToken) => {
     // setChatLists([]);
@@ -171,6 +189,7 @@ export default function ChatList() {
                           ? userInfo.users[0].readCount
                           : userInfo.users[1].readCount
                       }`,
+                      anotherUserId: i.id,
                     };
                   }
                 });
@@ -394,14 +413,19 @@ export default function ChatList() {
           {chatLists &&
             chatLists.map((item, idx) => (
               <div key={idx} id="unit_chat">
-                <ProfileImg
+                <img
                   id={item.id}
-                  img={item.img}
-                  size={8}
-                  name={item.username}
-                  type={2}
+                  src={item.img}
+                  style={{
+                    width: `${8}vh`,
+                    height: `${8}vh`,
+                    borderRadius: "100%",
+                  }}
                 />
-                <div id="chat_content" onClick={() => goChat(item.id)}>
+                <div
+                  id="chat_content"
+                  onClick={() => goChat(item.id, item.anotherUserId)}
+                >
                   <div id="chat_user">
                     <h3>{item.username}</h3>
                     <p style={{}}> {item.date}</p>
@@ -435,6 +459,7 @@ export default function ChatList() {
           <NoData data={chatLists} />
         </div>
       </div>
+      <BottomMenu />
       <style jsx>{style}</style>
     </>
   );
