@@ -1,20 +1,33 @@
 import { Divider } from "@mui/material";
 import React, { Fragment, useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import { get } from "../../lib/apis/apiClient";
+import { userState } from "../../state/atom/authState";
 import styles from "../../styles/MyRoomUserList.module.css";
 import MyRoomUserListItem from "./MyRoomUserListItem";
 
 const BASE_URL = `${process.env.NANUM_USER_SERVICE_BASE_URL}`;
 
-const MyRoomUserList = ({ userInfo }) => {
+function isEmptyObject(param) {
+  return Object.keys(param).length === 0 && param.constructor === Object;
+}
+
+const MyRoomUserList = ({ roomInfo }) => {
+  const userValue = useRecoilValue(userState);
   const [userList, setUserList] = useState([]);
   useEffect(() => {
-    const API_URI = `/houses/users/lists/1,3`;
-    get(BASE_URL, API_URI)
-      .then((res) => res.data)
-      .then((data) => setUserList(data.result))
-      .catch((err) => console.log(err));
-  }, []);
+    if (!isEmptyObject(roomInfo)) {
+      const nextUserIds = roomInfo.userIds.filter((id) => userValue.id !== id);
+      if (nextUserIds.length >= 1) {
+        // 이웃이 존재하는 경우
+        const API_URI = `/houses/users/lists/${roomInfo.userIds}`;
+        get(BASE_URL, API_URI)
+          .then((res) => res.data)
+          .then((data) => setUserList(data.result))
+          .catch((err) => console.log(err));
+      }
+    }
+  }, [roomInfo]);
 
   return (
     <div className="room_user_list_wrapper">

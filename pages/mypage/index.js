@@ -367,7 +367,12 @@ export default function MyPage() {
                 </div>
               </div>
             </div>
-            <img src={houseStatus.myHouseImg} />
+            <img
+              src={
+                houseStatus.myHouseImg ||
+                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
+              }
+            />
           </div>
           <div id="user_move" className={styles.user_move}>
             <div id="move_content" className={styles.move_content}>
@@ -408,11 +413,16 @@ export default function MyPage() {
                 </div>
               </div>
               <div className={styles.my_room_date}>
-                <strong>계약 날짜: </strong>
+                <strong>입주 날짜: </strong>
                 {houseStatus.moveInDate}
               </div>
             </div>
-            <img src={houseStatus.moveInHouseImg} />
+            <img
+              src={
+                houseStatus.moveInHouseImg ||
+                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
+              }
+            />
           </div>
           <div id="user_move" className={styles.user_move}>
             <div id="move_content" className={styles.move_content}>
@@ -453,11 +463,16 @@ export default function MyPage() {
                 </div>
               </div>
               <div className={styles.my_room_date}>
-                <strong>신청 날짜: </strong>
+                <strong>투어 날짜: </strong>
                 {houseStatus.tourDate}
               </div>
             </div>
-            <img src={houseStatus.tourHouseImg} />
+            <img
+              src={
+                houseStatus.tourHouseImg ||
+                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
+              }
+            />
           </div>
         </section>
         <section>

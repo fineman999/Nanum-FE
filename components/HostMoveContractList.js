@@ -11,9 +11,7 @@ const HostMoveContractList = () => {
   const userValue = useRecoilValue(userState);
   const [moveList, setMoveList] = useState([]);
   useEffect(() => {
-    // const API_URI = `/users/${userValue.id}/move-in`;
-    const API_URI = `/move-in/hosts/1`;
-
+    const API_URI = `/move-in/hosts/${userValue.id}`;
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {

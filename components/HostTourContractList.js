@@ -19,8 +19,7 @@ const HostTourContractList = () => {
   const filteredHostTourList = useRecoilValue(filteredHostTourListState);
 
   useEffect(() => {
-    // const API_URI = `/tours/hosts/${userStateValue.id}`;
-    const API_URI = `/tours/hosts/1`;
+    const API_URI = `/tours/hosts/${userValue.id}`;
     console.log(filteredHostTourList);
     get(BASE_URL, API_URI)
       .then((res) => res.data)
