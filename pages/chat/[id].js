@@ -259,6 +259,7 @@ export default function Chat() {
                     time={m.createAt}
                     nickName={m.username}
                     profileImgUrl={m.img}
+                    id={m.sender}
                     count={
                       count[idx].users.length === 0
                         ? ""

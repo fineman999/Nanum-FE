@@ -6,6 +6,7 @@ import NoticeList from "../../components/NoticeList";
 import Slide from "@mui/material/Slide";
 import { getSearch } from "../../lib/apis/board";
 import styles from "../../styles/Notice.module.css";
+import BottomMenu from "../../components/common/BottomMenu";
 const Search = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(0);
@@ -52,39 +53,42 @@ const Search = () => {
   };
 
   return (
-    <Slide direction="left" in={slideState} mountOnEnter unmountOnExit>
-      <div>
-        <SearchHeader
-          title="검색"
-          type="search"
-          board={true}
-          setSearch={setSearch}
-          search={search}
-          handleSendSearch={handleSendSearch}
-          setSlideState={setSlideState}
-        />
-        <BoardSearchFilter
-          category={category}
-          setCategory={setCategory}
-          board={board}
-          setBoard={setBoard}
-        />
-        <section className={styles.contents_section}>
-          <NoticeList
-            list={list}
-            searchType={true}
-            type={true}
-            curPage={curPage}
-            setCurPage={setCurPage}
-            totalPages={totalPages}
-            setTotalPages={setTotalPages}
+    <>
+      <Slide direction="left" in={slideState} mountOnEnter unmountOnExit>
+        <div>
+          <SearchHeader
+            title="검색"
+            type="search"
+            board={true}
+            setSearch={setSearch}
             search={search}
-            categoryId={category}
-            board={board}
+            handleSendSearch={handleSendSearch}
+            setSlideState={setSlideState}
           />
-        </section>
-      </div>
-    </Slide>
+          <BoardSearchFilter
+            category={category}
+            setCategory={setCategory}
+            board={board}
+            setBoard={setBoard}
+          />
+          <section className={styles.contents_section}>
+            <NoticeList
+              list={list}
+              searchType={true}
+              type={true}
+              curPage={curPage}
+              setCurPage={setCurPage}
+              totalPages={totalPages}
+              setTotalPages={setTotalPages}
+              search={search}
+              categoryId={category}
+              board={board}
+            />
+          </section>
+          <BottomMenu />
+        </div>
+      </Slide>
+    </>
   );
 };
 

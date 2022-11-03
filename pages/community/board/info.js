@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
+import BottomMenu from "../../../components/common/BottomMenu";
 import SubHeader from "../../../components/common/SubHeader";
 import NoticeList from "../../../components/NoticeList";
 import WriteButton from "../../../components/WriteButton";
@@ -52,6 +53,7 @@ const Info = () => {
         />
       </section>
       {role.current !== null ? <WriteButton /> : ""}
+      <BottomMenu />
     </>
   );
 };

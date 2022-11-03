@@ -82,9 +82,25 @@ const CommentList = ({
     };
   }, []);
   useEffect(() => {
+    async function reactive() {
+      try {
+        const response = await Api.get(
+          `https://nanum.site/board-service/api/v1/board/reply/${boardId}?size=${
+            curPage !== 0 ? defaultSize * curPage : defaultSize
+          }&sort=createAt`,
+          ""
+        );
+        const { content } = response.data.result;
+        setCommentList(content);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     if (newComment) {
       // const newCommentList = [newComment, ...commentList];
-      setCommentList((prev) => [...prev, newComment]);
+      // setCommentList((prev) => [...prev, newComment]);
+      reactive();
       const anchor = document.querySelector("#back-to-top-anchor");
       if (anchor) {
         anchor.scrollIntoView({

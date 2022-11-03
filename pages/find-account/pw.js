@@ -26,7 +26,7 @@ const style = css`
     padding: 2rem 0rem;
   }
   #signup_innercontainer {
-    width: 50%;
+    width: 95%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 1rem;
@@ -99,7 +99,9 @@ const style = css`
     align-items: center;
     margin: 2rem 0 1rem;
   }
-
+  #signup_header {
+    text-align: center;
+  }
   #signup_header h1 {
     margin: 0;
     font-size: 2rem;
@@ -432,7 +434,7 @@ export default function Account() {
           <section id="signup_header">
             <h1 style={{ marginBottom: "2rem" }}>NANUM</h1>
           </section>
-          <section id="signup_header">
+          <section id="signup_header_text" style={{ textAlign: "center" }}>
             <h2>{title}</h2>
             <h2>{subTitle}</h2>
           </section>

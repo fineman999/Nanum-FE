@@ -5,6 +5,7 @@ import NoticeList from "../../../components/NoticeList";
 import WriteButton from "../../../components/WriteButton";
 import styles from "../../../styles/All.module.css";
 import * as Api from "../../../lib/apis/apiClient";
+import BottomMenu from "../../../components/common/BottomMenu";
 
 const All = () => {
   const [notice, setNotice] = useState({});
@@ -50,7 +51,9 @@ const All = () => {
           setTotalPages={setTotalPages}
           category={2}
         />
+        <BottomMenu />
       </section>
+
       {role.current !== null ? <WriteButton /> : ""}
     </>
   );
