@@ -5,15 +5,26 @@ import { useRecoilValue } from "recoil";
 import HostMoveContractListItem from "./HostMoveContractListItem";
 import { Divider } from "@mui/material";
 import LastPageComment from "./LastPageComment";
+import Swal from "sweetalert2";
+import MoveContractFormModal from "./host/MoveContractFormModal";
+import formatDate from "../lib/fomatDate";
+
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
 const HostMoveContractList = () => {
   const userValue = useRecoilValue(userState);
   const [moveList, setMoveList] = useState([]);
-  useEffect(() => {
-    // const API_URI = `/users/${userValue.id}/move-in`;
-    const API_URI = `/move-in/hosts/1`;
+  const [moveForm, setMoveForm] = useState({
+    moveInId: "",
+    expireDate: "",
+  });
+  const [modal, setModal] = useState(false);
 
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
+
+  useEffect(() => {
+    const API_URI = `/move-in/hosts/${userValue.id}`;
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
@@ -22,6 +33,17 @@ const HostMoveContractList = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  const handleClickDate = (newValue) => {
+    console.log(formatDate(newValue.toDate()));
+
+    setMoveForm((prev) => {
+      return {
+        ...prev,
+        expireDate: formatDate(newValue.toDate()),
+      };
+    });
+  };
 
   const handleContract = (id) => {
     const nextMoveList = moveList.map((listItem) =>
@@ -52,29 +74,35 @@ const HostMoveContractList = () => {
   };
 
   const handleComplete = (id) => {
-    const nextMoveList = moveList.map((listItem) =>
-      id === listItem.id
-        ? { ...listItem, moveInStatus: "CONTRACT_COMPLETED" }
-        : listItem
-    );
-
-    const API_URI = `/move-in`;
-    const formData = {
-      moveInId: id,
-      moveInStatus: "CONTRACT_COMPLETED",
-      expireDate: "2100-10-10",
-    };
-
-    // 입주 계약 완료 API 요청
-    put(BASE_URL, API_URI, formData)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
-
-    setMoveList(nextMoveList);
+    Swal.fire({
+      title: "입주 계약을 <br/>완료하시겠습니까?",
+      showCancelButton: true,
+      confirmButtonText: "네",
+      cancelButtonText: "아니요",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // 입주 계약 신청 아이디 등록
+        setMoveForm((prev) => {
+          return {
+            ...prev,
+            moveInId: id,
+          };
+        });
+        openModal();
+      }
+    });
   };
 
   return (
     <div className="host_move_list_wrapper">
+      <MoveContractFormModal
+        open={modal}
+        handleClose={closeModal}
+        moveList={moveList}
+        setMoveList={setMoveList}
+        moveForm={moveForm}
+        handleClickDate={handleClickDate}
+      />
       <ul className="move_list">
         {moveList &&
           moveList.map((listItem, index) => (

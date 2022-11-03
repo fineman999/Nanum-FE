@@ -34,10 +34,10 @@ const style = css`
   }
 `;
 const BottomMenu = () => {
+  const router = useRouter();
   const userValue = useRecoilValue(userState);
   const [likeCount, setLikeCount] = useRecoilState(likeCountState);
   const matches = useMediaQuery("(min-width: 600px");
-  const router = useRouter();
   const [userData, setUserData] = useRecoilState(userState);
   const eventSource = useRef(null);
   const [userInfo, setUserInfo] = useState({
