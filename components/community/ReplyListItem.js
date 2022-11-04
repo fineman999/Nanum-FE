@@ -24,7 +24,6 @@ const ReplyListItem = ({
 }) => {
   const [userData, setUserData] = useRecoilState(userState);
   const handleDeleteReply = async () => {
-    console.log("userId", userId, "userData", userData);
     const result = await confirmAlertV2({
       icon: "warning",
       title: "댓글 삭제",

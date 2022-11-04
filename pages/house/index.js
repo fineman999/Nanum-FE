@@ -12,6 +12,7 @@ import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
 import houseSearchListState from "../../state/atom/houseSearchListState";
 import { useRecoilState } from "recoil";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 export default function Houses() {
   const router = useRouter();
@@ -20,7 +21,6 @@ export default function Houses() {
   const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
   useEffect(() => {
-    console.log("houseList ", houseList);
     setSearchInput(router.query.searchWord);
   }, [router]);
 
@@ -77,6 +77,7 @@ export default function Houses() {
       </div>
       <SearchModal open={open} handleClose={handleClose} />
       <BottomMenu />
+      <NotificationAlert />
       <Footer />
       <style jsx>{`
         .search_container {

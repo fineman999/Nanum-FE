@@ -19,7 +19,6 @@ const MyRoomWrapper = () => {
 
     get(BASE_URL, API_URI)
       .then((res) => {
-        console.log("마이룸 정보 조회: ", res);
         const { status, data } = res;
         if (status === 200) {
           setRoomInfo(data);

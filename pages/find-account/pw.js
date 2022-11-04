@@ -248,7 +248,6 @@ export default function Account() {
     if (emailTest) {
       findEmailValid(email)
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
             setEmailValid(true);
             setTitle("해당 이메일이 존재합니다.");
@@ -320,7 +319,6 @@ export default function Account() {
         setValidCheck(true);
       })
       .catch((err) => {
-        console.log(err);
         fireAlert({
           icon: "error",
           title: "인증번호 실패.",
@@ -341,11 +339,8 @@ export default function Account() {
 
     phoneValue = phoneValue[0] + phoneValue[1] + phoneValue[2];
     const content = numValid;
-    console.log(phoneValue, content);
-
     findIdByPhone({ phoneNumber: phoneValue, content: numValid })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setPhoneValid(true);
           setPhoneExist(true);
@@ -370,7 +365,6 @@ export default function Account() {
         }
       })
       .catch((err) => {
-        console.log(err);
         setPhoneValid(false);
         fireAlert({
           icon: "error",

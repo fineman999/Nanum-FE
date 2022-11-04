@@ -22,6 +22,7 @@ import HouseNearDetail from "../../components/HouseNearDetail";
 import HouseReviewDetail from "../../components/HouseReviewDetail";
 import { get } from "../../lib/apis/apiClient";
 import formatDate from "../../lib/fomatDate";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 const House = () => {
   const router = useRouter();
 
@@ -339,6 +340,7 @@ const House = () => {
           }
         }
       `}</style>
+      <NotificationAlert />
     </>
   );
 };

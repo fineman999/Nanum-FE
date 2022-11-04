@@ -15,7 +15,6 @@ const LikeList = () => {
   useEffect(() => {
     const API_URI = `/users/${userValue.id}/wishes`;
     get(BASE_URL, API_URI).then((res) => {
-      console.log(res);
       const { status } = res;
       const { isSuccess, message, result } = res.data;
 

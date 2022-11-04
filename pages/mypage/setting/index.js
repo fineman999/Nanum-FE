@@ -20,6 +20,7 @@ import { useRecoilState } from "recoil";
 import { userState } from "../../../state/atom/authState";
 import axios from "axios";
 import { fireAlert } from "../../../components/common/Alert";
+import { NotificationAlert } from "../../../components/common/NotificationAlert";
 const style = css`
   #setting {
     padding: 5rem 2rem;
@@ -117,7 +118,6 @@ export default function Setting() {
       reader.onload = () => {
         setImageSrc(reader.result);
 
-        console.log(reader.result);
         resolve();
       };
     });
@@ -146,7 +146,6 @@ export default function Setting() {
       isNoteReject: mailAccept,
       imgUrl: userData.profileImgUrl,
     };
-    console.log(imgFile, "!@@");
     const uploaderString = JSON.stringify(request);
     formData.append(
       "request",
@@ -162,15 +161,12 @@ export default function Setting() {
         },
       }
     );
-    console.log(res);
     if (res.status == 200) {
-      console.log(userId);
       fireAlert({
         icon: "success",
         title: "성공적으로 회원정보가 수정되었습니다.",
       });
       getUserDetail({ userId }).then((res) => {
-        console.log(res);
         setUserData(res.data.result);
       });
     } else {
@@ -323,6 +319,7 @@ export default function Setting() {
         </section>
       </div>
       <style jsx>{style}</style>
+      <NotificationAlert />
     </>
   );
 }

@@ -102,10 +102,8 @@ export default function Password() {
 
   //기존 비밀번호 일치
   const checkOriginPw = () => {
-    console.log(pwd);
     getOriginPw({ userId, pwd })
       .then((res) => {
-        console.log(res);
         if (res.status == 204) {
           setPwConfirm(false);
         }
@@ -127,7 +125,6 @@ export default function Password() {
     } else {
       putPassword({ userId, newPw })
         .then((res) => {
-          console.log(res);
           fireAlert({
             icon: "success",
             title: "성공적으로 비밀번호가 변경됐어요",

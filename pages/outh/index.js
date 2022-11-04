@@ -232,7 +232,6 @@ export default function SignupOuth() {
   const [phoneExist, setPhoneExist] = useState(true);
   //
   useEffect(() => {
-    console.log(router.query);
     const { email, nickname, socialType, mobile, gender } = router.query;
     setUserInfo((prev) => ({
       ...prev,
@@ -258,11 +257,9 @@ export default function SignupOuth() {
 
   //닉네임 중복 체크
   const checkNameValid = () => {
-    console.log("hihi");
     if (userInfo) {
       getNickname(userInfo.nickname)
         .then((res) => {
-          console.log(res);
           if (res.status == 200) {
             setNameValid(true);
           }
@@ -323,7 +320,6 @@ export default function SignupOuth() {
   const postPhoneCheck = () => {
     let phone = userInfo.phone.split("-");
     phone = phone[0] + phone[1] + phone[2];
-    console.log(phone);
     postPhone(phone)
       .then((res) => {
         console.log(res);
@@ -341,12 +337,9 @@ export default function SignupOuth() {
   const checkNum = () => {
     let phone = userInfo.phone.split("-");
     phone = phone[0] + phone[1] + phone[2];
-    console.log("hihi");
     const number = numValid;
-    console.log(phone, number);
     postPhoneValid({ phone, number })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           setPhoneValid(true);
           setPhoneExist(true);
@@ -379,7 +372,6 @@ export default function SignupOuth() {
       gender: userInfo.gender,
       socialType: userInfo.socialType,
     };
-    console.log(nameTest, nameValid, userInfo.gender);
     if (nameTest && nameValid && userInfo.gender && phoneValid && phoneExist) {
       const formData = new FormData();
       formData.append("profileImg", userInfo.imgFile);
@@ -388,7 +380,6 @@ export default function SignupOuth() {
         "userRequest",
         new Blob([uploaderString], { type: "application/json" })
       );
-      console.log(userRequest);
       const res = await axios.post(
         "https://nanum.site/user-service/api/v1/oauth/signup",
         formData,
@@ -398,7 +389,6 @@ export default function SignupOuth() {
           },
         }
       );
-      console.log(res);
       if (res.status == 200) {
         fireAlert({
           icon: "success",

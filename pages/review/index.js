@@ -37,7 +37,6 @@ const Review = () => {
   };
 
   const addImages = (file) => {
-    console.log("add image");
     setReviewForm({
       ...reviewForm,
       reviewImgs: [...reviewForm.reviewImgs, file],
@@ -45,7 +44,6 @@ const Review = () => {
   };
 
   const removeImages = (index) => {
-    console.log("remove image");
     const nextReviewImages = [
       ...reviewForm.reviewImgs.slice(0, index),
       ...reviewForm.reviewImgs.slice(index + 1),
@@ -63,7 +61,6 @@ const Review = () => {
       return null;
     }
 
-    console.log(reviewForm);
     fireAlert({ icon: "success", title: "리뷰 작성 완료" });
   };
 

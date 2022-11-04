@@ -14,6 +14,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { NoData } from "../../components/common/NoData";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 // 메일 데이터
 const mailData = {
@@ -153,7 +154,6 @@ export default function MailList() {
   const handleCurrentMail = (noteId) => {
     getMailDetail({ noteId, userId })
       .then((res) => {
-        console.log(res.data, "ss");
         setCurrentMail(res.data);
         getItemList();
         handleOpen();
@@ -172,7 +172,6 @@ export default function MailList() {
     } else {
       setNoteList([...noteList, id]);
     }
-    console.log(noteList);
   };
 
   //쪽지 삭제하기
@@ -181,7 +180,6 @@ export default function MailList() {
     noteList.map((noteId) => {
       deleteMail({ noteId, userId })
         .then((res) => {
-          console.log(res);
           fireAlert({ icon: "success", title: "삭제되었습니다." });
           getItemList();
           setNoteList([]);
@@ -193,7 +191,6 @@ export default function MailList() {
   const delAll = () => {
     mailType.map((mail) => {
       let noteId = mail.id;
-      console.log(isType);
       deleteMail({ noteId, userId })
         .then((res) => {
           fireAlert({ icon: "success", title: "삭제되었습니다." });
@@ -207,7 +204,6 @@ export default function MailList() {
     if (isType == 1) {
       getReceivedMail(userId)
         .then((res) => {
-          console.log(res);
           setReceivedMail(res.data.result.content);
           setMailType(res.data.result.content);
         })
@@ -343,6 +339,7 @@ export default function MailList() {
         )}
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );

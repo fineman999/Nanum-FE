@@ -74,7 +74,6 @@ export default function ProfileModal({
   const goBlock = () => {
     postBlock({ blockerId, blockedUserId })
       .then((res) => {
-        console.log(res);
         router.push("/mypage/block");
         setTimeout(() => {
           if (res.status == 201) {
