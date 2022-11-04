@@ -1,0 +1,17 @@
+.room_info {
+  padding: 10px;
+}
+.room_body div:first-child {
+  margin-bottom: 5px;
+}
+.roomName {
+  margin-bottom: 10px;
+}
+
+.name,
+.date {
+  margin-bottom: 5px;
+}
+.date_range {
+  display: flex;
+}

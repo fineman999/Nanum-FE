@@ -1,0 +1,123 @@
+.content_header {
+  display: flex;
+  padding: 10px 10px 0px 10px;
+}
+
+.content_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.article_date {
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.icons {
+  display: flex;
+}
+
+.icon_views {
+  display: flex;
+  align-items: center;
+}
+
+.icon_chats {
+  display: flex;
+  align-items: center;
+}
+
+.icon_text {
+  margin-left: 3px;
+  color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  font-size: 0.7em;
+}
+
+.article_date {
+  width: 100%;
+}
+
+.date_text {
+  font-size: 0.7em;
+  color: #76c1b2;
+}
+.user_incorrect_container {
+  display: flex;
+  align-items: flex-end;
+}
+.user_incorrect_fix {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: var(--button-bg-color);
+  color: var(--button-color);
+
+  margin: 0 1rem;
+  /* padding: 0.5rem 1rem; */
+
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+
+  border: none;
+  border-radius: 1.5rem;
+
+  display: inline-block;
+  width: 3rem;
+  height: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  color: #ffffff;
+  cursor: pointer;
+
+  transition: 0.5s;
+
+  --button-bg-color: blueviolet;
+  --button-hover-bg-color: blueviolet;
+}
+.user_incorrect_fix:hover {
+  background-color: darkslateblue;
+  outline: 0;
+}
+.user_incorrect_delete {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  background: var(--button-bg-color);
+  color: var(--button-color);
+
+  margin: 0;
+  /* padding: 0.5rem 1rem; */
+  color: #ffffff;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  text-align: center;
+  text-decoration: none;
+
+  border: none;
+  border-radius: 1.5rem;
+
+  display: inline-block;
+  width: 3rem;
+  height: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  cursor: pointer;
+
+  transition: 0.5s;
+  --button-bg-color: darkslategray;
+  --button-hover-bg-color: darkslategray;
+}
+.user_incorrect_delete:hover {
+  background-color: black;
+  outline: 0;
+}

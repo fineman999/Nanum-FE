@@ -1,0 +1,36 @@
+.list_item {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.myroom_info {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.myroom_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.moreBtn {
+  box-sizing: border-box;
+  padding: 5px;
+  font-size: 0.5em;
+  color: red;
+  cursor: pointer;
+}
+.myroom_image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}

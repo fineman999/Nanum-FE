@@ -1,0 +1,62 @@
+.house_info {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  background: white;
+}
+
+.house_img {
+  position: relative;
+  box-sizing: border-box;
+  width: 100px;
+  height: 100p;
+  margin-right: 10px;
+  overflow: hidden;
+  border-radius: 5px;
+}
+
+.house_desc {
+  position: relative;
+  flex: 1;
+}
+
+.house_name {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.house_zonecode {
+  font-size: 0.7em;
+  color: #76c1b2;
+  font-weight: bold;
+}
+
+.house_road {
+  font-size: 0.7em;
+  color: #76c1b2;
+  font-weight: bold;
+}
+
+.house_jibun {
+  font-size: 0.7em;
+  color: #76c1b2;
+  font-weight: bold;
+}
+
+.house_detail {
+  font-size: 0.7em;
+  color: #76c1b2;
+  font-weight: bold;
+}
+
+.detail_btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #76c1b2;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,40 @@
+.contract_list_item {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: white;
+}
+
+.tour_status {
+  flex: 1;
+  height: 100%;
+  margin-right: 10px;
+}
+.tour_date {
+  color: #76c1b2;
+}
+
+.tour_name {
+  margin-bottom: 5px;
+}
+
+.tour_house_name {
+  margin-right: 8px;
+}
+
+.tour_image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.tour_btns {
+  display: flex;
+  justify-content: right;
+}

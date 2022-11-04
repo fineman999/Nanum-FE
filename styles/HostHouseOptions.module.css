@@ -1,0 +1,4 @@
+.host_house_options_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}

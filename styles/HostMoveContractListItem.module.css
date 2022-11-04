@@ -1,0 +1,45 @@
+.move_list_item {
+  background: white;
+}
+
+.list_item_wrapper {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  background: white;
+}
+
+.move_status {
+  flex: 1;
+  height: 100%;
+  margin-right: 10px;
+}
+.move_date {
+  color: #76c1b2;
+  margin-bottom: 5px;
+}
+.move_name {
+  margin-bottom: 5px;
+}
+.move_house_name {
+  margin-right: 8px;
+}
+
+.move_image {
+  position: relative;
+  width: 100px;
+  height: 100px;
+
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.move_btns {
+  display: flex;
+  justify-content: right;
+  box-sizing: border-box;
+  padding: 0px 10px 10px 10px;
+}

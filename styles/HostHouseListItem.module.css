@@ -1,0 +1,44 @@
+.host_houst_list_item {
+  display: flex;
+  background: white;
+  box-sizing: border-box;
+  padding: 10px;
+}
+
+.house_info {
+  width: 70%;
+  margin-right: 15px;
+}
+
+.house_name {
+  margin-bottom: 3px;
+}
+
+.house_thumnail {
+  position: relative;
+  width: 30%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.house_status {
+  margin-top: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.house_address {
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.like_status {
+  display: flex;
+  align-items: center;
+}
+
+.like_num {
+  font-size: 0.7em;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: bold;
+}

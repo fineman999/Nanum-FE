@@ -1,0 +1,182 @@
+.house_add_form {
+  width: 100%;
+  height: 100%;
+}
+
+.house_main_section {
+  margin-bottom: 20px;
+}
+
+.house_main_section .house_main_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_main_section .house_main_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_desc_section {
+  margin-bottom: 20px;
+}
+
+.house_desc_section .house_desc_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_desc_section .house_desc_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_type_section {
+  margin-bottom: 20px;
+}
+
+.house_type_section .house_type_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_type_section .house_type_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_address_section {
+  margin-bottom: 20px;
+}
+
+.house_address_section .house_address_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_address_section .house_address_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_position_section {
+  margin-bottom: 20px;
+}
+
+.house_position_section .house_position_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_position_section .house_position_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_option_section {
+  margin-bottom: 20px;
+}
+
+.house_option_section .house_option_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_option_section .house_option_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_keyword_section {
+  margin-bottom: 20px;
+}
+
+.house_keyword_section .house_keyword_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_keyword_section .house_keyword_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_detail_image_section {
+  margin-bottom: 20px;
+}
+
+.house_detail_image_section .house_detail_image_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_detail_image_section .house_detail_image_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_floor_section {
+  margin-bottom: 20px;
+}
+
+.house_floor_section .house_floor_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_floor_section .house_floor_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_file_section {
+  margin-bottom: 20px;
+}
+
+.house_file_section .house_file_header {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.house_file_section .house_file_body {
+  box-sizing: border-box;
+  padding: 0px 10px;
+}
+
+.house_edit_button {
+  background: #76c1b2;
+  color: white;
+  border: none;
+  width: 100%;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.house_edit_button:hover {
+  background: #555555;
+}
+
+.house_add_btns {
+  display: flex;
+}
+
+.house_add_button {
+  flex-grow: 1;
+  background: #76c1b2;
+  color: white;
+  border: none;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+}
+
+.house_reset_button {
+  flex-grow: 1;
+  background: #555555;
+  color: white;
+  border: none;
+  height: 50px;
+  font-size: 1.5em;
+  cursor: pointer;
+}

@@ -1,0 +1,25 @@
+.category_menu_list {
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  overflow: auto;
+}
+
+.category_menu_list::-webkit-scrollbar {
+  display: none;
+}
+
+.category_menu_list .list_item {
+  box-sizing: border-box;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 15px;
+  background: #76c1b2;
+  color: #fff;
+  font-size: 0.8em;
+}
+
+.category_menu_list .list_item:hover {
+  background: #555555;
+}

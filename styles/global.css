@@ -1,0 +1,30 @@
+body,
+html {
+  height: 100%;
+}
+
+body {
+  background: #edf1f1;
+  height: 100%;
+}
+* {
+  padding: 0;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+}
+
+address {
+  font-style: normal;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.my-swal {
+  z-index: 300000 !important;
+}
