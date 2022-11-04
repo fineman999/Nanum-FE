@@ -35,3 +35,6 @@
 .reply_content_wrapper {
   width: 100%;
 }
+.comment_content {
+  word-break: break-word;
+}

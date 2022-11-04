@@ -90,7 +90,7 @@ const ReplyListItem = ({
             </div>
           </div>
         </div>
-        <div className="comment_content">{content}</div>
+        <div className={styles.comment_content}>{content}</div>
       </div>
     </li>
   );

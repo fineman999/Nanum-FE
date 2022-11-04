@@ -1,6 +1,11 @@
 import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
+import { useRecoilState } from "recoil";
 import css from "styled-jsx/css";
+import { fireAlert } from "../../../components/common/Alert";
 import Header from "../../../components/common/Header";
+import { getUserDetail } from "../../../lib/apis/auth";
+import { userState } from "../../../state/atom/authState";
 const style = css`
   #password {
     padding: 12rem 2rem;
@@ -53,8 +58,15 @@ const style = css`
   }
 `;
 export default function Withdrawal() {
-  const email = "test@test.com";
   const router = useRouter();
+  const [userData, setUserData] = useRecoilState(userState);
+  const handleOut = () => {
+    fireAlert({
+      icon: "warning",
+      title: "아직 테스트 단계입니다. 회원탈퇴는 불가합니다.",
+    });
+  };
+
   return (
     <>
       <div id="password">
@@ -74,7 +86,7 @@ export default function Withdrawal() {
               type="email"
               id="email"
               name="email"
-              value={email}
+              value={userData.email}
               disabled
               placeholder="이메일을 입력해주세요."
             />
@@ -89,7 +101,9 @@ export default function Withdrawal() {
           </article>
         </section>
         <section id="btn_list">
-          <button style={{ backgroundColor: "#777777" }}>회원 탈퇴</button>
+          <button style={{ backgroundColor: "#777777" }} onClick={handleOut}>
+            회원 탈퇴
+          </button>
           <button onClick={() => router.back()}>취소</button>
         </section>
       </div>

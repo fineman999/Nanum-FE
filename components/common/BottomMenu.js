@@ -105,9 +105,10 @@ const BottomMenu = () => {
 
         eventSource.current.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
-          const result = JSON.parse(sseMessage.content);
+
           console.log(sseMessage);
           if (sseMessage.title === "CHAT") {
+            const result = JSON.parse(sseMessage.content);
             if (timerId.current !== null) {
               clearTimeout(timerId.current);
             }
