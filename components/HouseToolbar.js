@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import SwipeableEdgeDrawer from "../components/SwipeableEdgeDrawer";
-
-import CallIcon from "@mui/icons-material/Call";
+import ChatIcon from "@mui/icons-material/Chat";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import { IconButton } from "@mui/material";
 
 import styles from "../styles/HouseToolbar.module.css";
 import LikeButton from "./common/LikeButton";
+import { getChat, postChat } from "../lib/apis/chat";
+import { useRecoilState } from "recoil";
+import { userState } from "../state/atom/authState";
+import { useRouter } from "next/router";
 
 const HouseToolbar = ({
   roomData,
@@ -15,7 +18,36 @@ const HouseToolbar = ({
   like,
   open,
   toggleDrawer,
+  hostId,
+  houseId,
 }) => {
+  const [userData, setUserData] = useRecoilState(userState);
+  const router = useRouter();
+
+  const handleChatConnected = async () => {
+    const users = [hostId, userData.id];
+    try {
+      const response = await getChat({ houseId: 0, users });
+      if (!response.data.id) {
+        console.log("true");
+        let obj = {
+          userIds: [hostId, userData.id],
+          houseId: 0,
+          roomName: "",
+          houseImg: "/images/default.png",
+        };
+        const createChat = await postChat(obj);
+
+        router.push(`/chat/${createChat.data.id}`);
+        return;
+      } else {
+        router.push(`/chat/${response.data.id}`);
+        return;
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
   return (
     <div className={styles.house_toolbar_container}>
       <SwipeableEdgeDrawer
@@ -35,9 +67,9 @@ const HouseToolbar = ({
         </div>
         <div className={styles.house_toolbar_btns}>
           <div className="btn_call">
-            <IconButton>
-              <CallIcon />
-              <span className={styles.btn_text}>전화문의</span>
+            <IconButton onClick={handleChatConnected}>
+              <ChatIcon />
+              <span className={styles.btn_text}>채팅문의</span>
             </IconButton>
           </div>
           <div className="btn_reg">

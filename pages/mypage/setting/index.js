@@ -282,7 +282,7 @@ export default function Setting() {
               />
             </RadioGroup>
           </FormControl>
-          <FormControl id="mail_accept">
+          {/* <FormControl id="mail_accept">
             <FormLabel id="demo-controlled-radio-buttons-group">
               <h4 style={{ color: "black", marginBottom: "0" }}>쪽지 수신</h4>
             </FormLabel>
@@ -310,7 +310,7 @@ export default function Setting() {
                 disabled={isLock ? true : false}
               />
             </RadioGroup>
-          </FormControl>
+          </FormControl> */}
         </section>
         <section id="btn">
           <button
