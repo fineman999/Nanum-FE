@@ -6,6 +6,7 @@ import WriteButton from "../../../components/WriteButton";
 import styles from "../../../styles/All.module.css";
 import * as Api from "../../../lib/apis/apiClient";
 import BottomMenu from "../../../components/common/BottomMenu";
+import { NotificationAlert } from "../../../components/common/NotificationAlert";
 
 const All = () => {
   const [notice, setNotice] = useState({});
@@ -52,6 +53,7 @@ const All = () => {
           category={2}
         />
         <BottomMenu />
+        <NotificationAlert />
       </section>
 
       {role.current !== null ? <WriteButton /> : ""}

@@ -14,6 +14,7 @@ import NoteAltIcon from "@mui/icons-material/NoteAltOutlined";
 import styles from "../../styles/MyPage.module.css";
 import { Divider } from "@mui/material";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 const style = css`
   #mypage {
@@ -173,7 +174,6 @@ export default function MyPage() {
     return new Promise((resolve) => {
       reader.onload = () => {
         setImageSrc(reader.result);
-        console.log(reader.result);
         resolve();
       };
     });
@@ -196,7 +196,6 @@ export default function MyPage() {
           newCondition["noteCount"] = userCountNote.data.result.count;
           return newCondition;
         });
-        console.log(userCountNote);
       } catch (e) {
         console.log("Error" + e);
       }
@@ -209,19 +208,16 @@ export default function MyPage() {
           throw new Error(`${getChatLists} not allowd`);
         }
         setCount((current) => {
-          console.log(userCountNote);
           let newCondition = { ...current };
           newCondition["chatCount"] = userCountNote.data.count;
           return newCondition;
         });
-        console.log(userCountNote);
       } catch (e) {
         console.log("Error" + e);
       }
       const API_URI = `/tours/moveIn/users/${userData.id}`;
       Api.get(BASE_URL, API_URI)
         .then((res) => {
-          console.log("마이페이지 마이룸/입주/투어 현황: ", res);
           const { status } = res;
           const { isSuccess, message, result } = res.data;
 
@@ -259,14 +255,12 @@ export default function MyPage() {
         },
       }
     );
-    console.log(res);
     if (res.status == 200) {
       fireAlert({
         icon: "success",
         title: "성공적으로 프로필이미지가 수정되었습니다.",
       });
       getUserDetail({ userId }).then((res) => {
-        console.log(res);
         setUserData(res.data.result);
       });
     } else {
@@ -518,6 +512,7 @@ export default function MyPage() {
         </section>
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );

@@ -12,7 +12,6 @@ const WriteButton = () => {
   }, []);
 
   const goToWrite = () => {
-    console.log("hihi");
     router.push({
       pathname: `/community/${params[3]}/write`,
     });

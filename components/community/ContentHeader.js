@@ -27,9 +27,6 @@ const ContentHeader = ({
   const router = useRouter();
 
   const handleFix = () => {
-    console.log("userData.id", userData.id, "userId", userId);
-    console.log("boardId", boardId);
-    console.log(...router.pathname.split("/"));
     router.push({
       pathname: `/community/category/${categoryId}/${boardId}/write`,
     });

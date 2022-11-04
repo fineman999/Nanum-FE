@@ -68,7 +68,6 @@ const CommentToolbar = ({
       boardId: boardId[0],
       content: form,
     };
-    console.log(userData);
     try {
       const sendComment = await Api.post(
         "https://nanum.site/board-service/api/v1/board/reply/",
@@ -78,7 +77,6 @@ const CommentToolbar = ({
       if (!sendComment) {
         throw new Error(`${getBoards} not allowd`);
       }
-      console.log("sendComment", sendComment);
       setForm("");
       setNewComment(sendComment.data.result);
     } catch (e) {

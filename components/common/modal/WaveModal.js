@@ -48,7 +48,6 @@ export default function WaveModal({ sender, username, img, ws }) {
     ws.current.send(JSON.stringify(obj));
   };
   const openLikeEvent = () => {
-    console.log("Hi");
     let obj = {
       sender: sender,
       message: emoticonList[1],
@@ -60,7 +59,6 @@ export default function WaveModal({ sender, username, img, ws }) {
     ws.current.send(JSON.stringify(obj));
   };
   const openOkayEvent = () => {
-    console.log("Hi");
     let obj = {
       sender: sender,
       message: emoticonList[2],
@@ -72,7 +70,6 @@ export default function WaveModal({ sender, username, img, ws }) {
     ws.current.send(JSON.stringify(obj));
   };
   const openNoEvent = () => {
-    console.log("Hi");
     let obj = {
       sender: sender,
       message: emoticonList[3],

@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
+import { NotificationAlert } from "../../../components/common/NotificationAlert";
 import SubHeader from "../../../components/common/SubHeader";
 import { get } from "../../../lib/apis/apiClient";
 
@@ -156,7 +157,8 @@ const Region = () => {
           width: 100%;
           height: 100%;
         }
-      `}</style>
+      `}</style>{" "}
+      <NotificationAlert />
     </>
   );
 };

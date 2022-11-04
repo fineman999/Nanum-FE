@@ -20,6 +20,7 @@ import axios from "axios";
 import { NoData } from "../../components/common/NoData";
 import { getBlockByBlockerIdAndBlockedUserId } from "../../lib/apis/block";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 const style = css`
   #chatlist {
@@ -101,7 +102,6 @@ export default function ChatList() {
   const [listening, setListening] = useState(false);
   const [deleteState, setDeleteState] = useState(true);
   const goChat = async (id, anotherUserId) => {
-    console.log(anotherUserId);
     if (!anotherUserId) {
       router.push(`/chat/${id}`);
     } else {
@@ -121,14 +121,12 @@ export default function ChatList() {
   };
   const getChats = async (cancelToken) => {
     // setChatLists([]);
-    console.log(userData.id);
     try {
       const getChatLists = await Api.getCancelToken(
         `https://nanum.site/web-flux-service/api/v1/rooms/users/`,
         userData.id,
         cancelToken
       );
-      console.log("getChatLists", getChatLists);
       if (!getChatLists) {
         throw new Error(`${getChatLists} not allowd`);
       }
@@ -333,7 +331,6 @@ export default function ChatList() {
       };
 
       eventSource.current.onerror = (event) => {
-        console.log(event);
         if (event.target.readyState === EventSource.CLOSED) {
           console.log("eventsource closed (" + event.target.readyState + ")");
         }
@@ -343,7 +340,6 @@ export default function ChatList() {
       setListening(true);
     }
     return () => {
-      console.log("eventsource close");
       eventSource.current.close();
 
       cancleToken.cancel();
@@ -460,6 +456,7 @@ export default function ChatList() {
         </div>
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );

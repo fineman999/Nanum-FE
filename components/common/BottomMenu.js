@@ -19,11 +19,6 @@ import likeCountState from "../../state/atom/likeCountState";
 import axios from "axios";
 import { get } from "../../lib/apis/apiClient";
 import { getChatCount, getNoteCount } from "../../lib/apis/bottom";
-import Alert from "@mui/material/Alert";
-import Stack from "@mui/material/Stack";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import AlertTitle from "@mui/material/AlertTitle";
-import { styled } from "@mui/material/styles";
 import css from "styled-jsx/css";
 const LIKE_BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 const style = css`
@@ -45,23 +40,11 @@ const BottomMenu = () => {
     noteCount: 0,
   });
 
-  const [alertState, setAlertState] = useState({
-    open: false,
-    vertical: "top",
-    horizontal: "center",
-    title: "",
-    content: "",
-    url: "",
-  });
-
   const [listening, setListening] = useState(false);
-  const timerId = useRef(null);
-  const { vertical, horizontal, open, title, content, url } = alertState;
   const getChat = async (cancelToken) => {
     try {
       const getChat = await getChatCount({ userId: userData.id, cancelToken });
       if (getChat.status === 200) {
-        console.log("getChat", getChat.data);
         setUserInfo((prev) => ({
           ...prev,
           chatCount: Number(getChat.data.count),
@@ -75,7 +58,6 @@ const BottomMenu = () => {
     try {
       const getNote = await getNoteCount({ userId: userData.id, cancelToken });
       if (getNote.status === 200) {
-        console.log(getNote.data.result);
         setUserInfo((prev) => ({
           ...prev,
           noteCount: getNote.data.result.count,
@@ -92,7 +74,7 @@ const BottomMenu = () => {
       await getChat(cancelToken);
       await getNote(cancelToken);
     }
-    if (userData) {
+    if (userData.id) {
       reactive();
       if (!listening) {
         eventSource.current = new EventSource(
@@ -102,54 +84,23 @@ const BottomMenu = () => {
         eventSource.current.onopen = (event) => {
           console.log("connection opened");
         };
-
         eventSource.current.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
 
-          console.log(sseMessage);
           if (sseMessage.title === "CHAT") {
-            const result = JSON.parse(sseMessage.content);
-            if (timerId.current !== null) {
-              clearTimeout(timerId.current);
-            }
-
             setUserInfo((prev) => ({
               ...prev,
               chatCount: prev.chatCount + 1,
             }));
-            setAlertState((prev) => ({
-              ...prev,
-              open: true,
-              title: "채팅이 왔습니다.",
-              content: result.lastMessage,
-              url: sseMessage.url,
-            }));
-            timerId.current = setTimeout(() => {
-              setAlertState({ ...alertState, open: false });
-            }, 2000);
           } else if (sseMessage.title === "NOTE") {
-            if (timerId.current !== null) {
-              clearTimeout(timerId.current);
-            }
             setUserInfo((prev) => ({
               ...prev,
               noteCount: prev.noteCount + 1,
             }));
-            setAlertState((prev) => ({
-              ...prev,
-              open: true,
-              title: "쪽지가 왔습니다.",
-              content: sseMessage.content,
-              url: sseMessage.url,
-            }));
-            timerId.current = setTimeout(() => {
-              setAlertState({ ...alertState, open: false });
-            }, 2000);
           }
         };
 
         eventSource.current.onerror = (event) => {
-          console.log(event);
           if (event.target.readyState === EventSource.CLOSED) {
             console.log("eventsource closed (" + event.target.readyState + ")");
           }
@@ -179,7 +130,7 @@ const BottomMenu = () => {
         });
     }
     return () => {
-      eventSource.current.close();
+      if (eventSource.current !== null) eventSource.current.close();
       cancelToken.cancel();
     };
   }, []);
@@ -187,29 +138,9 @@ const BottomMenu = () => {
   if (matches) {
     return null;
   }
-  const handleClick = () => () => {
-    setAlertState((prev) => ({ ...prev, open: true }));
-  };
-  const handleClose = () => {
-    setAlertState({ ...alertState, open: false });
-  };
-  const handleUrl = () => {
-    router.push(url);
-  };
+
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
-        open={open}
-        onClose={handleClose}
-        key={vertical + horizontal}
-        onClick={handleUrl}
-      >
-        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
-          <AlertTitle>{title}</AlertTitle>
-          {content}
-        </Alert>
-      </Snackbar>
       <Box
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
       >

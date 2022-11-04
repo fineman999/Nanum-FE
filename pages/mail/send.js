@@ -14,6 +14,7 @@ import { postMail, sendAlert } from "../../lib/apis/mail";
 import axios from "axios";
 import { fireAlert } from "../../components/common/Alert";
 import { getBlockByBlockerIdAndBlockedUserId } from "../../lib/apis/block";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 const style = css`
   #send_mail {
     padding: 5rem 1rem;
@@ -30,13 +31,10 @@ export default function Send() {
   };
 
   const addImages = (file) => {
-    console.log("add image");
-    console.log(images);
     setImages([...images, file]);
   };
 
   const removeImages = (index) => {
-    console.log("remove image");
     const nextImages = [...images.slice(0, index), ...images.slice(index + 1)];
 
     setImages(nextImages);
@@ -44,7 +42,6 @@ export default function Send() {
 
   //쪽지보내기
   const sendMail = async () => {
-    console.log(images);
     const checkBlock = await getBlockByBlockerIdAndBlockedUserId({
       blockerId: router.query.receiverId,
       blockedUserId: router.query.senderId,
@@ -68,7 +65,6 @@ export default function Send() {
       formData.append("images", image);
     });
     const uploaderString = JSON.stringify(noteDetails);
-    console.log(uploaderString);
     formData.append(
       "noteDetails",
       new Blob([uploaderString], { type: "application/json" })
@@ -84,7 +80,6 @@ export default function Send() {
         },
       }
     );
-    console.log(res);
     if (res.status == 201) {
       fireAlert({
         icon: "success",
@@ -148,6 +143,7 @@ export default function Send() {
         />
       </div>
       <style jsx>{style}</style>
+      <NotificationAlert />
     </>
   );
 }

@@ -37,8 +37,6 @@ const MoveContractFormModal = ({
     // 입주 계약 완료 API 요청
     put(BASE_URL, API_URI, formData)
       .then((res) => {
-        console.log(res);
-
         const { status } = res;
         const { isSuccess, message, result } = res.data;
         if (status === 200 && isSuccess) {

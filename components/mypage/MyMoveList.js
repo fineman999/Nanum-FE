@@ -16,12 +16,10 @@ const MyMoveList = () => {
 
   useEffect(() => {
     const API_URI = `/move-in/users/${userValue.id}`;
-    console.log(userValue);
 
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
         setMyMoveList(data.result);
       })
       .catch((err) => console.log(err));
