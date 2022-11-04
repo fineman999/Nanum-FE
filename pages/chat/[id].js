@@ -99,7 +99,6 @@ export default function Chat() {
 
   //소켓 열기
   const onOpen = async () => {
-    console.log(userId, "userId", roomNum);
     // const uri = `wss://nanum.site/web-flux-service/chat?room=${roomNum}&userId=${userId}`;
     const uri = `wss://ssghot.shop/chat?room=${roomNum}&userId=${userId}`;
     ws.current = new WebSocket(uri);
@@ -213,7 +212,6 @@ export default function Chat() {
     // console.log(roomNum, "🙆‍♀️ 콘솔에 쿼리 찍힘!");
     return () => {
       ws.current.close();
-      console.log("websocket closed");
     };
   }, [router.isReady, ws]);
 

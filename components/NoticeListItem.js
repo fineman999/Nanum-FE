@@ -59,9 +59,10 @@ const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
             </div>
             <div className={styles.article_date}>
               <span className={styles.date_text}>
-                {new Intl.DateTimeFormat("ko", { dateStyle: "medium" }).format(
-                  new Date(date)
-                )}
+                {new Intl.DateTimeFormat("ko", {
+                  dateStyle: "medium",
+                  timeStyle: "short",
+                }).format(new Date(date))}
               </span>
             </div>
           </div>

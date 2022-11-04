@@ -7,6 +7,7 @@ import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { NoData } from "../../components/common/NoData";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 const style = css`
   #blocklist {
@@ -76,7 +77,6 @@ export default function Block() {
     } else {
       setDelList([...delList, id]);
     }
-    console.log(delList);
   };
 
   //선택 삭제
@@ -85,10 +85,8 @@ export default function Block() {
     delList.map((blockId) => {
       deleteBlock(blockId)
         .then((res) => {
-          console.log(res);
           getBlock({ blockerId, page })
             .then((res) => {
-              console.log(res, "!!!!");
               setBlockList(res.data.result.content);
             })
             .catch((err) => console.log(err));
@@ -101,7 +99,6 @@ export default function Block() {
     blockList.map((block) => {
       deleteBlock(block.id)
         .then((res) => {
-          console.log(res);
           setBlockList([]);
         })
         .catch((err) => console.log(err));
@@ -112,7 +109,6 @@ export default function Block() {
     const blockerId = userData.id;
     getBlock({ blockerId, page })
       .then((res) => {
-        console.log(res);
         setBlockList(res.data.result.content);
       })
       .catch((err) => console.log(err));
@@ -160,6 +156,7 @@ export default function Block() {
         )}
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );

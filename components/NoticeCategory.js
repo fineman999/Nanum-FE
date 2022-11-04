@@ -4,7 +4,6 @@ import styles from "../styles/NoticeCategory.module.css";
 import NoticeList from "./NoticeList";
 
 const NoticeCategory = ({ list }) => {
-  console.log("NoticeCategory,,,", list);
   return (
     <div className={styles.category_container}>
       <div className={styles.category_header}>

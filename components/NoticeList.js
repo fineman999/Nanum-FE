@@ -75,9 +75,8 @@ const NoticeList = ({
           `https://nanum.site/board-service/api/v1/posts/category/${category}?page=${curPage}&size=20`,
           ""
         );
-        console.log(response);
+
         const { content } = response.data.result;
-        console.log(" 목록 ", content);
 
         setBoards((prev) => {
           return prev.concat(content);
@@ -103,9 +102,8 @@ const NoticeList = ({
           board,
           curPage,
         });
-        console.log(response);
+
         const { content } = response.data.result;
-        console.log(" 목록 ", content);
 
         setBoards((prev) => {
           return prev.concat(content);

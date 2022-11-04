@@ -10,6 +10,7 @@ import styles from "../../styles/Community.module.css";
 import axios from "axios";
 import * as Api from "../../lib/apis/apiClient";
 import { getAll, getInfo, getNotice } from "../../lib/apis/board";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 const Community = () => {
   const [notice, setNotice] = useState({});
   const [all, setAll] = useState({});
@@ -79,6 +80,7 @@ const Community = () => {
       </section>
       <Footer />
       <BottomMenu />
+      <NotificationAlert />
     </>
   );
 };

@@ -18,7 +18,6 @@ const MyRoomUserList = ({ roomInfo }) => {
   useEffect(() => {
     if (!isEmptyObject(roomInfo)) {
       const nextUserIds = roomInfo.userIds.filter((id) => userValue.id !== id);
-      console.log(nextUserIds);
       if (nextUserIds.length >= 1) {
         // 이웃이 존재하는 경우
         const API_URI = `/houses/users/lists/${nextUserIds}`;

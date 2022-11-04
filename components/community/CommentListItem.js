@@ -28,8 +28,6 @@ const CommentListItem = ({
 }) => {
   const [userData, setUserData] = useRecoilState(userState);
   const sendDeleteReply = async () => {
-    console.log(userId === userData.id);
-    console.log(id);
     const result = await confirmAlertV2({
       icon: "warning",
       title: "댓글 삭제",
@@ -57,7 +55,6 @@ const CommentListItem = ({
     }
   };
   const sendReply = () => {
-    console.log("id", id, "nickName", nickName);
     // setInputCommnet((current) => {
     //   let newCondition = { ...current };
     //   newCondition.open = true;

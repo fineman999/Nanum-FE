@@ -10,8 +10,6 @@ export function ProfileImg({ img, size, name, type, id }) {
   const userData = useRecoilValue(userState);
   const [roomNum, setRoomNum] = useState(undefined);
   const makeChat = () => {
-    console.log(roomNum, id, userData.id, "@@");
-
     let obj = {
       userIds: [id, userData.id],
       houseId: 0,
@@ -20,7 +18,6 @@ export function ProfileImg({ img, size, name, type, id }) {
     };
     postChat(obj)
       .then((res) => {
-        console.log(res, "gkgkgk");
         setRoomNum(res.data.id);
       })
       .catch((err) => {

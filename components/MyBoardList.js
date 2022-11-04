@@ -44,11 +44,6 @@ export default function MyBoardList({
   isUpdate,
   setDeleteState,
 }) {
-  const router = useRouter();
-  const handleDelete = () => {
-    console.log("handleDelete");
-    //   setDeleteState()
-  };
   return (
     <>
       <div key={id} id="unit_mail">
@@ -67,7 +62,7 @@ export default function MyBoardList({
         </Link>
         {isUpdate && (
           <div>
-            <Checkbox {...label} color="default" onClick={handleDelete} />
+            <Checkbox {...label} color="default" />
           </div>
         )}
       </div>

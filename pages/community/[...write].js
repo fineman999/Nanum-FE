@@ -9,6 +9,7 @@ import { userState } from "../../state/atom/authState";
 import axios from "axios";
 import { getBoard } from "../../lib/apis/board";
 import PreviewImageFixForm from "../../components/PreviewImageFixForm";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 const category = {
   notice: 1,
@@ -30,10 +31,9 @@ const Write = () => {
   const [fixValue, setFixVale] = useState(false);
   const [categoryId, setCategoryId] = useState(0);
   useEffect(() => {
-    console.log(router.asPath.split("/"));
     setCategoryId([...router.asPath.split("/")][3]);
     boardId.current = [...router.asPath.split("/")][4];
-    console.log(" boardId.current", boardId.current);
+
     setFixVale(!isNaN(boardId.current));
 
     const cancleToken = axios.CancelToken.source();
@@ -41,7 +41,6 @@ const Write = () => {
       try {
         const response = await getBoard(boardId.current, cancleToken);
         const { content, imgUrls, title } = response.data.result;
-        console.log(response.data.result);
         setForm({
           ...form,
           content: content,
@@ -68,7 +67,6 @@ const Write = () => {
   };
 
   const addImages = (file) => {
-    console.log("add image");
     setForm({
       ...form,
       images: [...form.images, file],
@@ -76,7 +74,6 @@ const Write = () => {
   };
 
   const removeImages = (index) => {
-    console.log("remove image");
     const nextImages = [
       ...form.images.slice(0, index),
       ...form.images.slice(index + 1),
@@ -88,7 +85,6 @@ const Write = () => {
     });
   };
   const removeImagesFix = (index) => {
-    console.log("remove image");
     setDeleteImg([...deleteImg, fixImg[index]]);
     const nextImages = [...fixImg.slice(0, index), ...fixImg.slice(index + 1)];
 
@@ -104,7 +100,6 @@ const Write = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (fixValue) {
-      console.log("hihi");
       await handleSubmitFix();
       return;
     }
@@ -153,7 +148,6 @@ const Write = () => {
           },
         }
       );
-      console.log(res);
       if (res.status == 201) {
         fireAlert({
           icon: "success",
@@ -169,7 +163,6 @@ const Write = () => {
     }
   };
   const handleSubmitFix = async () => {
-    console.log("deleteImg", deleteImg);
     const imgId = deleteImg.map((ele) => ele.imgId);
     if (form.title.length < 1) {
       fireAlert({ icon: "error", title: "제목을 입력해주세요." });
@@ -216,7 +209,6 @@ const Write = () => {
           },
         }
       );
-      console.log(res);
       if (res.status == 200) {
         fireAlert({
           icon: "success",
@@ -322,6 +314,7 @@ const Write = () => {
           background: #555555;
         }
       `}</style>
+      <NotificationAlert />
     </>
   );
 };

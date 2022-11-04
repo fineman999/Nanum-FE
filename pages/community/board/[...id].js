@@ -15,6 +15,7 @@ import axios from "axios";
 import * as Api from "../../../lib/apis/apiClient";
 import { useRecoilState } from "recoil";
 import { userState } from "../../../state/atom/authState";
+import { NotificationAlert } from "../../../components/common/NotificationAlert";
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
@@ -36,7 +37,6 @@ const Article = () => {
           router.query.id
         );
         setBoard(getBoards.data.result);
-        console.log("HIHIHI", getBoards);
 
         if (!getBoards) {
           throw new Error(`${getBoards} not allowd`);
@@ -92,7 +92,7 @@ const Article = () => {
           setNewReply={setNewReply}
         />
       </section>
-
+      <NotificationAlert />
       <style jsx>{`
         .content_section {
           position: relative;

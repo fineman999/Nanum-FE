@@ -7,6 +7,7 @@ import Slide from "@mui/material/Slide";
 import { getSearch } from "../../lib/apis/board";
 import styles from "../../styles/Notice.module.css";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 const Search = () => {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState(0);
@@ -36,10 +37,8 @@ const Search = () => {
         content: search,
       };
     }
-    console.log("sendData", sendData);
     try {
       const result = await getSearch(sendData);
-      console.log(result);
       const { totalPages } = result.data.result;
       setCurPage((prev) => prev + 1);
       setTotalPages(totalPages);
@@ -86,6 +85,7 @@ const Search = () => {
             />
           </section>
           <BottomMenu />
+          <NotificationAlert />
         </div>
       </Slide>
     </>

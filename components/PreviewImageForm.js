@@ -71,7 +71,6 @@ const PreviewImageForm = ({
     // previewImages.filter(idx=>idx===index)
     setPreviewImages([...nextPreviewImages]);
     removeImages(index);
-    console.log("previewImages", previewImages);
   };
 
   const handleDialog = () => {

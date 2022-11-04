@@ -28,7 +28,6 @@ const TourContractList = () => {
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
         setTourList([...data.result]);
       })
       .catch((err) => console.log("사용자 투어 목록 조회 오류", err));

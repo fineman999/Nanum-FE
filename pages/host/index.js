@@ -9,6 +9,7 @@ import { userState } from "../../state/atom/authState";
 import * as Api from "../../lib/apis/apiClient";
 import NoteAltIcon from "@mui/icons-material/NoteAltOutlined";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 const style = css`
   #mypage {
     display: flex;
@@ -168,7 +169,6 @@ export default function MyPage() {
     return new Promise((resolve) => {
       reader.onload = () => {
         setImageSrc(reader.result);
-        console.log(reader.result);
         resolve();
       };
     });
@@ -189,7 +189,6 @@ export default function MyPage() {
           newCondition["noteCount"] = userCountNote.data.result.count;
           return newCondition;
         });
-        console.log(userCountNote);
       } catch (e) {
         console.log("Error" + e);
       }
@@ -202,12 +201,10 @@ export default function MyPage() {
           throw new Error(`${getChatLists} not allowd`);
         }
         setCount((current) => {
-          console.log(userCountNote);
           let newCondition = { ...current };
           newCondition["chatCount"] = userCountNote.data.count;
           return newCondition;
         });
-        console.log(userCountNote);
       } catch (e) {
         console.log("Error" + e);
       }
@@ -218,8 +215,6 @@ export default function MyPage() {
     const API_URI = `/tours/moveIn/status/host/${userData.id}`;
     Api.get(BASE_URL, API_URI)
       .then((res) => {
-        console.log(res);
-
         const { status } = res;
         const { isSuccess, message, result } = res.data;
         if (status === 200 && isSuccess) {
@@ -431,6 +426,7 @@ export default function MyPage() {
         </section>
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );
