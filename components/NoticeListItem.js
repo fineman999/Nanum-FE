@@ -16,7 +16,7 @@ const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
         <li>
           <div className={styles.article_wrapper}>
             <div className={styles.article_content}>
-              <div>
+              <div style={{ width: "80%" }}>
                 {new Intl.DateTimeFormat("ko", { dateStyle: "medium" }).format(
                   new Date(date)
                 ) ===

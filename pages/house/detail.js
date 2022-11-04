@@ -156,6 +156,8 @@ const House = () => {
         like={like}
         open={open}
         toggleDrawer={toggleDrawer}
+        hostId={houseData.hostId}
+        houseId={houseData.id}
       />
 
       <style jsx>{`
