@@ -14,7 +14,6 @@ const MyHouseInfo = ({ roomInfo }) => {
   const userData = useRecoilValue(userState);
   const router = useRouter();
   const handleChat = async () => {
-    console.log(roomInfo);
     const houseId = roomInfo.houseId;
     try {
       const getChat = await getHouseChat({ houseId });
@@ -22,7 +21,6 @@ const MyHouseInfo = ({ roomInfo }) => {
         fireAlert({ icon: "error", title: "채팅방이 존재하지 않습니다." });
         return;
       }
-      console.log(getChat);
       // 기존에 채팅방에 없는 경우
       let { id } = getChat.data;
       if (!findUserInChat(getChat.data)) {
@@ -36,7 +34,6 @@ const MyHouseInfo = ({ roomInfo }) => {
     }
   };
   const findUserInChat = async (data) => {
-    console.log(data);
     data.roomInfo.users.filter((user) => {
       if (user.userId + "" === userData.id + "") {
         return true;

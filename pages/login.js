@@ -156,7 +156,6 @@ export default function Login() {
       console.log(userInput);
       postLogin(userInput)
         .then((res) => {
-          console.log(res, "로그인");
           const userId = res.data.result.userId;
           localStorage.setItem("accessToken", res.data.result.accessToken);
           sessionStorage.setItem("userId", res.data.result.userId);
@@ -166,7 +165,6 @@ export default function Login() {
           getUserDetail({ userId })
             .then((Res) => {
               setUserData(Res.data.result);
-              console.log(Res);
               router.push("/");
             })
             .catch((Err) => {

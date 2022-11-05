@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import LastPageComment from "../../components/LastPageComment";
 import BottomMenu from "../../components/common/BottomMenu";
+import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 const style = css`
   #mail_header {
@@ -171,6 +172,7 @@ export default function MyNoteList() {
         )}
       </div>
       <BottomMenu />
+      <NotificationAlert />
       <style jsx>{style}</style>
     </>
   );

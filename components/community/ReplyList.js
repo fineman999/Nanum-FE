@@ -8,7 +8,6 @@ const ReplyList = ({ nestedCount, commentId, newReply }) => {
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
       if (nestedCount > 0) {
-        console.log("nestedCount", nestedCount);
         try {
           const getReplyList = await Api.getCancelToken(
             "https://nanum.site/board-service/api/v1/board/reply/nest/",

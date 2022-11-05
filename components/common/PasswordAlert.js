@@ -19,10 +19,8 @@ export const inputAlert = ({ userId, title, setIsLock }) => {
     },
   }).then((result) => {
     const pwd = result.value.password;
-    console.log(pwd);
     getOriginPw({ userId, pwd })
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           Swal.fire(
             `

@@ -253,7 +253,6 @@ export default function Signup() {
   const checkEmailValid = () => {
     getEmail(userInfo.email)
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           setEmailValid(true);
         }
@@ -297,7 +296,6 @@ export default function Signup() {
   const checkNameValid = () => {
     getNickname(userInfo.nickname)
       .then((res) => {
-        console.log(res);
         if (res.status == 200) {
           setNameValid(true);
         }
@@ -358,7 +356,6 @@ export default function Signup() {
   const postPhoneCheck = () => {
     let phone = userInfo.phone.split("-");
     phone = phone[0] + phone[1] + phone[2];
-    console.log(phone);
     postPhone(phone)
       .then((res) => {
         console.log(res);
@@ -377,10 +374,8 @@ export default function Signup() {
     let phone = userInfo.phone.split("-");
     phone = phone[0] + phone[1] + phone[2];
     const number = numValid;
-    console.log(phone, number);
     postPhoneValid({ phone, number })
       .then((res) => {
-        console.log(res);
         setPhoneValid(true);
       })
       .catch((err) => {
@@ -434,7 +429,6 @@ export default function Signup() {
           },
         }
       );
-      console.log(res);
       if (res.status == 201) {
         fireAlert({
           icon: "success",

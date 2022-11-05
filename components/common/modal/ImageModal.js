@@ -54,7 +54,6 @@ export default function ImageModal({
     return new Promise((resolve) => {
       reader.onload = () => {
         setImageSrc(reader.result);
-        console.log(reader.result);
         resolve();
       };
     });

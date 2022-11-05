@@ -15,8 +15,6 @@ const MyRoomUserListItem = ({ listItem }) => {
   const userData = useRecoilValue(userState);
   const router = useRouter();
   const makeChat = async (roomNum) => {
-    console.log(roomNum, id, userData.id, "@@");
-
     let obj = {
       userIds: [id, userData.id],
       houseId: 0,

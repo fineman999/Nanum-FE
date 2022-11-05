@@ -82,10 +82,10 @@ const style = css`
 export default function SignUpCheckOuth() {
   const router = useRouter();
   const [userType, setUserType] = useState(0);
-  useEffect(() => {
-    // 인가코드
-    console.log(router.query);
-  }, []);
+  // useEffect(() => {
+  //   // 인가코드
+  //   console.log(router.query);
+  // }, []);
   return (
     <>
       <SubHeader title="선택" type="chooseType" />

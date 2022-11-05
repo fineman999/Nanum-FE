@@ -62,7 +62,6 @@ const SearchModal = ({ open, handleClose }) => {
       fireAlert({ icon: "warning", title: "검색어를 입력해주세요." });
       return null;
     }
-    console.log(detailSearchForm);
     router.push({
       pathname: "/house",
       query: {
