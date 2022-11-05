@@ -10,7 +10,7 @@ export default function Document() {
     <Html>
       <Head>
         {/* Next PWA */}
-        {/* <link rel="manifest" href="manifest.json" /> */}
+        <link rel="manifest" href="manifest.json" />
         <link rel="apple-touch-icon" href="/icon.png" />
         <link rel="theme-color" href="#fff" />
         {/* MUI - Roboto font */}

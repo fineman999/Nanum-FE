@@ -25,6 +25,7 @@ export const NotificationAlert = () => {
   const timerId = useRef(null);
   const { vertical, horizontal, open, title, content, url } = alertState;
   useEffect(() => {
+    console.log("hihi", userData.id);
     if (userData.id) {
       if (!listening) {
         eventSource.current = new EventSource(
@@ -37,7 +38,7 @@ export const NotificationAlert = () => {
 
         eventSource.current.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
-
+          console.log(sseMessage);
           if (sseMessage.title === "CHAT") {
             const result = JSON.parse(sseMessage.content);
             if (timerId.current !== null) {
