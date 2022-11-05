@@ -24,7 +24,6 @@ const HouseRoomDetail = ({
       get(BASE_URL, API_URI)
         .then((res) => res.data)
         .then((data) => {
-          console.log("하우스 방 목록: ", data);
           setRoomData([...data.result.content]);
         })
         .catch((err) => console.log("하우스 방 목록 조회: ", err));

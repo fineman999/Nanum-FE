@@ -23,6 +23,7 @@ import HouseReviewDetail from "../../components/HouseReviewDetail";
 import { get } from "../../lib/apis/apiClient";
 import formatDate from "../../lib/fomatDate";
 import { NotificationAlert } from "../../components/common/NotificationAlert";
+import LikeButton from "../../components/common/LikeButton";
 const House = () => {
   const router = useRouter();
 
@@ -40,11 +41,7 @@ const House = () => {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    console.log(router);
     const { asPath } = router;
-    console.log(asPath);
-
-    console.log(asPath.split("?"));
     const houseId = asPath.split("?")[1].split("=")[1];
     const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
     const API_URI = `/houses/house/${houseId}`;
@@ -114,14 +111,12 @@ const House = () => {
 
             {/* 좋아요 버튼 */}
             <div className="like_wrapper" style={{ zIndex: "1200" }}>
-              <IconButton onClick={handleLike}>
-                {like ? (
-                  <Favorite sx={{ color: pink[500] }} />
-                ) : (
-                  <FavoriteBorderIcon sx={{ color: pink[500] }} />
-                )}
-                <span className="like_text">좋아요</span>
-              </IconButton>
+              <LikeButton
+                isLike={houseData.wishId ? true : false}
+                listItem={houseData}
+                wishId={houseData.wishId}
+              />
+              <span className="like_text">좋아요</span>
             </div>
           </div>
         </div>
@@ -151,14 +146,13 @@ const House = () => {
 
       {/* 하우스 툴바 */}
       <HouseToolbar
+        houseData={houseData}
         roomData={roomData}
         tourForm={tourForm}
         setTourForm={setTourForm}
-        like={like}
         open={open}
         toggleDrawer={toggleDrawer}
         hostId={houseData.hostId}
-        houseId={houseData.id}
       />
 
       <style jsx>{`
@@ -206,8 +200,6 @@ const House = () => {
           margin-left: 3px;
         }
 
-        // 하우스 상세 정보
-        // 하우스 소개
         .house_intro_wrapper {
           background: white;
           margin-bottom: 20px;

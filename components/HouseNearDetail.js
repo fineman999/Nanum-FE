@@ -7,10 +7,6 @@ import HouseNearPlaceList from "./HouseNearPlaceList";
 const HouseNearDetail = ({ data }) => {
   const [places, setPlaces] = useState([]);
 
-  useEffect(() => {
-    console.log("검색 키워드 데이터: ", places);
-  }, [places]);
-
   const addPlace = (place) => {
     setPlaces((prev) => {
       return [...prev, place];

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SwipeableEdgeDrawer from "../components/SwipeableEdgeDrawer";
 import ChatIcon from "@mui/icons-material/Chat";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
@@ -12,17 +12,20 @@ import { userState } from "../state/atom/authState";
 import { useRouter } from "next/router";
 
 const HouseToolbar = ({
+  houseData,
   roomData,
   tourForm,
   setTourForm,
-  like,
   open,
   toggleDrawer,
   hostId,
-  houseId,
 }) => {
   const [userData, setUserData] = useRecoilState(userState);
   const router = useRouter();
+
+  useEffect(() => {
+    console.log(houseData);
+  }, [houseData]);
 
   const handleChatConnected = async () => {
     const users = [hostId, userData.id];
@@ -59,7 +62,11 @@ const HouseToolbar = ({
       />
       <div className={styles.toolbar_wrapper}>
         <div className={styles.toolbar_ico_like_wrapper}>
-          <LikeButton isLike={like} />
+          <LikeButton
+            isLike={houseData.wishId ? true : false}
+            listItem={houseData}
+            wishId={houseData.wishId}
+          />
         </div>
         <div className={styles.toolbar_info_wrapper}>
           <h2 className={styles.house_name}>나눔101</h2>

@@ -4,6 +4,8 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import HostHouseListItem from "./HostHouseListItem";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import { userState } from "../state/atom/authState";
+import { useRecoilValue } from "recoil";
 
 const LoadingPageComment = () => {
   const style = {
@@ -42,6 +44,7 @@ const LastPageComment = () => {
 };
 
 const HostHouseList = () => {
+  const userValue = useRecoilValue(userState);
   const [houseList, setHouseList] = useState([]);
   const [curPage, setCurPage] = useState(0);
   const [defaultSize, setDefaultSize] = useState(10);
@@ -52,7 +55,7 @@ const HostHouseList = () => {
     const requestApi = async () => {
       try {
         const response = await axios.get(
-          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1?page=${curPage}&size=${defaultSize}&sort=createAt,desc`
+          `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/${userValue.id}?page=${curPage}&size=${defaultSize}&sort=createAt,desc`
         );
 
         const { content, totalPages } = response.data.result;
