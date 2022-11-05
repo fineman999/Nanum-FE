@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { pink } from "@mui/material/colors";
 import { Favorite } from "@mui/icons-material";
@@ -16,6 +16,12 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
   const [likeClicked, setLikeClicked] = useState(false);
   const setLikeCount = useSetRecoilState(likeCountState);
   const [likeId, setLikeId] = useState(wishId);
+
+  useEffect(() => {
+    setLike(isLike);
+    setLikeId(wishId);
+  }, [listItem]);
+
   const handleLike = (e) => {
     e.stopPropagation();
     if (likeClicked) {

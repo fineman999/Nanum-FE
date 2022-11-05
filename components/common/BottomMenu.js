@@ -135,6 +135,13 @@ const BottomMenu = () => {
     };
   }, []);
 
+  const goToFavorite = () => {
+    if (userData.id) {
+      router.push("/like");
+    } else {
+      router.push("/login");
+    }
+  };
   if (matches) {
     return null;
   }
@@ -170,10 +177,10 @@ const BottomMenu = () => {
               icon={
                 likeCount >= 0 ? (
                   <Badge badgeContent={likeCount} color="primary" max={10}>
-                    <FavoriteIcon />
+                    <FavoriteIcon onClick={goToFavorite} />
                   </Badge>
                 ) : (
-                  <FavoriteIcon />
+                  <FavoriteIcon onClick={goToFavorite} />
                 )
               }
             />
