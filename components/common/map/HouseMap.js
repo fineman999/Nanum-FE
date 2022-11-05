@@ -81,8 +81,6 @@ const HouseMap = ({ setHouseList }) => {
 
             get(BASE_URL, API_URI)
               .then((res) => {
-                console.log(res);
-
                 const { status } = res;
                 const { isSuccess, message, result } = res.data;
 
@@ -298,8 +296,6 @@ const HouseMap = ({ setHouseList }) => {
                 });
               })
             ).then((values) => {
-              console.log("하우스 목록 조회: ", data);
-              console.log("하우스 리뷰 조회: ", values);
               const valueList = values.map((value) => {
                 return { ...value.data.result };
               });
@@ -321,9 +317,6 @@ const HouseMap = ({ setHouseList }) => {
             });
           });
       });
-
-      // const zoomControl = new kakao.maps.ZoomControl();
-      // map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
     });
   }, [router]);
 

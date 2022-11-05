@@ -10,8 +10,6 @@ const HouseNearInfo = ({ data, addPlace }) => {
   useEffect(() => {
     if (!isEmptyObject(data)) {
       const { kakao } = globalThis;
-      console.log("하우스 주변 정보: ", data);
-      console.log(`lat: ${data.lat} lon: ${data.lon}`);
       kakao.maps.load(() => {
         const infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
         const mapContainer = mapRef.current;
@@ -80,7 +78,7 @@ const HouseNearInfo = ({ data, addPlace }) => {
       <style jsx>{`
         .house_map {
           width: 100%;
-          height: 300px;
+          height: 500px;
         }
       `}</style>
     </>

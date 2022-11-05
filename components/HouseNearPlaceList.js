@@ -18,7 +18,7 @@ const HouseNearPlaceList = ({ places }) => {
       <ul className={styles.place_list}>
         {places &&
           places.map((place, index) => (
-            <Fragment key={place.id}>
+            <Fragment key={index}>
               <HouseNearPlaceListItem place={place} />
               {index <= places.length - 1 ? <Divider /> : ""}
             </Fragment>

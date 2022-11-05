@@ -66,7 +66,10 @@ const Region = () => {
 
                   kakao.maps.event.addListener(marker, "click", function () {
                     router.push({
-                      pathname: `/house/${marker.getTitle()}`,
+                      pathname: `/house/detail`,
+                      query: {
+                        id: marker.getTitle(),
+                      },
                     });
                   });
 
@@ -121,7 +124,10 @@ const Region = () => {
 
               kakao.maps.event.addListener(marker, "click", function () {
                 router.push({
-                  pathname: `/house/${marker.getTitle()}`,
+                  pathname: `/house/detail`,
+                  query: {
+                    id: marker.getTitle(),
+                  },
                 });
               });
 
