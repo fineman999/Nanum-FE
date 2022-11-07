@@ -13,7 +13,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import ChatIcon from "@mui/icons-material/Chat";
 import FloatingButton from "./FloatingButton";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { userState } from "../../state/atom/authState";
+import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import likeCountState from "../../state/atom/likeCountState";
 import axios from "axios";
@@ -31,6 +31,8 @@ const style = css`
 const BottomMenu = () => {
   const router = useRouter();
   const userValue = useRecoilValue(userState);
+  const authValue = useRecoilValue(authState);
+
   const [likeCount, setLikeCount] = useRecoilState(likeCountState);
   const matches = useMediaQuery("(min-width: 600px");
   const [userData, setUserData] = useRecoilState(userState);
@@ -112,7 +114,7 @@ const BottomMenu = () => {
     }
 
     // 로그인 유저인 경우
-    if (userValue.id) {
+    if (authValue.isLogin) {
       const LIKE_API_URI = `/users/${userValue.id}/wishes`;
 
       get(LIKE_BASE_URL, LIKE_API_URI)
@@ -136,7 +138,7 @@ const BottomMenu = () => {
   }, []);
 
   const goToFavorite = () => {
-    if (userData.id) {
+    if (authValue.isLogin) {
       router.push("/like");
     } else {
       router.push("/login");
