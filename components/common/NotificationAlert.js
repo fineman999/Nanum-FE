@@ -25,7 +25,6 @@ export const NotificationAlert = () => {
   const timerId = useRef(null);
   const { vertical, horizontal, open, title, content, url } = alertState;
   useEffect(() => {
-    console.log("hihi", userData.id);
     if (userData.id) {
       if (!listening) {
         eventSource.current = new EventSource(

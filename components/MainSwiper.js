@@ -5,56 +5,43 @@ import styles from "../styles/MainSwiper.module.css";
 
 const itemData = [
   {
-    img: "/images/house_image_1.jpg",
-    title: "Bed",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_1.jpg",
   },
   {
-    img: "/images/house_image_2.jpg",
-    title: "Books",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_2.jpg",
   },
   {
-    img: "/images/house_image_3.jpg",
-    title: "Sink",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_3.jpg",
   },
   {
-    img: "/images/house_image_4.jpg",
-    title: "Kitchen",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_4.jpg",
   },
   {
-    img: "/images/house_image_5.jpg",
-    title: "Blinds",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_5.jpg",
   },
   {
-    img: "/images/house_image_6.jpg",
-    title: "Chairs",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_6.jpg",
   },
   {
-    img: "/images/house_image_7.jpg",
-    title: "Laptop",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_7.jpg",
   },
   {
-    img: "/images/house_image_8.jpg",
-    title: "Doors",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_8.jpg",
   },
   {
-    img: "/images/house_image_9.jpg",
-    title: "Coffee",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_9.jpg",
   },
   {
-    img: "/images/house_image_10.jpg",
-    title: "Storage",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_10.jpg",
   },
   {
-    img: "/images/house_image_11.jpg",
-    title: "Candle",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_11.jpg",
   },
   {
-    img: "/images/house_image_12.jpg",
-    title: "Coffee table",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_12.jpg",
   },
   {
-    img: "/images/house_image_13.jpg",
-    title: "night",
+    img: "https://nanumbucket.s3.ap-northeast-2.amazonaws.com/mainPage/house_image_13.jpg",
   },
 ];
 

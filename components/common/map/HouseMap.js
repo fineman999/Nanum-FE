@@ -10,7 +10,7 @@ const HouseMap = ({ setHouseList }) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    // 지역 카테고리로 검색하는 경우
+    console.log("HouseMap: ", router);
     // 검색 키워드로 검색하는 경우
     const encodeUri = decodeURIComponent(router.asPath);
     const encodeUriTokens = encodeUri.split("&");
@@ -29,7 +29,7 @@ const HouseMap = ({ setHouseList }) => {
       const mapContainer = mapRef.current;
       const mapOptions = {
         center: new kakao.maps.LatLng(35.1659659088957, 129.132374315529),
-        level: 4,
+        level: 8,
       };
 
       const map = new kakao.maps.Map(mapContainer, mapOptions);
