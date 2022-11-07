@@ -11,6 +11,8 @@ import { NotificationAlert } from "../components/common/NotificationAlert";
 import { getMyMain, getPopularMain, getShareMain } from "../lib/apis/main";
 import axios from "axios";
 
+const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
+
 export default function Home() {
   const [open, setOpen] = useState(false);
   const [popularList, setPopularList] = useState([]);
@@ -23,15 +25,26 @@ export default function Home() {
     const cancelToken = axios.CancelToken.source();
     async function reactive() {
       getPopularMain(cancelToken)
-        .then((res) => setPopularList(res.data.result))
+        .then((res) => {
+          console.log(res);
+          setPopularList(res.data.result);
+        })
         .catch((res) => console.log(res));
+
       getMyMain(cancelToken)
-        .then((res) => setMyRoomList(res.data.result))
+        .then((res) => {
+          console.log(res);
+          setMyRoomList(res.data.result);
+        })
         .catch((res) => console.log(res));
-      // 풀어줘
-      // getShareMain((res) => setShareList(res.data.result)).catch((res) =>
-      //   console.log(res)
-      // );
+
+      axios.get(BASE_URL + "/houses/main/sharelist").then((res) => {
+        const { status } = res;
+        const { isSuccess, message, result } = res.data;
+        if (status === 200 && isSuccess) {
+          setShareList(result);
+        }
+      });
     }
     reactive();
   }, []);
@@ -42,9 +55,8 @@ export default function Home() {
       <GlobalSearch handleOpen={handleOpen} />
       <SearchModal open={open} handleClose={handleClose} />
       <HouseListSwiper title="신상 하우스" roomList={popularList} />
-
-      {/* <HouseListSwiper title="추천 하우스" roomList={shareList} /> */}
-      <HouseListSwiper title="원룸룸" roomList={myRoomList} />
+      <HouseListSwiper title="추천 하우스" roomList={shareList} />
+      <HouseListSwiper title="마이룸(원룸형)" roomList={myRoomList} />
       <MainMap />
       <Footer />
       <NotificationAlert />

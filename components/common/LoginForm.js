@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 
@@ -25,9 +25,38 @@ const LoginForm = () => {
 
   const [isChecked, setIsChecked] = useState(false);
 
+  useEffect(() => {
+    const STORED_ID = localStorage.getItem("stored_id");
+    if (STORED_ID) {
+      setIsChecked(true);
+      setUserInput({
+        ...userInput,
+        email: STORED_ID,
+      });
+    }
+  }, [isChecked]);
+
   // 아이디 저장
   const handleCheck = () => {
+    if (isChecked) {
+      // 저장된 아이디 삭제
+      localStorage.removeItem("stored_id");
+    } else {
+      localStorage.setItem("stored_id", userInput.email);
+    }
+
     setIsChecked(!isChecked);
+  };
+
+  const handleChange = (e) => {
+    if (isChecked && e.target.name === "email") {
+      localStorage.setItem("stored_id", e.target.value);
+    }
+
+    setUserInput({
+      ...userInput,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const goLogin = (e) => {
@@ -65,20 +94,22 @@ const LoginForm = () => {
       <form className={styles.login_form}>
         <input
           type="text"
+          name="email"
+          value={userInput.email || ""}
           className={styles.email_inp}
           placeholder="아이디"
           autoComplete="off"
-          onBlur={(e) => setUserInput({ ...userInput, email: e.target.value })}
+          onChange={handleChange}
         />
 
         <input
           type="password"
+          name="pwd"
+          value={userInput.pwd || ""}
           className={styles.password_inp}
           placeholder="비밀번호"
           autoComplete="off"
-          onBlur={(e) => {
-            setUserInput({ ...userInput, pwd: e.target.value });
-          }}
+          onChange={handleChange}
         />
 
         <div className={styles.login_form_check}>
