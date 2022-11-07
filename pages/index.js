@@ -28,10 +28,9 @@ export default function Home() {
       getMyMain(cancelToken)
         .then((res) => setMyRoomList(res.data.result))
         .catch((res) => console.log(res));
-      // 풀어줘
-      // getShareMain((res) => setShareList(res.data.result)).catch((res) =>
-      //   console.log(res)
-      // );
+      getShareMain((res) => setShareList(res.data.result)).catch((res) =>
+        console.log(res)
+      );
     }
     reactive();
   }, []);
@@ -42,8 +41,7 @@ export default function Home() {
       <GlobalSearch handleOpen={handleOpen} />
       <SearchModal open={open} handleClose={handleClose} />
       <HouseListSwiper title="신상 하우스" roomList={popularList} />
-
-      {/* <HouseListSwiper title="추천 하우스" roomList={shareList} /> */}
+      <HouseListSwiper title="추천 하우스" roomList={shareList} />
       <HouseListSwiper title="원룸룸" roomList={myRoomList} />
       <MainMap />
       <Footer />
