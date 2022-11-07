@@ -1,8 +1,8 @@
 import React from "react";
 import Image from "next/image";
-import LikeButton from "./common/LikeButton";
 import { useRouter } from "next/router";
 import css from "styled-jsx/css";
+
 const style = css`
   .overlay {
     overflow: hidden;
@@ -10,23 +10,21 @@ const style = css`
     white-space: nowrap;
   }
 `;
+
 const HouseListItem = ({ item }) => {
   const router = useRouter();
-  // const { id, img, name, isLike, gender, type, wishId } = item;
   const {
     id,
     mainHouseImgPath: img,
     houseName: name,
-    isLike,
     houseGender: gender,
     streetAddress: address,
-    wishId,
-    type,
   } = item;
 
   const handleClick = () => {
     router.push(`/house/detail?id=${id}`);
   };
+
   return (
     <div className="house_item_wrapper" onClick={handleClick}>
       <div
