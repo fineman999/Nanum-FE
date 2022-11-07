@@ -2,13 +2,30 @@ import React from "react";
 import Image from "next/image";
 import LikeButton from "./common/LikeButton";
 import { useRouter } from "next/router";
-
+import css from "styled-jsx/css";
+const style = css`
+  .overlay {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+`;
 const HouseListItem = ({ item }) => {
   const router = useRouter();
-  const { id, img, name, isLike, gender, type, wishId } = item;
+  // const { id, img, name, isLike, gender, type, wishId } = item;
+  const {
+    id,
+    mainHouseImgPath: img,
+    houseName: name,
+    isLike,
+    houseGender: gender,
+    streetAddress: address,
+    wishId,
+    type,
+  } = item;
 
   const handleClick = () => {
-    router.push(`/house/${id}`);
+    router.push(`/house/detail?id=${id}`);
   };
   return (
     <div className="house_item_wrapper" onClick={handleClick}>
@@ -26,23 +43,27 @@ const HouseListItem = ({ item }) => {
         <div className="house_info_header">
           <div className="house_name_wrapper">
             <div className="house_name">{name}</div>
-            <span className="house_address">(해운대구)</span>
+            <span
+              className="house_address"
+              style={{
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {address}
+            </span>
           </div>
-          {/* 좋아요 버튼 */}
-          {wishId ? (
-            <LikeButton isLike={true} />
-          ) : (
-            <LikeButton isLike={false} />
-          )}
         </div>
         <div className="house_info_body">
           <div className="house_type_wrapper">
-            <div className="gender_type">{gender}</div>
-            <span className="house_type">{type}</span>
-          </div>
-          <div className="house_state">
-            <div className="capacity">신청가능</div>
-            <span className="capacity_number">1</span>
+            <div className="gender_type">
+              {gender === "COMMON"
+                ? "남녀공용"
+                : gender === "FEMAIL"
+                ? "여성전용"
+                : "남성전용"}
+            </div>
           </div>
         </div>
       </div>
