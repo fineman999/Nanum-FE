@@ -21,6 +21,7 @@ export default function Houses() {
   const [houseList, setHouseList] = useRecoilState(houseSearchListState);
 
   useEffect(() => {
+    console.log("House: ", router);
     setSearchInput(router.query.searchWord);
   }, [router]);
 
@@ -45,7 +46,7 @@ export default function Houses() {
       <div className="search_container">
         {/* 지도 맵 API */}
         <div className="map_wrapper">
-          <HouseMap setHouseList={setHouseList} />
+          <HouseMap setHouseList={setHouseList} searchInput={searchInput} />
         </div>
         <div className="house_list_wrapper">
           <div className="search_wrapper">

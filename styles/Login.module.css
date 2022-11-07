@@ -1,0 +1,21 @@
+.login_header {
+  position: relative;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: flex-start;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.login_header h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: -1px;
+  color: #ffff;
+  position: absolute;
+}
