@@ -43,6 +43,8 @@ const MoveContractFormModal = ({
           fireAlert({ icon: "success", title: result });
           setMoveList(nextMoveList);
           handleClose();
+        } else {
+          fireAlert({ icon: "warning", title: message });
         }
       })
       .catch((err) => console.log(err));
