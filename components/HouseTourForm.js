@@ -9,6 +9,7 @@ import { Button } from "@mui/material";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HouseRoomSelector from "./HouseRoomSelector";
 import { post } from "../lib/apis/apiClient";
+import { fireAlert } from "./common/Alert";
 
 const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
   const [warnStatus, setWarnStatus] = useState(false);
@@ -21,13 +22,11 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
   const handleTour = () => {
     if (!tourForm.roomId) {
       onWarning();
-      console.log(tourForm);
       return null;
     } else if (!tourForm.timeId) {
       onTimeWarning();
       return null;
     }
-    console.log(tourForm);
 
     const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
     const API_URI = `/tours/houses/${tourForm.houseId}/rooms/${tourForm.roomId}`;
@@ -38,13 +37,12 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
     };
 
     post(BASE_URL, API_URI, formData).then((res) => {
-      console.log(res);
       const { data, status } = res;
       const { message } = data;
       switch (status) {
         case 201:
-          alert(message);
           toggleDrawer(false)();
+          fireAlert({ icon: "success", title: message });
           break;
         case 208:
           alert(message);
