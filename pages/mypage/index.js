@@ -130,6 +130,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
+const BOARD_SERVICE_BASE_URL = `${process.env.NANUM_BOARD_SERVICE_BASE_URL}`;
 
 export default function MyPage() {
   const router = useRouter();
@@ -230,7 +231,26 @@ export default function MyPage() {
         .catch((err) => console.log(err));
     }
     reactive();
+
+    // 게시글/댓글 갯수 조회하기
+    axios
+      .get(BOARD_SERVICE_BASE_URL + "/posts/total", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        const { status } = res;
+        const { isSuccess, message, result } = res.data;
+        if (status === 200 && isSuccess) {
+          setPostCnt(result.postCount);
+          setCommentCnt(result.replyCount);
+        }
+      });
   }, []);
+
   //프로필 이미지 변경하기
   const changeProfile = async (fileBob) => {
     const formData = new FormData();

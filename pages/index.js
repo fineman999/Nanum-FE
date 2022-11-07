@@ -25,17 +25,11 @@ export default function Home() {
     const cancelToken = axios.CancelToken.source();
     async function reactive() {
       getPopularMain(cancelToken)
-        .then((res) => {
-          console.log(res);
-          setPopularList(res.data.result);
-        })
+        .then((res) => setPopularList(res.data.result))
         .catch((res) => console.log(res));
 
       getMyMain(cancelToken)
-        .then((res) => {
-          console.log(res);
-          setMyRoomList(res.data.result);
-        })
+        .then((res) => setMyRoomList(res.data.result))
         .catch((res) => console.log(res));
 
       axios.get(BASE_URL + "/houses/main/sharelist").then((res) => {
