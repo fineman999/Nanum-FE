@@ -18,11 +18,12 @@ import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Link from "next/link";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import { logout } from "../../lib/apis/auth";
 import axios from "axios";
+import likeCountState from "../../state/atom/likeCountState";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
@@ -116,7 +117,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
   const isLogin = authData.isLogin;
   const [menuList, setMenuList] = useState([]);
   const [areaList, setAreaList] = useState([]);
-
+  const setLikeCount = useSetRecoilState(likeCountState);
   useEffect(() => {
     const API_URI = `/houses/search/regions`;
 
@@ -155,6 +156,7 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
 
   const handleLogout = () => {
     logout();
+    setLikeCount(0);
     setAuthData({ isLogin: false });
     toggleDrawer();
     router.push("/");
