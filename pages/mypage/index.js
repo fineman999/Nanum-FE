@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import Badge from "@mui/material/Badge";
 import Header from "../../components/common/Header";
 import { useRouter } from "next/router";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { fireAlert } from "../../components/common/Alert";
 import axios from "axios";
@@ -15,6 +15,7 @@ import styles from "../../styles/MyPage.module.css";
 import { Divider } from "@mui/material";
 import BottomMenu from "../../components/common/BottomMenu";
 import { NotificationAlert } from "../../components/common/NotificationAlert";
+import likeCountState from "../../state/atom/likeCountState";
 
 const style = css`
   #mypage {
@@ -133,14 +134,15 @@ const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 export default function MyPage() {
   const router = useRouter();
 
-  const [postCnt, setPostCnt] = useState(2);
-  const [commentCnt, setCommentCnt] = useState(3);
-  const [likeCnt, setLikeCnt] = useState(1);
+  const [postCnt, setPostCnt] = useState(0);
+  const [commentCnt, setCommentCnt] = useState(0);
+  const likeCnt = useRecoilValue(likeCountState);
   const [count, setCount] = useState({
     noteCount: 0,
     chatCount: 0,
     alertCount: 0,
   });
+
   const [userData, setUserData] = useRecoilState(userState);
   const [imageSrc, setImageSrc] = useState("");
   // const userDate = "2022.10.31";
@@ -296,6 +298,31 @@ export default function MyPage() {
                   changeProfile(e.target.files[0]);
                 }}
               />
+            </div>
+            <div id="user_activity">
+              <h4
+                onClick={() => {
+                  router.push("/mypage/posts");
+                }}
+              >
+                게시글 {postCnt}
+              </h4>
+
+              <h4
+                onClick={() => {
+                  router.push("/mypage/comments");
+                }}
+              >
+                댓글 {commentCnt}
+              </h4>
+
+              <h4
+                onClick={() => {
+                  router.push("/like");
+                }}
+              >
+                좋아요 {likeCnt}
+              </h4>
             </div>
           </div>
         </section>
