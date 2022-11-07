@@ -108,16 +108,6 @@ const House = () => {
                   </SwiperSlide>
                 ))}
             </Swiper>
-
-            {/* 좋아요 버튼 */}
-            <div className="like_wrapper" style={{ zIndex: "1200" }}>
-              <LikeButton
-                isLike={houseData.wishId ? true : false}
-                listItem={houseData}
-                wishId={houseData.wishId}
-              />
-              <span className="like_text">좋아요</span>
-            </div>
           </div>
         </div>
 

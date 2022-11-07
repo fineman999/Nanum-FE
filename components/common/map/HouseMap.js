@@ -120,16 +120,18 @@ const HouseMap = ({ setHouseList }) => {
                 Promise.all(
                   data.map((listItem) => {
                     const { id: houseId } = listItem;
-                    return axios.get(
-                      BASE_URL + `/houses/house/${houseId}/total`,
-                      {
+                    const API_URI = `/houses/house/${houseId}/total`;
+                    if (localStorage.getItem("accessToken")) {
+                      return axios.get(BASE_URL + API_URI, {
                         headers: {
                           Authorization: `Bearer ${localStorage.getItem(
                             "accessToken"
                           )}`,
                         },
-                      }
-                    );
+                      });
+                    } else {
+                      return axios.get(BASE_URL + API_URI);
+                    }
                   })
                 ).then((values) => {
                   // console.log("하우스 목록 조회: ", data);
@@ -207,13 +209,18 @@ const HouseMap = ({ setHouseList }) => {
             Promise.all(
               data.map((listItem) => {
                 const { id: houseId } = listItem;
-                return axios.get(BASE_URL + `/houses/house/${houseId}/total`, {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                      "accessToken"
-                    )}`,
-                  },
-                });
+                const API_URI = `/houses/house/${houseId}/total`;
+                if (localStorage.getItem("accessToken")) {
+                  return axios.get(BASE_URL + API_URI, {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                      )}`,
+                    },
+                  });
+                } else {
+                  return axios.get(BASE_URL + API_URI);
+                }
               })
             ).then((values) => {
               // console.log("하우스 목록 조회: ", data);
@@ -287,13 +294,18 @@ const HouseMap = ({ setHouseList }) => {
             Promise.all(
               data.map((listItem) => {
                 const { id: houseId } = listItem;
-                return axios.get(BASE_URL + `/houses/house/${houseId}/total`, {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem(
-                      "accessToken"
-                    )}`,
-                  },
-                });
+                const API_URI = `/houses/house/${houseId}/total`;
+                if (localStorage.getItem("accessToken")) {
+                  return axios.get(BASE_URL + API_URI, {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem(
+                        "accessToken"
+                      )}`,
+                    },
+                  });
+                } else {
+                  return axios.get(BASE_URL + API_URI);
+                }
               })
             ).then((values) => {
               const valueList = values.map((value) => {
