@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Container, Typography } from "@mui/material";
 import { Swiper, SwiperSlide } from "swiper/react";
 import HouseListItem from "./HouseListItem";
+import axios from "axios";
 
 const itemData = [
   {
@@ -98,7 +99,7 @@ const itemData = [
   },
 ];
 
-const HouseListSwiper = ({ title }) => {
+const HouseListSwiper = ({ title, roomList }) => {
   return (
     <Container sx={{ marginBottom: "120px", padding: "0px 30px 0px 30px" }}>
       <Typography
@@ -124,8 +125,8 @@ const HouseListSwiper = ({ title }) => {
         }}
         className="mySwiper"
       >
-        {itemData &&
-          itemData.map((item, index) => (
+        {roomList &&
+          roomList.map((item, index) => (
             <SwiperSlide key={index}>
               <HouseListItem item={item} />
             </SwiperSlide>
