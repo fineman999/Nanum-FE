@@ -22,7 +22,7 @@ import { useRecoilState } from "recoil";
 import { authState, userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
 import { logout } from "../../lib/apis/auth";
-import { get } from "../../lib/apis/apiClient";
+import axios from "axios";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
@@ -119,7 +119,15 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
 
   useEffect(() => {
     const API_URI = `/houses/search/regions`;
-    get(BASE_URL, API_URI).then((res) => setAreaList(res.data.result));
+
+    axios.get(BASE_URL + API_URI).then((res) => {
+      const { status } = res;
+      const { isSuccess, message, result } = res.data;
+      if (status === 200 && isSuccess) {
+        setAreaList(result);
+      }
+    });
+    // get(BASE_URL, API_URI).then((res) => setAreaList(res.data.result));
   }, []);
 
   const handleClick = (listItem, index) => {
@@ -196,14 +204,6 @@ const DrawerMenu = ({ onToggle = false, toggleDrawer }) => {
               },
               { name: "설정", path: isLogin ? "/mypage/setting" : "/login" },
             ],
-          },
-        },
-        {
-          id: 4,
-          name: "FAQ",
-          sub: {
-            open: false,
-            menuList: [{ name: "자주 묻는 질문" }],
           },
         },
       ]);

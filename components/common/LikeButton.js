@@ -7,6 +7,8 @@ import { userState } from "../../state/atom/authState";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { del, post } from "../../lib/apis/apiClient";
 import likeCountState from "../../state/atom/likeCountState";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 
@@ -16,6 +18,7 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
   const [likeClicked, setLikeClicked] = useState(false);
   const setLikeCount = useSetRecoilState(likeCountState);
   const [likeId, setLikeId] = useState(wishId);
+  const router = useRouter();
 
   useEffect(() => {
     setLike(isLike);
@@ -24,6 +27,22 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
 
   const handleLike = (e) => {
     e.stopPropagation();
+
+    const ACCESS_TOKEN = localStorage.getItem("accessToken");
+    if (!ACCESS_TOKEN) {
+      Swal.fire({
+        title: "로그인 페이지로<br/>이동하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "네",
+        cancelButtonText: "아니요",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        }
+      });
+      return;
+    }
+
     if (likeClicked) {
       return null;
     }
