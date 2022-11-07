@@ -109,7 +109,7 @@ const SearchModal = ({ open, handleClose }) => {
           <SearchAreaRadioGroup handleChange={handleChange} />
 
           <Box mb={2}>
-            <Stack spacing={1}>
+            <Stack spacing={3}>
               <Box>
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
@@ -147,7 +147,6 @@ const SearchModal = ({ open, handleClose }) => {
                   >
                     <MenuItem value="원룸형">원룸형</MenuItem>
                     <MenuItem value="빌라">빌라형</MenuItem>
-                    <MenuItem value="아파트형">아파트형</MenuItem>
                   </Select>
                 </FormControl>
               </Box>
