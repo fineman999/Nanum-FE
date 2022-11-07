@@ -177,12 +177,13 @@ const BottomMenu = () => {
               icon={
                 likeCount >= 0 ? (
                   <Badge badgeContent={likeCount} color="primary" max={10}>
-                    <FavoriteIcon onClick={goToFavorite} />
+                    <FavoriteIcon />
                   </Badge>
                 ) : (
-                  <FavoriteIcon onClick={goToFavorite} />
+                  <FavoriteIcon />
                 )
               }
+              onClick={goToFavorite}
             />
             <BottomNavigationAction
               label="Chat"

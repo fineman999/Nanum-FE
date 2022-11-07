@@ -297,31 +297,6 @@ export default function MyPage() {
                 }}
               />
             </div>
-            <div id="user_activity">
-              <h4
-                onClick={() => {
-                  router.push("/mypage/posts");
-                }}
-              >
-                게시글 {postCnt}
-              </h4>
-
-              <h4
-                onClick={() => {
-                  router.push("/mypage/comments");
-                }}
-              >
-                댓글 {commentCnt}
-              </h4>
-
-              <h4
-                onClick={() => {
-                  router.push("/like");
-                }}
-              >
-                좋아요 {likeCnt}
-              </h4>
-            </div>
           </div>
         </section>
         <hr />
