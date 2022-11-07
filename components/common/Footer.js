@@ -4,7 +4,7 @@ import React from "react";
 const Footer = () => {
   return (
     <footer>
-      <Container sx={{ pt: "20px" }}>
+      <Container sx={{ p: "20px" }}>
         <div className="app_info">
           <ul className="app_info_list">
             <li>앱 소개</li>
@@ -34,7 +34,6 @@ const Footer = () => {
           }
           footer {
             width: 100%;
-            height: 320px;
             background: #555555;
           }
 
