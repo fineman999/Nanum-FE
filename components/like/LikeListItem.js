@@ -25,6 +25,11 @@ const HouseInfo = ({ listItem, loading = false }) => {
     houseName,
     lotAddress: jibunAddress,
     mainHouseImgPath: mainImage,
+    minMonthlyRent,
+    maxMonthlyRent,
+    wishCount,
+    reviewCount,
+    reviewAvg,
   } = listItem;
   return (
     <>
@@ -36,79 +41,49 @@ const HouseInfo = ({ listItem, loading = false }) => {
           position: "relative",
         }}
       >
-        {!loading ? (
-          <Image src={mainImage} alt={houseName} layout="fill" />
-        ) : (
-          <Skeleton
-            variant="rectangular"
-            sx={{ width: "100%", height: "100%" }}
-          />
-        )}
+        <Image src={mainImage} alt={houseName} layout="fill" />
       </div>
 
-      {!loading ? (
-        <div className="house_info">
-          <div className="house_info_header">
-            <div className="house_name_wrapper">
-              <div className="house_name">
-                {houseName.length > HOUSE_NAME_LENGTH_SIZE
-                  ? `${name.slice(0, HOUSE_NAME_LENGTH_SIZE)}...`
-                  : houseName}
-              </div>
+      <div className="house_info">
+        <div className="house_info_header">
+          <div className="house_name_wrapper">
+            <div className="house_name">
+              {houseName.length > HOUSE_NAME_LENGTH_SIZE
+                ? `${name.slice(0, HOUSE_NAME_LENGTH_SIZE)}...`
+                : houseName}
+            </div>
 
-              <span className="house_address">
-                {jibunAddress.length > HOUSE_ADDRESS_LENGTH_SIZE
-                  ? `${jibunAddress.slice(0, HOUSE_ADDRESS_LENGTH_SIZE)}...`
-                  : jibunAddress}
-              </span>
-            </div>
-            {/* 좋아요 버튼 */}
-            <LikeButton
-              isLike={wishId ? true : false}
-              listItem={listItem}
-              wishId={wishId}
-            />
+            <span className="house_address">
+              {jibunAddress.length > HOUSE_ADDRESS_LENGTH_SIZE
+                ? `${jibunAddress.slice(0, HOUSE_ADDRESS_LENGTH_SIZE)}...`
+                : jibunAddress}
+            </span>
           </div>
-          <div className="house_info_body">
-            <div className="house_type_wrapper">
-              <div className="gender_type">성별타입</div>
-              <span className="house_type">주거타입</span>
-            </div>
-            <div className="house_state">
-              <div className="capacity">신청가능</div>
-              <span className="capacity_number">1</span>
-            </div>
+          {/* 좋아요 버튼 */}
+          <LikeButton
+            isLike={wishId ? true : false}
+            listItem={listItem}
+            wishId={wishId}
+          />
+        </div>
+        <div className="house_info_body">
+          <div className="house_type_wrapper">
+            <div className="gender_type">성별타입</div>
+            <span className="house_type">주거타입</span>
           </div>
-          <div className="house_info_bottom">
-            <div className="house_price">최대값: 0원</div>
-            <div className="house_price">최저값: 0원</div>
-            <div className={styles.house_review}>
-              <StarIcon fontSize="16" /> 0.0 0개
-            </div>
+          <div className="house_state">
+            <div className="capacity">신청가능</div>
+            <span className="capacity_number">1</span>
           </div>
         </div>
-      ) : (
-        <div className="house_info">
-          <div className={styles.skeleton_house_info_header}>
-            <div className="house_name_wrapper">
-              <div className={styles.skeleton_house_name}>
-                <Skeleton sx={{ width: "100%" }} />
-              </div>
-              <span className="house_address">
-                <Skeleton sx={{ width: "50%" }} />
-              </span>
-            </div>
-          </div>
-          <div className="house_info_body">
-            <Skeleton sx={{ width: "100%" }} />
-          </div>
-          <div className="house_info_bottom">
-            <Skeleton sx={{ width: "100%" }} />
-            <Skeleton sx={{ width: "100%" }} />
-            <Skeleton sx={{ width: "100%" }} />
+        <div className="house_info_bottom">
+          <div className="house_price">최대값: {maxMonthlyRent}원</div>
+          <div className="house_price">최저값: {minMonthlyRent}원</div>
+          <div className={styles.house_review}>
+            <StarIcon fontSize="16" /> {reviewAvg} {reviewCount}건
           </div>
         </div>
-      )}
+      </div>
 
       <style jsx>{`
         .house_item_wrapper {

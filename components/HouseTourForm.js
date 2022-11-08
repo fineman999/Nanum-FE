@@ -10,8 +10,13 @@ import HowToRegIcon from "@mui/icons-material/HowToReg";
 import HouseRoomSelector from "./HouseRoomSelector";
 import { post } from "../lib/apis/apiClient";
 import { fireAlert } from "./common/Alert";
+import { authState } from "../state/atom/authState";
+import { useRecoilValue } from "recoil";
+import { useRouter } from "next/router";
+import Swal from "sweetalert2";
 
 const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
+  const authValue = useRecoilValue(authState);
   const [warnStatus, setWarnStatus] = useState(false);
   const [timeWarning, setTimeWarning] = useState(false);
   const onWarning = () => setWarnStatus(true);
@@ -19,12 +24,32 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
   const onTimeWarning = () => setTimeWarning(true);
   const offTimeWarning = () => setTimeWarning(false);
 
+  const router = useRouter();
+
   const handleTour = () => {
     if (!tourForm.roomId) {
       onWarning();
       return null;
     } else if (!tourForm.timeId) {
       onTimeWarning();
+      return null;
+    }
+
+    // 비회원인 경우 로그인 페이지로 라우팅시킨다.
+    if (!authValue.isLogin) {
+      Swal.fire({
+        customClass: {
+          container: "my-swal",
+        },
+        title: "로그인 페이지로<br/>이동하시겠습니까?",
+        showCancelButton: true,
+        confirmButtonText: "네",
+        cancelButtonText: "아니오",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          router.push("/login");
+        }
+      });
       return null;
     }
 
