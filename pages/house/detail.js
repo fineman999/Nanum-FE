@@ -80,6 +80,7 @@ const House = () => {
         <div className="house_body_top">
           <div className="house_image_container">
             <Swiper
+              initialSlide={1}
               slidesPerView={1}
               spaceBetween={30}
               pagination={{

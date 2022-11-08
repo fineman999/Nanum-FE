@@ -11,17 +11,16 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import HouseSearchList from "../../components/HouseSearchList";
 import houseSearchListState from "../../state/atom/houseSearchListState";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { NotificationAlert } from "../../components/common/NotificationAlert";
 
 export default function Houses() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [searchInput, setSearchInput] = useState(router.query.searchWord);
-  const [houseList, setHouseList] = useRecoilState(houseSearchListState);
+  const setHouseList = useSetRecoilState(houseSearchListState);
 
   useEffect(() => {
-    console.log("House: ", router);
     setSearchInput(router.query.searchWord);
   }, [router]);
 
@@ -56,7 +55,7 @@ export default function Houses() {
                   className="search_input"
                   name="searchWord"
                   value={searchInput || ""}
-                  placeholder="지역명, 대학명, 지하철역으로 검색..."
+                  placeholder="주소로 하우스 검색..."
                   onChange={(e) => setSearchInput(e.target.value)}
                   autoComplete="off"
                 />

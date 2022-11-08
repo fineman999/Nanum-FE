@@ -6,9 +6,15 @@ import styles from "../styles/HouseDateForm.module.css";
 import formatDate from "../lib/fomatDate";
 
 const HouseDateForm = ({ tourForm, setTourForm, onWarning }) => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState(
+    new Date().setDate(new Date().getDate() + 1)
+  );
 
   const handleChange = (newValue) => {
+    if (formatDate(newValue.toDate()) <= formatDate(new Date())) {
+      return null;
+    }
+
     if (tourForm.roomId === "") {
       onWarning();
       return null;

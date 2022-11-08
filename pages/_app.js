@@ -3,10 +3,11 @@ import "../styles/global.css";
 // Swiper.js
 import "swiper/css";
 import "swiper/css/effect-fade";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 import Head from "next/head";
 import { RecoilRoot } from "recoil";
-
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
