@@ -78,8 +78,12 @@ const HouseInfo = ({ listItem }) => {
           </div>
         </div>
         <div className="house_info_bottom">
-          <div className="house_price">월세 최고가: {maxMonthlyRent}</div>
-          <div className="house_price">월세 최저가: {minMonthlyRent}</div>
+          <div className="house_price">
+            월세 최고: {Number(maxMonthlyRent).toLocaleString("en")}원
+          </div>
+          <div className="house_price">
+            월세 최저: {Number(minMonthlyRent).toLocaleString("en")}원
+          </div>
           <div className={styles.house_review}>
             <StarIcon fontSize="16" /> {reviewAvg} {reviewCount}개
           </div>
