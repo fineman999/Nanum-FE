@@ -34,7 +34,7 @@ const House = () => {
     houseId: "",
     roomId: "",
     timeId: "",
-    tourDate: formatDate(new Date()),
+    tourDate: formatDate(new Date().setDate(new Date().getDate() + 1)),
   });
   const [like, setLike] = useState(false);
   const [open, setOpen] = useState(false);

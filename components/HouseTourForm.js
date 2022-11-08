@@ -64,6 +64,8 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
       timeId: tourForm.timeId,
       inquiry: "",
     };
+
+    console.log(formData);
     post(BASE_URL, API_URI, formData).then((res) => {
       const { data, status } = res;
       const { message } = data;
@@ -73,7 +75,7 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
           fireAlert({ icon: "success", title: message });
           break;
         case 208:
-          alert(message);
+          fireAlert({ icon: "warning", title: message });
           break;
       }
     });
