@@ -6,6 +6,7 @@ import myMoveListState from "../../state/atom/myMoveListState";
 import MyMoveListFilter from "./MyMoveListFilter";
 import MyMoveListItem from "./MyMoveListItem";
 import filteredMyMoveListState from "../../state/selector/filteredMyMoveListState";
+import LastPageComment from "../LastPageComment";
 
 const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
 
@@ -34,6 +35,7 @@ const MyMoveList = () => {
             <MyMoveListItem key={listItem.id} listItem={listItem} />
           ))}
       </ul>
+      <LastPageComment />
     </div>
   );
 };
