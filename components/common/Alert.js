@@ -8,13 +8,14 @@ import Swal from "sweetalert2";
 // 물음 :question
 
 //확인 알럿 - 확인 취소 버튼이 없음
-export const fireAlert = ({ icon, title }) => {
+export const fireAlert = ({ icon, title ,text}) => {
   return Swal.fire({
     customClass: {
       container: "my-swal",
     },
     icon: icon,
     title: title,
+    text: text,
     showConfirmButton: false,
     timer: 1500,
   });

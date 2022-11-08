@@ -99,7 +99,7 @@ export default function SignUpCheckOuth() {
             <h3>호스트</h3>
             <p>나의 멋진 집을 올려봐요</p>
             <img src="/images/default.png" alt="host_image" />
-            {userType === 1 ? (
+            {userType === "HOST" ? (
               <>
                 <div id="checked"></div>
                 <img
@@ -117,7 +117,7 @@ export default function SignUpCheckOuth() {
             <h3>세입자</h3>
             <p>살고 싶은 집을 찾아봐요</p>
             <img src="/images/default.png" alt="user_image" />
-            {userType === 2 ? (
+            {userType === "USER" ? (
               <>
                 <div id="checked"></div>
                 <img
