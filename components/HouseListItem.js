@@ -39,18 +39,9 @@ const HouseListItem = ({ item }) => {
       </div>
       <div className="house_info">
         <div className="house_info_header">
-          <div className="house_name_wrapper">
+          <div className="house_name_wrapper" style={{ width: "90%" }}>
             <div className="house_name">{name}</div>
-            <span
-              className="house_address"
-              style={{
-                overflow: "hidden",
-                textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
-              }}
-            >
-              {address}
-            </span>
+            <div className="house_address">{address}</div>
           </div>
         </div>
         <div className="house_info_body">
@@ -88,6 +79,11 @@ const HouseListItem = ({ item }) => {
         .house_address {
           font-size: 1em;
           font-weight: normal;
+          width: 100%;
+          padding: 0 5px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
         .house_info_body {
           display: flex;
