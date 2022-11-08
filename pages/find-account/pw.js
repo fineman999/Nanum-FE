@@ -470,9 +470,7 @@ export default function Account() {
                   {emailTest ? (
                     <>
                       {emailValid ? (
-                        <span className="collect">
-                          사용가능한 이메일입니다.
-                        </span>
+                        <span className="collect">존재하는 이메일입니다.</span>
                       ) : (
                         <span className="collect_blue">
                           이메일 양식에 맞습니다.
