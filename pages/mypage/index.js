@@ -320,29 +320,11 @@ export default function MyPage() {
               />
             </div>
             <div id="user_activity">
-              <h4
-                onClick={() => {
-                  router.push("/mypage/posts");
-                }}
-              >
-                게시글 {postCnt}
-              </h4>
+              <h4>게시글 {postCnt}</h4>
 
-              <h4
-                onClick={() => {
-                  router.push("/mypage/comments");
-                }}
-              >
-                댓글 {commentCnt}
-              </h4>
+              <h4>댓글 {commentCnt}</h4>
 
-              <h4
-                onClick={() => {
-                  router.push("/like");
-                }}
-              >
-                좋아요 {likeCnt}
-              </h4>
+              <h4>좋아요 {likeCnt}</h4>
             </div>
           </div>
         </section>
@@ -361,13 +343,28 @@ export default function MyPage() {
                     cursor: "pointer",
                   }}
                   onClick={() => {
-                    router.push(
-                      {
-                        pathname: "/mypage/myroom",
-                        query: { type: 1 },
-                      },
-                      `/mypage/myroom`
-                    );
+                    const API_URI = `/move-in/users/in/${userData.id}`;
+
+                    Api.get(BASE_URL, API_URI)
+                      .then((res) => {
+                        const { status, data } = res;
+                        if (status === 204) {
+                          fireAlert({
+                            icon: "warning",
+                            title: "아직 입주하지 않았습니다!",
+                          });
+                          return;
+                        } else {
+                          router.push(
+                            {
+                              pathname: "/mypage/myroom",
+                              query: { type: 1 },
+                            },
+                            `/mypage/myroom`
+                          );
+                        }
+                      })
+                      .catch((err) => console.log(err));
                   }}
                 >
                   더보기
@@ -385,12 +382,7 @@ export default function MyPage() {
                 </div>
               </div>
             </div>
-            <img
-              src={
-                houseStatus.myHouseImg ||
-                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
-              }
-            />
+            <img src={houseStatus.myHouseImg || "/icons/myHome.png"} />
           </div>
           <div id="user_move" className={styles.user_move}>
             <div id="move_content" className={styles.move_content}>
@@ -436,10 +428,7 @@ export default function MyPage() {
               </div>
             </div>
             <img
-              src={
-                houseStatus.moveInHouseImg ||
-                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
-              }
+              src={houseStatus.moveInHouseImg || "/icons/myStateHouse.png"}
             />
           </div>
           <div id="user_move" className={styles.user_move}>
@@ -485,12 +474,7 @@ export default function MyPage() {
                 {houseStatus.tourDate}
               </div>
             </div>
-            <img
-              src={
-                houseStatus.tourHouseImg ||
-                "https://images.unsplash.com/photo-1598928506311-c55ded91a20c"
-              }
-            />
+            <img src={houseStatus.tourHouseImg || "/icons/mytour.png"} />
           </div>
         </section>
         <section>
@@ -522,10 +506,10 @@ export default function MyPage() {
               <img src="/icons/user.png" />
               <p style={{ width: "10vh", textAlign: "center" }}>차단관리</p>
             </div>
-            <div id="user_unit" onClick={() => router.push("/mypage/review")}>
+            {/* <div id="user_unit" onClick={() => router.push("/mypage/review")}>
               <img src="/icons/review.png" />
               <p>리뷰</p>
-            </div>
+            </div> */}
             <div id="user_unit" onClick={() => router.push("/mypage/setting")}>
               <img src="/icons/setting.png" />
               <p>설정</p>

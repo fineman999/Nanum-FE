@@ -5,6 +5,7 @@ import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
 import styles from "../styles/NoticeListItem.module.css";
 import classNames from "classnames/bind";
 import Link from "next/link";
+import { displayedAtV2 } from "../lib/utils/useful-functions";
 const cx = classNames.bind(styles);
 
 const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
@@ -59,10 +60,11 @@ const NoticeListItem = ({ id, date, title, viewCount, content, type }) => {
             </div>
             <div className={styles.article_date}>
               <span className={styles.date_text}>
-                {new Intl.DateTimeFormat("ko", {
+                {displayedAtV2(date)}
+                {/* {new Intl.DateTimeFormat("ko", {
                   dateStyle: "medium",
                   timeStyle: "short",
-                }).format(new Date(date))}
+                }).format(new Date(date))} */}
               </span>
             </div>
           </div>
