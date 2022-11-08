@@ -17,7 +17,7 @@ import {
   putUserDetail,
 } from "../../../lib/apis/auth";
 import { useRecoilState } from "recoil";
-import { userState } from "../../../state/atom/authState";
+import { authState, userState } from "../../../state/atom/authState";
 import axios from "axios";
 import { fireAlert } from "../../../components/common/Alert";
 import { NotificationAlert } from "../../../components/common/NotificationAlert";
@@ -75,7 +75,7 @@ export default function Setting() {
   const router = useRouter();
   const [isLock, setIsLock] = useState(true);
   const [userData, setUserData] = useRecoilState(userState);
-  const [authData, setAuthData] = useRecoilState(authS);
+  const [authData, setAuthData] = useRecoilState(authState);
   const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
   const [mailAccept, setMailAccept] = useState(userData.noteReject);
   const [sex, setSex] = useState(userData.gender);
