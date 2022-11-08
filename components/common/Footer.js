@@ -30,8 +30,6 @@ const Footer = () => {
       </Container>
       <style jsx>
         {`
-          address {
-          }
           footer {
             width: 100%;
             background: #555555;
@@ -40,6 +38,7 @@ const Footer = () => {
           .app_info {
             color: #f5f5f5;
             font-size: 0.7rem;
+            height: 200px;
           }
 
           .app_info .app_info_detail > div {

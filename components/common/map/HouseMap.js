@@ -10,7 +10,6 @@ const HouseMap = ({ setHouseList }) => {
   const mapRef = useRef(null);
 
   useEffect(() => {
-    console.log("HouseMap: ", router);
     // 검색 키워드로 검색하는 경우
     const encodeUri = decodeURIComponent(router.asPath);
     const encodeUriTokens = encodeUri.split("&");

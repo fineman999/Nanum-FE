@@ -39,7 +39,7 @@ const GlobalSearch = ({ handleOpen }) => {
               className="form_placeholder"
               name="searchInput"
               type="text"
-              placeholder="지역명, 대학교, 지하철 역으로 검색..."
+              placeholder="주소로 하우스 검색..."
               onChange={handleChange}
               autoComplete="off"
             />
