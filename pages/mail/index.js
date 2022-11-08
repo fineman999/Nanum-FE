@@ -99,7 +99,7 @@ const style = css`
   #delete {
     display: flex;
     position: fixed;
-    bottom: 0;
+    bottom: 56px;
     width: 100%;
   }
   #delete_btn {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { getChat, postChat } from "../../lib/apis/chat";
+import { initChat } from "../../lib/utils/useful-functions";
 import { userState } from "../../state/atom/authState";
 import ProfileModal from "./modal/ProfileModal";
 
@@ -17,8 +18,9 @@ export function ProfileImg({ img, size, name, type, id }) {
       houseImg: "/images/default.png",
     };
     postChat(obj)
-      .then((res) => {
+      .then(async (res) => {
         setRoomNum(res.data.id);
+        await initChat({userId:userData.id,chatRoomId:res.data.id,userName:userData.nickName,type:"CHATIN",msg:`${userData.nickName}님이 채팅방을 생성하였습니다.`,img:userData.profileImgUrl});
       })
       .catch((err) => {
         console.log(err);
@@ -32,6 +34,7 @@ export function ProfileImg({ img, size, name, type, id }) {
         setRoomNum(res.data.id);
         if (res.data.id === undefined) {
           makeChat();
+      
         }
       })
       .catch((err) => {
