@@ -23,7 +23,8 @@ const MyHouseInfo = ({ roomInfo }) => {
       }
       // 기존에 채팅방에 없는 경우
       let { id } = getChat.data;
-      if (!findUserInChat(getChat.data)) {
+      const result = await findUserInChat(getChat.data);
+      if (!result) {
         const userId = userData.id;
         const getResult = await putChat({ id, userId });
         id = getResult.data.id;
