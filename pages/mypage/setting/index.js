@@ -75,6 +75,7 @@ export default function Setting() {
   const router = useRouter();
   const [isLock, setIsLock] = useState(true);
   const [userData, setUserData] = useRecoilState(userState);
+  const [authData, setAuthData] = useRecoilState(authS);
   const [imageSrc, setImageSrc] = useState(userData.profileImgUrl);
   const [mailAccept, setMailAccept] = useState(userData.noteReject);
   const [sex, setSex] = useState(userData.gender);
@@ -106,6 +107,7 @@ export default function Setting() {
     sessionStorage.clear();
     localStorage.clear();
     setUserData();
+
     router.push("/");
   };
 

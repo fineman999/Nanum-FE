@@ -76,7 +76,7 @@ const BottomMenu = () => {
       await getChat(cancelToken);
       await getNote(cancelToken);
     }
-    if (userData.id) {
+    if (authValue.isLogin) {
       reactive();
       if (!listening) {
         eventSource.current = new EventSource(
@@ -144,6 +144,20 @@ const BottomMenu = () => {
       router.push("/login");
     }
   };
+  const goToMail = () => {
+    if (authValue.isLogin) {
+      router.push("/mail");
+    } else {
+      router.push("/login");
+    }
+  };
+  const goToChat = () => {
+    if (authValue.isLogin) {
+      router.push("/chat");
+    } else {
+      router.push("/login");
+    }
+  };
   if (matches) {
     return null;
   }
@@ -163,7 +177,7 @@ const BottomMenu = () => {
             />
             <BottomNavigationAction
               label="Email"
-              onClick={() => router.push("/mail")}
+              onClick={goToMail}
               icon={
                 <Badge
                   badgeContent={userInfo.noteCount}
@@ -189,7 +203,7 @@ const BottomMenu = () => {
             />
             <BottomNavigationAction
               label="Chat"
-              onClick={() => router.push("/chat")}
+              onClick={goToChat}
               icon={
                 <Badge
                   badgeContent={userInfo.chatCount}

@@ -51,6 +51,25 @@ export const confirmAlertV2 = async ({ icon, title, text, successText }) => {
   });
   return result;
 };
+export const confirmAlertV3 = async ({
+  icon,
+  title,
+  text,
+  successText,
+  failText,
+}) => {
+  const result = await Swal.fire({
+    title: title,
+    // text: text,
+    // icon: icon,
+    showCancelButton: true,
+    confirmButtonColor: "#7066e0",
+    cancelButtonColor: "#6e7881",
+    confirmButtonText: successText,
+    cancelButtonText: failText,
+  });
+  return result;
+};
 //입력 받는 알럿
 export const inputAlert = ({ title }) => {
   Swal.fire({
