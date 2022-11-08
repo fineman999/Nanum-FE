@@ -225,7 +225,7 @@ export default function Signup() {
   const [pwTest, setPwTest] = useState(false);
   const [pwConfirmTest, setPwConfirmTest] = useState(false);
   const [nameTest, setNameTest] = useState(false);
-
+  const [phoneState, setPhoneState] = useState(false);
   //이메일 중복 검사
   const [emailValid, setEmailValid] = useState(true);
 
@@ -233,7 +233,7 @@ export default function Signup() {
   const [nameValid, setNameValid] = useState(true);
 
   //휴대폰 인증 검사
-  const [phoneValid, setPhoneValid] = useState(false);
+  const [phoneValid, setPhoneValid] = useState(0);
 
   //휴대폰 인증 번호 일치 검사
   const [numValid, setNumValid] = useState(0);
@@ -355,6 +355,10 @@ export default function Signup() {
   //인증번호 발송
   const postPhoneCheck = () => {
     let phone = userInfo.phone.split("-");
+    if(phone.length!==3){
+      fireAlert({icon:"warning",title:"인증번호 오류",text:"전화번호를 정확히 입력해주세요."})
+      return;
+    }
     phone = phone[0] + phone[1] + phone[2];
     postPhone(phone)
       .then((res) => {
@@ -376,11 +380,19 @@ export default function Signup() {
     const number = numValid;
     postPhoneValid({ phone, number })
       .then((res) => {
-        setPhoneValid(true);
+        if(res.status===200){
+          setPhoneValid(200);
+          setPhoneState(true);
+        }else if(res.status===208){
+          setPhoneValid(208);
+        }else{
+          setPhoneValid(400);
+        }
+        
       })
       .catch((err) => {
         console.log(err);
-        setPhoneValid(false);
+        setPhoneValid(400);
         fireAlert({
           icon: "error",
           title: "인증 번호가 틀렸어요. 확인 후 입력해주세요.",
@@ -407,7 +419,7 @@ export default function Signup() {
       nameTest &&
       pwTest &&
       pwConfirmTest &&
-      // phoneValid &&
+      phoneValid===200 &&
       nameValid &&
       emailValid &&
       userInfo.sex
@@ -572,6 +584,7 @@ export default function Signup() {
                   marginBottom: "10px",
                   justifyContent: "space-around",
                 }}
+              
               >
                 <input
                   type="tel"
@@ -581,8 +594,9 @@ export default function Signup() {
                   style={{ marginRight: "5px" }}
                   onChange={handlePhone}
                   value={userInfo.phone}
+                  disabled={phoneState}
                 />
-                <button style={{ width: "80%" }} onClick={postPhoneCheck}>
+                <button style={{ width: "80%" }} onClick={postPhoneCheck}      disabled={phoneState}>
                   {" "}
                   인증번호 받기
                 </button>
@@ -593,14 +607,14 @@ export default function Signup() {
                 placeholder="인증번호를 입력하세요."
                 onChange={(e) => setNumValid(e.target.value)}
                 onBlur={checkNum}
+                disabled={phoneState}
               />
               {numValid ? (
                 <>
-                  {" "}
-                  {phoneValid ? (
-                    <span className="collect">인증되었습니다.</span>
-                  ) : (
-                    <span className="warn">인증번호가 맞지 않아요.</span>
+                  {phoneValid===200 ? (
+                    <span className="collect">{"인증되었습니다."}</span>
+                  ) :phoneValid===208?(  <span className="warn">{"이미 가입되신 전화번호입니다."}</span>): (
+                    <span className="warn">{"인증번호가 맞지 않아요."}</span>
                   )}
                 </>
               ) : (
