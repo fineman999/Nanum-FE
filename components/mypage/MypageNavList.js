@@ -14,7 +14,7 @@ const MypageNavList = () => {
             <div className={styles.myroom_header}>
               <h3>마이룸</h3>
               <Link href="/mypage/myroom">
-                <a className={styles.moreBtn}>더보기</a>
+                <div className={styles.moreBtn}>더보기</div>
               </Link>
             </div>
             <div className="myroom_body"></div>
