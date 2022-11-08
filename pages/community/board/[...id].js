@@ -13,13 +13,14 @@ import { getBoard } from "../../../lib/apis/board";
 import { useRouter } from "next/router";
 import axios from "axios";
 import * as Api from "../../../lib/apis/apiClient";
-import { useRecoilState } from "recoil";
-import { userState } from "../../../state/atom/authState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState, userState } from "../../../state/atom/authState";
 import { NotificationAlert } from "../../../components/common/NotificationAlert";
 const Article = () => {
   const router = useRouter();
   const { id } = router.query;
   const [newComment, setNewComment] = useState();
+  const authValue = useRecoilValue(authState);
   const [newReply, setNewReply] = useState();
   const [board, setBoard] = useState({});
   const [inputCommnet, setInputCommnet] = useState({
@@ -83,14 +84,18 @@ const Article = () => {
             newReply={newReply}
           />
         </div>
-        <CommentToolbar
-          boardId={id}
-          setNewComment={setNewComment}
-          newComment={newComment}
-          inputCommnet={inputCommnet}
-          setInputCommnet={setInputCommnet}
-          setNewReply={setNewReply}
-        />
+        {authValue.isLogin ? (
+          <CommentToolbar
+            boardId={id}
+            setNewComment={setNewComment}
+            newComment={newComment}
+            inputCommnet={inputCommnet}
+            setInputCommnet={setInputCommnet}
+            setNewReply={setNewReply}
+          />
+        ) : (
+          ""
+        )}
       </section>
       <NotificationAlert />
       <style jsx>{`

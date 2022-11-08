@@ -7,9 +7,15 @@ import { IconButton } from "@mui/material";
 import styles from "../styles/HouseToolbar.module.css";
 import LikeButton from "./common/LikeButton";
 import { getChat, postChat } from "../lib/apis/chat";
-import { useRecoilState } from "recoil";
-import { userState } from "../state/atom/authState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState, userState } from "../state/atom/authState";
 import { useRouter } from "next/router";
+import {
+  confirmAlert,
+  confirmAlertV2,
+  confirmAlertV3,
+  fireAlert,
+} from "./common/Alert";
 
 const HouseToolbar = ({
   houseData,
@@ -21,6 +27,7 @@ const HouseToolbar = ({
   hostId,
 }) => {
   const [userData, setUserData] = useRecoilState(userState);
+  const authValue = useRecoilValue(authState);
   const router = useRouter();
 
   useEffect(() => {
@@ -28,6 +35,19 @@ const HouseToolbar = ({
   }, [houseData]);
 
   const handleChatConnected = async () => {
+    if (!authValue.isLogin) {
+      confirmAlertV3({
+        icon: "info",
+        title: "로그인 페이지로<br/> 이동하시겠습니까?",
+        successText: "네",
+        failText: "아니오",
+      }).then((res) => {
+        if (res.isConfirmed) {
+          router.push("/login");
+        }
+      });
+      return;
+    }
     const users = [hostId, userData.id];
     try {
       const response = await getChat({ houseId: 0, users });
