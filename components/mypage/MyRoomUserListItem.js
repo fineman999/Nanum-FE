@@ -8,6 +8,7 @@ import { getChat, postChat } from "../../lib/apis/chat";
 import { useRecoilValue } from "recoil";
 import { userState } from "../../state/atom/authState";
 import { useRouter } from "next/router";
+import { initChat } from "../../lib/utils/useful-functions";
 
 const MyRoomUserListItem = ({ listItem }) => {
   const { email, nickName: name, phone, profileImgUrl, gender, id } = listItem;
@@ -23,6 +24,7 @@ const MyRoomUserListItem = ({ listItem }) => {
     };
     try {
       const chat = await postChat(obj);
+      await  initChat({userId:userData.id,chatRoomId:chat.data.id,userName:userData.nickName,type:"CHATIN",msg:`${userData.nickName}님이 채팅방을 생성하였습니다.`,img:userData.profileImgUrl});
       await goChat(chat.data.id);
     } catch (err) {
       console.log(err);

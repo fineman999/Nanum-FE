@@ -3,7 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Header from "../../components/common/Header";
 import css from "styled-jsx/css";
 import IconButton from "@mui/joy/IconButton";
-import { GetMessage, SendMessage } from "../../components/common/Message";
+import { GetMessage, InfoMessage, SendMessage } from "../../components/common/Message";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { userState } from "../../state/atom/authState";
@@ -117,6 +117,16 @@ export default function Chat() {
           /*고민 */
           setFirst(true);
           setInit(obj.message);
+        }else if (obj.message.type == "CHATIN" || obj.message.type == "CHATOUT") {
+            console.log(obj)
+            setMessage((prev) => [...prev, obj.message]);
+
+            setCount((prev) => [
+              ...prev,
+              {
+                users: [],
+              },
+            ]);
         } else {
           setMessage((prev) => [...prev, obj.message]);
 
@@ -239,7 +249,7 @@ export default function Chat() {
           {message &&
             message.map((m, idx) => (
               <div key={idx}>
-                {m.sender == userId ? (
+                {m.sender == userId && !(m.type==="CHATIN" || m.type=="CHATOUT")? (
                   <SendMessage
                     text={m.message}
                     type={m.type}
@@ -250,7 +260,7 @@ export default function Chat() {
                         : count[idx].users.length
                     }
                   />
-                ) : (
+                ) :  !(m.type==="CHATIN" || m.type=="CHATOUT")?(
                   <GetMessage
                     text={m.message}
                     type={m.type}
@@ -264,7 +274,7 @@ export default function Chat() {
                         : count[idx].users.length
                     }
                   />
-                )}
+                ):<InfoMessage text={m.message}/>}
               </div>
             ))}
         </section>

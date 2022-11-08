@@ -74,6 +74,20 @@ const style = css`
   p {
     font-size: 0.8rem;
   }
+  .infoMessage{
+    width: 100%;
+    display: flex;
+    text-align: center;
+    background-color: lightgray;
+    border-radius: 1rem;
+    height: 2rem;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  .text2{
+    width:100%;
+    color: darkslategray;
+  }
 `;
 
 export function SendMessage({ text, time, type, count }) {
@@ -106,6 +120,19 @@ export function SendMessage({ text, time, type, count }) {
         )}
       </div>
       <BigImageModal open={open} handleClose={handleClose} image={text} />
+      <style jsx>{style}</style>
+    </>
+  );
+}
+export function InfoMessage({ text }) {
+  return (
+    <>
+      <div  className="infoMessage">
+      
+          <p className="text2">{text}</p>
+     
+      </div>
+     
       <style jsx>{style}</style>
     </>
   );

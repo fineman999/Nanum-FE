@@ -10,6 +10,7 @@ import {
   displayedAt,
   getCurrentDate,
   displayedASpringMVC,
+  initChat,
 } from "../../lib/utils/useful-functions";
 import * as Api from "../../lib/apis/apiClient";
 import { useRecoilValue } from "recoil";
@@ -376,11 +377,13 @@ export default function ChatList() {
           try {
             if (deleteState) {
               setDeleteState(false);
+              await initChat({userId:userData.id,chatRoomId:roomId,userName:userData.nickName,type:"CHATOUT",msg:`${userData.nickName}님이 나갔습니다.`,img:userData.profileImgUrl});
+
               const chatDeleteResult = await Api.delete(
                 `https://nanum.site/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
                 ""
               );
-
+            
               setChatLists(chatLists.filter((item) => item.id !== roomId));
             }
           } catch (e) {

@@ -7,6 +7,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import { fireAlert } from "./Alert";
+import { initChat } from "../../lib/utils/useful-functions";
 export function ChatListItem({ img, size, name, type, id, primary }) {
   //modal 관리
   const [open, setOpen] = useState(false);
@@ -20,8 +21,9 @@ export function ChatListItem({ img, size, name, type, id, primary }) {
       houseImg: "/images/default.png",
     };
     postChat(obj)
-      .then((res) => {
+      .then(async(res) => {
         setRoomNum(res.data.id);
+        await initChat({userId:userData.id,chatRoomId:res.data.id,userName:userData.nickName,type:"CHATIN",msg:`${userData.nickName}님이 채팅방을 생성하였습니다.`,img:userData.profileImgUrl});
       })
       .catch((err) => {
         console.log(err);
