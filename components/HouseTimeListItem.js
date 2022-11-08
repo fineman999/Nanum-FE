@@ -1,13 +1,11 @@
 import { Chip } from "@mui/material";
 import React, { useEffect } from "react";
-import formDate from "../lib/fomatDate";
+import { fireAlert } from "./common/Alert";
 
-const HouseTimeListItem = ({ time, tourForm, handleClick }) => {
+const HouseTimeListItem = ({ time, handleClick }) => {
   return (
     <li>
-      {formDate(new Date()) >= tourForm.tourDate ? (
-        <Chip label={time.time} sx={{ width: "100%" }} />
-      ) : time.isAvailable ? (
+      {time.isAvailable ? (
         <Chip
           label={time.time}
           variant="outlined"
@@ -15,7 +13,16 @@ const HouseTimeListItem = ({ time, tourForm, handleClick }) => {
           sx={{ width: "100%" }}
         />
       ) : (
-        <Chip label={time.time} sx={{ width: "100%" }} />
+        <Chip
+          label={time.time}
+          sx={{ width: "100%" }}
+          onClick={() =>
+            fireAlert({
+              icon: "warning",
+              title: "당일 신청은<br/>불가능합니다.",
+            })
+          }
+        />
       )}
     </li>
   );

@@ -1,7 +1,17 @@
+import { Button, Divider, IconButton, Toolbar } from "@mui/material";
 import Head from "next/head";
+import Image from "next/image";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Footer from "../../components/common/Footer";
 import SubHeader from "../../components/common/SubHeader";
-import { useEffect, useState } from "react";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { useEffect, useRef, useState } from "react";
+import { pink } from "@mui/material/colors";
+import { Favorite } from "@mui/icons-material";
+import { Pagination, Navigation } from "swiper";
+
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 import HouseToolbar from "../../components/HouseToolbar";
 import HouseDetailTopMenu from "../../components/HouseDetailTopMenu";
@@ -13,7 +23,7 @@ import HouseReviewDetail from "../../components/HouseReviewDetail";
 import { get } from "../../lib/apis/apiClient";
 import formatDate from "../../lib/fomatDate";
 import { NotificationAlert } from "../../components/common/NotificationAlert";
-import HouseDetailImageSwiper from "../../components/HouseDetailImageSwiper";
+import LikeButton from "../../components/common/LikeButton";
 const House = () => {
   const router = useRouter();
 
@@ -24,9 +34,11 @@ const House = () => {
     houseId: "",
     roomId: "",
     timeId: "",
-    tourDate: formatDate(new Date()),
+    tourDate: formatDate(new Date().setDate(new Date().getDate() + 1)),
   });
+  const [like, setLike] = useState(false);
   const [open, setOpen] = useState(false);
+  const swiperRef = useRef(null);
 
   useEffect(() => {
     const { asPath } = router;
@@ -51,6 +63,10 @@ const House = () => {
     setOpen(newOpen);
   };
 
+  const handleLike = () => {
+    setLike(!like);
+  };
+
   return (
     <>
       <Head>
@@ -63,7 +79,36 @@ const House = () => {
         {/* 하우스 이미지 리스트 */}
         <div className="house_body_top">
           <div className="house_image_container">
-            <HouseDetailImageSwiper houseImages={houseData.houseImgs} />
+            <Swiper
+              initialSlide={1}
+              slidesPerView={1}
+              spaceBetween={30}
+              pagination={{
+                type: "fraction",
+                clickable: true,
+              }}
+              loop={true}
+              navigation={true}
+              modules={[Pagination, Navigation]}
+              style={{
+                "--swiper-navigation-color": "#fff",
+              }}
+              ref={swiperRef}
+            >
+              {houseData.houseImgs &&
+                houseData.houseImgs.map((image) => (
+                  <SwiperSlide key={image.id}>
+                    <div className="house_image_wrapper">
+                      <Image
+                        src={image.imgPath}
+                        alt="temp"
+                        layout="fill"
+                        priority
+                      />
+                    </div>
+                  </SwiperSlide>
+                ))}
+            </Swiper>
           </div>
         </div>
 

@@ -28,8 +28,13 @@ const HouseTimeList = ({
       console.log("시간대 조회: ", BASE_URL + API_URI);
 
       get(BASE_URL, API_URI)
-        .then((res) => res.data)
-        .then((data) => setTimeList([...data.result]))
+        .then((res) => {
+          const { status } = res;
+          const { isSuccess, message, result } = res.data;
+          if (status === 200 && isSuccess) {
+            setTimeList(result);
+          }
+        })
         .catch((err) => console.log(err));
     }
   }, [tourForm]);
@@ -46,7 +51,6 @@ const HouseTimeList = ({
             <HouseTimeListItem
               key={time.timeId}
               time={time}
-              tourForm={tourForm}
               handleClick={handleClick}
             />
           ))}

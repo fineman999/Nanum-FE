@@ -434,6 +434,7 @@ export default function Signup() {
           icon: "success",
           title: "축하합니다! 회원가입이 성공했습니다.",
         });
+        router.push("/");
       } else {
         fireAlert({
           icon: "error",
