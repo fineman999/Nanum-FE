@@ -19,10 +19,14 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
   const authValue = useRecoilValue(authState);
   const [warnStatus, setWarnStatus] = useState(false);
   const [timeWarning, setTimeWarning] = useState(false);
+  const [dateWarning, setDateWarning] = useState(false);
+
   const onWarning = () => setWarnStatus(true);
   const offWarning = () => setWarnStatus(false);
   const onTimeWarning = () => setTimeWarning(true);
   const offTimeWarning = () => setTimeWarning(false);
+  const onDateWarning = () => setDateWarning(true);
+  const offDateWarning = () => setDateWarning(false);
 
   const router = useRouter();
 
@@ -60,7 +64,6 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
       timeId: tourForm.timeId,
       inquiry: "",
     };
-
     post(BASE_URL, API_URI, formData).then((res) => {
       const { data, status } = res;
       const { message } = data;
@@ -90,6 +93,9 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
         setTourForm={setTourForm}
         onWarning={onWarning}
         offWarning={offWarning}
+        dateWarning={dateWarning}
+        onDateWarning={onDateWarning}
+        offDateWarning={offDateWarning}
       />
       <HouseTimeList
         tourForm={tourForm}
