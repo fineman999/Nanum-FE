@@ -27,7 +27,6 @@ const PreviewImageScroll = ({ imageList, date }) => {
                 alt={image.imagId}
                 style={{
                   width: `10vh`,
-                  height: `10vh`,
                   borderRadius: "0.5rem",
                 }}
               />
