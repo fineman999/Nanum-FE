@@ -30,9 +30,9 @@ const HouseToolbar = ({
   const authValue = useRecoilValue(authState);
   const router = useRouter();
 
-  useEffect(() => {
-    console.log(houseData);
-  }, [houseData]);
+  // useEffect(() => {
+  //   console.log(houseData);
+  // }, [houseData]);
 
   const handleChatConnected = async () => {
     if (!authValue.isLogin) {
@@ -52,7 +52,7 @@ const HouseToolbar = ({
     try {
       const response = await getChat({ houseId: 0, users });
       if (!response.data.id) {
-        console.log("true");
+        // console.log("true");
         let obj = {
           userIds: [hostId, userData.id],
           houseId: 0,

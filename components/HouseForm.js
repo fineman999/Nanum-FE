@@ -67,7 +67,7 @@ const HouseForm = () => {
           const response = await axios.get(
             `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1/origin/${houseId}`
           );
-          console.log(response.data.result);
+
           const { houseMainImg, floorPlanImg } = response.data.result;
           setForm({ ...response.data.result, houseId: houseId });
           setPreview({
@@ -256,7 +256,7 @@ const HouseForm = () => {
     });
 
     if (path === "edit") {
-      console.log(form.houseImgs[index]);
+    
       const nextDeleteImages = [
         ...editImageForm.deleteHouseImgs,
         form.houseImgs[index].id,
@@ -320,7 +320,7 @@ const HouseForm = () => {
           `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}${EDIT_API}`,
           formData
         );
-        console.log(response.data);
+      
       } catch (err) {
         console.log(err);
       }
@@ -342,7 +342,7 @@ const HouseForm = () => {
           `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}${DETAIL_IMAGE_EDIT_API}`,
           formData
         );
-        console.log(response.data);
+    
       } catch (err) {
         console.log(err);
       }
@@ -374,7 +374,7 @@ const HouseForm = () => {
         },
       })
       .then((res) => {
-        console.log("하우스 등록 응답: ", res);
+       
         const { isSuccess, message, result } = res.data;
         return result;
       })
@@ -389,7 +389,7 @@ const HouseForm = () => {
           houseId: id,
           houseImg: mainHouseImgPath,
         };
-        console.log("채팅방 생성 폼: ", data);
+    
         axios
           .post(WEB_FLUX_URL + WEB_FLUX_API_URI, data)
           .then((res) => {

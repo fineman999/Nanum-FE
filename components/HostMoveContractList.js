@@ -28,14 +28,14 @@ const HostMoveContractList = () => {
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
+    
         setMoveList(data.result);
       })
       .catch((err) => console.log(err));
   }, []);
 
   const handleClickDate = (newValue) => {
-    console.log(formatDate(newValue.toDate()));
+   
 
     setMoveForm((prev) => {
       return {

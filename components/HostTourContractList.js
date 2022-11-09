@@ -20,11 +20,11 @@ const HostTourContractList = () => {
 
   useEffect(() => {
     const API_URI = `/tours/hosts/${userValue.id}`;
-    console.log(filteredHostTourList);
+
     get(BASE_URL, API_URI)
       .then((res) => res.data)
       .then((data) => {
-        console.log(data);
+  
         setHostTourList(data.result);
       });
   }, []);
@@ -43,7 +43,7 @@ const HostTourContractList = () => {
 
     put(BASE_URL, API_URI, formData)
       .then((res) => {
-        console.log("투어 신청 승인: ", res);
+      
         const { status } = res;
         const { result } = res.data;
         if (status === 200) {
@@ -70,7 +70,7 @@ const HostTourContractList = () => {
 
     put(BASE_URL, API_URI, formData)
       .then((res) => {
-        console.log("투어 신청 거부: ", res);
+        
         const { status } = res;
         const { result } = res.data;
         if (status === 200) {
@@ -97,7 +97,7 @@ const HostTourContractList = () => {
 
     put(BASE_URL, API_URI, formData)
       .then((res) => {
-        console.log("투어 완료: ", res);
+       
         const { status } = res;
         const { result } = res.data;
         if (status === 200) {

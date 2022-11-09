@@ -4,9 +4,9 @@ import HouseRoomImageList from "./HouseRoomImageList";
 import HouseRoomItem from "./HouseRoomItem";
 
 const HouseRoomDetailContent = ({ data }) => {
-  useEffect(() => {
-    console.log("방 목록 API 호출!!");
-  }, []);
+  // useEffect(() => {
+  //   console.log("방 목록 API 호출!!");
+  // }, []);
   return (
     <div id="house_room" className="house_room_info_wrapper">
       <div className="house_info_header">
