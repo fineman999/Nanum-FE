@@ -28,7 +28,16 @@ const MyHouseInfo = ({ roomInfo }) => {
       if (!result) {
         const userId = userData.id;
         const getResult = await putChat({ id, userId });
-        await initChat({userId:userData.id,chatRoomId:getResult.data.id,userName:userData.nickName,type:"CHATIN",msg:`${userData.nickName}님이 들어왔습니다.`,img:userData.profileImgUrl});
+        if (getResult.status === 200) {
+          await initChat({
+            userId: userData.id,
+            chatRoomId: getResult.data.id,
+            userName: userData.nickName,
+            type: "CHATIN",
+            msg: `${userData.nickName}님이 들어왔습니다.`,
+            img: userData.profileImgUrl,
+          });
+        }
         id = getResult.data.id;
       }
       await goChat(id);
