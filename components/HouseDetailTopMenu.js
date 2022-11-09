@@ -49,7 +49,7 @@ const HouseDetailTopMenu = () => {
             onClick={(event) => MoveToAnchor(event, "#house_review")}
             sx={{ color: "black", fontWeight: "bold", fontSize: "16px" }}
           >
-            리뷰(100)
+            리뷰
           </Button>
         </li>
       </ul>
