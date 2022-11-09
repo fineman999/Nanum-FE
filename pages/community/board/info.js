@@ -55,7 +55,6 @@ const Info = () => {
       </section>
       {role.current !== null ? <WriteButton /> : ""}
       <BottomMenu />
-      <NotificationAlert />
     </>
   );
 };

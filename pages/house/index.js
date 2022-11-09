@@ -77,7 +77,7 @@ export default function Houses() {
       </div>
       <SearchModal open={open} handleClose={handleClose} />
       <BottomMenu />
-      <NotificationAlert />
+
       <Footer />
       <style jsx>{`
         .search_container {

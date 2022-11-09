@@ -97,7 +97,7 @@ const Article = () => {
           ""
         )}
       </section>
-      <NotificationAlert />
+
       <style jsx>{`
         .content_section {
           position: relative;

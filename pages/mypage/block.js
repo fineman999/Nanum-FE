@@ -156,7 +156,7 @@ export default function Block() {
         )}
       </div>
       <BottomMenu />
-      <NotificationAlert />
+
       <style jsx>{style}</style>
     </>
   );

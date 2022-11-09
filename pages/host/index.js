@@ -426,7 +426,7 @@ export default function MyPage() {
         </section>
       </div>
       <BottomMenu />
-      <NotificationAlert />
+
       <style jsx>{style}</style>
     </>
   );
