@@ -8,7 +8,7 @@ const style = css`
   button {
     background-color: #76c1b2;
     color: white;
-    font-size: 1rem;
+    /* font-size: 1rem; */
     font-weight: bold;
     border: none;
     border-radius: 20px;
