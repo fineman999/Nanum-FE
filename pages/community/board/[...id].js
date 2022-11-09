@@ -30,6 +30,7 @@ const Article = () => {
   });
 
   useEffect(() => {
+
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
       try {
@@ -47,10 +48,14 @@ const Article = () => {
         console.log("Error" + e);
       }
     }
-    reactive();
-    if (!router.isReady) return;
+      if(router.query.id!==undefined)
+      reactive();
+
+    
     return () => {
       cancleToken.cancel();
+      
+    if (!router.isReady) return;
     };
   }, [router.isReady]);
   return (
