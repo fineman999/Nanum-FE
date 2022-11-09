@@ -59,7 +59,7 @@ const HostHouseList = () => {
         );
 
         const { content, totalPages } = response.data.result;
-        console.log("하우스 목록 ", content);
+       
         setHouseList(content);
         setCurPage((prev) => prev + 1);
         setTotalPages(totalPages);
@@ -83,7 +83,7 @@ const HostHouseList = () => {
           `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}/houses/1?page=${curPage}&size=${defaultSize}&sort=createAt,desc`
         );
         const { content } = response.data.result;
-        console.log("하우스 목록 ", content);
+        
 
         setHouseList((prev) => {
           return prev.concat(content);

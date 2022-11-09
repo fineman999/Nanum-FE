@@ -65,7 +65,7 @@ const HouseTourForm = ({ roomData, setTourForm, tourForm, toggleDrawer }) => {
       inquiry: "",
     };
 
-    console.log(formData);
+    // console.log(formData);
     post(BASE_URL, API_URI, formData).then((res) => {
       const { data, status } = res;
       const { message } = data;

@@ -58,7 +58,7 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
         houseId: id,
       })
         .then((res) => {
-          console.log("좋아요 추가", res);
+          // console.log("좋아요 추가", res);
 
           const { status } = res;
           const { isSuccess, message, result } = res.data;
@@ -74,7 +74,7 @@ const LikeButton = ({ isLike = false, listItem, wishId }) => {
       const API_URI = `/users/${userValue.id}/wishes/${likeId}`;
 
       del(BASE_URL, API_URI).then((res) => {
-        console.log("좋아요 제거", res);
+        // console.log("좋아요 제거", res);
 
         const { status } = res;
         setLikeClicked(false);
