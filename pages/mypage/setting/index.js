@@ -320,6 +320,7 @@ export default function Setting() {
           </button>
         </section>
       </div>
+      <NotificationAlert/>
       <style jsx>{style}</style>
     </>
   );
