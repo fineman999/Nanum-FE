@@ -46,12 +46,13 @@ const MyHouseInfo = ({ roomInfo }) => {
     }
   };
   const findUserInChat = async (data) => {
+    let value = false;
     data.roomInfo.users.filter((user) => {
       if (user.userId + "" === userData.id + "") {
-        return true;
+        value = true;
       }
     });
-    return false;
+    return value;
   };
 
   const goChat = async (room) => {
