@@ -23,6 +23,7 @@ import axios from "axios";
 import { get } from "../../lib/apis/apiClient";
 import { getChatCount, getNoteCount } from "../../lib/apis/bottom";
 import css from "styled-jsx/css";
+import sseState from "../../state/atom/sseState";
 const LIKE_BASE_URL = `${process.env.NANUM_HOUSE_SERVICE_BASE_URL}`;
 const style = css`
   .overlay {
@@ -39,7 +40,7 @@ const BottomMenu = () => {
   const [likeCount, setLikeCount] = useRecoilState(likeCountState);
   const matches = useMediaQuery("(min-width: 600px");
   const [userData, setUserData] = useRecoilState(userState);
-  const eventSource = useRef(null);
+  const [sseData, setSseData] = useRecoilState(sseState);
   const [userInfo, setUserInfo] = useState({
     chatCount: 0,
     noteCount: 0,
@@ -55,7 +56,6 @@ const BottomMenu = () => {
   const timerId = useRef(null);
   const { vertical, horizontal, open, title, content, url } = alertState;
 
-  const [listening, setListening] = useState(false);
   const getChat = async (cancelToken) => {
     try {
       const getChat = await getChatCount({ userId: userData.id, cancelToken });
@@ -96,17 +96,18 @@ const BottomMenu = () => {
     }
     if (authValue.isLogin) {
       reactive();
-      if (!listening) {
-        eventSource.current = new EventSource(
-          `https://ssghot.shop/api/v1/alerts/users?param=${userData.id}`
-        );
-
-        eventSource.current.onopen = (event) => {
-          console.log("connection opened");
-        };
-        eventSource.current.onmessage = async (event) => {
+      // if (!listening && sseData.eventSource) {
+  
+        if(sseData.eventSource===null){
+          setSseData({eventSource: new EventSource(
+           `https://ssghot.shop/api/v1/alerts/users?param=${userData.id}`
+          )})
+        }
+        if (sseData.eventSource!==null ) {
+        
+        sseData.eventSource.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
-
+            console.log(sseMessage)
           if (sseMessage.title === "CHAT") {
             setUserInfo((prev) => ({
               ...prev,
@@ -148,15 +149,14 @@ const BottomMenu = () => {
           }
         };
 
-        eventSource.current.onerror = (event) => {
+        sseData.eventSource.onerror = (event) => {
           if (event.target.readyState === EventSource.CLOSED) {
             console.log("eventsource closed (" + event.target.readyState + ")");
           }
-          eventSource.current.close();
+          sseData.eventSource.close();
+          setSseData({eventSource:null});
         };
-      } else {
-        setListening(true);
-      }
+      } 
     }
 
     // 로그인 유저인 경우
@@ -178,7 +178,7 @@ const BottomMenu = () => {
         });
     }
     return () => {
-      if (eventSource.current !== null) eventSource.current.close();
+  
       cancelToken.cancel();
     };
   }, []);

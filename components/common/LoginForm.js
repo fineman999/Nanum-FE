@@ -16,11 +16,13 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { fireAlert } from "./Alert";
 import { getUserDetail, postLogin } from "../../lib/apis/auth";
+import sseState from "../../state/atom/sseState";
 
 const LoginForm = () => {
   const [userInput, setUserInput] = useState({ email: "", pwd: "" });
   const [authData, setAuthData] = useRecoilState(authState);
   const [userData, setUserData] = useRecoilState(userState);
+  const [sseData, setSseData] = useRecoilState(sseState);
   const router = useRouter();
 
   const [isChecked, setIsChecked] = useState(false);
@@ -62,7 +64,6 @@ const LoginForm = () => {
   const goLogin = (e) => {
     e.preventDefault();
     if (userInput.email && userInput.pwd) {
-      console.log(userInput);
       postLogin(userInput)
         .then((res) => {
           const userId = res.data.result.userId;
@@ -71,6 +72,9 @@ const LoginForm = () => {
           sessionStorage.setItem("role", res.data.result.role);
           fireAlert({ icon: "success", title: "로그인 성공하였습니다." });
           setAuthData({ isLogin: true });
+          setSseData({eventSource: new EventSource(
+            `https://ssghot.shop/api/v1/alerts/users?param=${userId}`
+          )})
           getUserDetail({ userId })
             .then((Res) => {
               setUserData(Res.data.result);
