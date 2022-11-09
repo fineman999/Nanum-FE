@@ -25,7 +25,7 @@ const HouseTimeList = ({
     if (tourForm.houseId !== "" && tourForm.roomId !== "") {
       const BASE_URL = `${process.env.NANUM_ENROLL_SERVICE_BASE_URL}`;
       const API_URI = `/tours/houses/${tourForm.houseId}/room/${tourForm.roomId}/date/${tourForm.tourDate}`;
-      console.log("시간대 조회: ", BASE_URL + API_URI);
+      // console.log("시간대 조회: ", BASE_URL + API_URI);
 
       get(BASE_URL, API_URI)
         .then((res) => {

@@ -19,7 +19,7 @@ const MoveForm = () => {
   });
 
   const handleClickDate = (newValue) => {
-    console.log(formatDate(newValue.toDate()));
+    // console.log(formatDate(newValue.toDate()));
 
     setMoveForm((prev) => {
       return {
@@ -54,14 +54,14 @@ const MoveForm = () => {
 
         // 입주 신청 API 요청
         const { houseId, roomId } = router.query;
-        console.log(moveForm);
+        // console.log(moveForm);
         const API_URI = `/move-in/houses/${houseId}/rooms/${roomId}`;
         const formData = {
           moveDate: moveForm.moveDate,
           inquiry: moveForm.inquiry,
         };
         post(BASE_URL, API_URI, formData).then((res) => {
-          console.log(res);
+          // console.log(res);
           const { status } = res;
           const { isSuccess, message, result } = res.data;
           if (isSuccess) {

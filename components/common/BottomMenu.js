@@ -107,7 +107,7 @@ const BottomMenu = () => {
         
         sseData.eventSource.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
-            console.log(sseMessage)
+    
           if (sseMessage.title === "CHAT") {
             setUserInfo((prev) => ({
               ...prev,
