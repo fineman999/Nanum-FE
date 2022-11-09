@@ -274,6 +274,7 @@ const Write = () => {
           </div>
         </form>
       </section>
+      <NotificationAlert/>
       <style jsx>{`
         .form_section {
           position: relative;

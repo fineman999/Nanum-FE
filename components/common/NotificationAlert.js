@@ -1,17 +1,20 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
-import { userState } from "../../state/atom/authState";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { authState, userState } from "../../state/atom/authState";
 
 import Alert from "@mui/material/Alert";
 import Stack from "@mui/material/Stack";
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
 import AlertTitle from "@mui/material/AlertTitle";
+import sseState from "../../state/atom/sseState";
 export const NotificationAlert = () => {
   const router = useRouter();
   const [userData, setUserData] = useRecoilState(userState);
-  const eventSource = useRef(null);
+  // const eventSource = useRef(null);
+  const [sseData, setSseData] = useRecoilState(sseState);
+  const authValue = useRecoilValue(authState);
   const [alertState, setAlertState] = useState({
     open: false,
     vertical: "top",
@@ -21,24 +24,24 @@ export const NotificationAlert = () => {
     url: "",
   });
 
-  const [listening, setListening] = useState(false);
   const timerId = useRef(null);
   const { vertical, horizontal, open, title, content, url } = alertState;
   useEffect(() => {
-    if (userData.id) {
-      if (!listening) {
-        eventSource.current = new EventSource(
-          `https://ssghot.shop/api/v1/alerts/users?param=${userData.id}`
-        );
-
-        eventSource.current.onopen = (event) => {
+    if (authValue.isLogin) {
+      if(sseData.eventSource===null){
+        setSseData({eventSource: new EventSource(
+         `https://ssghot.shop/api/v1/alerts/users?param=${userData.id}`
+        )})
+      }
+      if (sseData.eventSource!==null) {
+     
+        sseData.eventSource.onopen = (event) => {
           console.log("connection opened");
         };
-
-        eventSource.current.onmessage = async (event) => {
+        sseData.eventSource.onmessage = async (event) => {
           const sseMessage = JSON.parse(event.data);
-          console.log(sseMessage);
           if (sseMessage.title === "CHAT") {
+         
             const result = JSON.parse(sseMessage.content);
             if (timerId.current !== null) {
               clearTimeout(timerId.current);
@@ -68,22 +71,19 @@ export const NotificationAlert = () => {
             timerId.current = setTimeout(() => {
               setAlertState({ ...alertState, open: false });
             }, 2000);
+         
           }
         };
 
-        eventSource.current.onerror = (event) => {
+        sseData.eventSource.onerror = (event) => {
           if (event.target.readyState === EventSource.CLOSED) {
             console.log("eventsource closed (" + event.target.readyState + ")");
           }
-          eventSource.current.close();
+          sseData.eventSource.close();
+          setSseData({eventSource:null});
         };
-      } else {
-        setListening(true);
       }
     }
-    return () => {
-      if (eventSource.current != null) eventSource.current.close();
-    };
   }, []);
   const handleClose = () => {
     setAlertState({ ...alertState, open: false });

@@ -142,6 +142,7 @@ export default function Send() {
           handleBtn2={handleBack}
         />
       </div>
+      <NotificationAlert/>
       <style jsx>{style}</style>
     </>
   );
