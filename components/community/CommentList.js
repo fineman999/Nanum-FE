@@ -7,6 +7,7 @@ import axios from "axios";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+import { useRouter } from "next/router";
 const LastPageComment = () => {
   const ScrollToTop = () => {
     window.scrollTo(0, 0);
@@ -39,7 +40,7 @@ const CommentList = ({
   const [defaultSize, setDefaultSize] = useState(10);
   const [totalPages, setTotalPages] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-
+  const router = useRouter();
   const handleDeleteReply = async (id) => {
     setCommentList(
       commentList.map((comment) => {
@@ -54,6 +55,7 @@ const CommentList = ({
   };
 
   useEffect(() => {
+   
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
       try {
@@ -75,12 +77,16 @@ const CommentList = ({
         console.log("Error" + e);
       }
     }
-    reactive();
+    if(router.query.id!==undefined)
+      reactive();
+    
 
     return () => {
       cancleToken.cancel();
+            
+    if (!router.isReady) return;
     };
-  }, []);
+  }, [router.isReady]);
   useEffect(() => {
     async function reactive() {
       try {
