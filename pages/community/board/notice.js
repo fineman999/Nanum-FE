@@ -57,7 +57,6 @@ const Notice = () => {
       </section>
       {role.current === "HOST" ? <WriteButton /> : ""}
       <BottomMenu />
-      <NotificationAlert />
     </>
   );
 };

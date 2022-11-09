@@ -321,7 +321,6 @@ export default function Setting() {
         </section>
       </div>
       <style jsx>{style}</style>
-      <NotificationAlert />
     </>
   );
 }

@@ -12,7 +12,6 @@ const review = () => {
       <HouseReviewList />
       <Footer />
       <BottomMenu />
-      <NotificationAlert />
     </>
   );
 };

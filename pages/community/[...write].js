@@ -314,7 +314,6 @@ const Write = () => {
           background: #555555;
         }
       `}</style>
-      <NotificationAlert />
     </>
   );
 };

@@ -1,10 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
+  Alert,
+  AlertTitle,
   Badge,
   BottomNavigation,
   BottomNavigationAction,
   Box,
   Paper,
+  Snackbar,
   useMediaQuery,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
@@ -41,6 +44,16 @@ const BottomMenu = () => {
     chatCount: 0,
     noteCount: 0,
   });
+  const [alertState, setAlertState] = useState({
+    open: false,
+    vertical: "top",
+    horizontal: "center",
+    title: "",
+    content: "",
+    url: "",
+  });
+  const timerId = useRef(null);
+  const { vertical, horizontal, open, title, content, url } = alertState;
 
   const [listening, setListening] = useState(false);
   const getChat = async (cancelToken) => {
@@ -69,7 +82,12 @@ const BottomMenu = () => {
       console.log("getNote Error", e);
     }
   };
-
+  const handleClose = () => {
+    setAlertState({ ...alertState, open: false });
+  };
+  const handleUrl = () => {
+    router.push(url);
+  };
   useEffect(() => {
     const cancelToken = axios.CancelToken.source();
     async function reactive() {
@@ -94,7 +112,35 @@ const BottomMenu = () => {
               ...prev,
               chatCount: prev.chatCount + 1,
             }));
+            const result = JSON.parse(sseMessage.content);
+            if (timerId.current !== null) {
+              clearTimeout(timerId.current);
+            }
+            setAlertState((prev) => ({
+              ...prev,
+              open: true,
+              title: "채팅이 왔습니다.",
+              content: result.lastMessage,
+              url: sseMessage.url,
+            }));
+            timerId.current = setTimeout(() => {
+              setAlertState({ ...alertState, open: false });
+            }, 2000);
           } else if (sseMessage.title === "NOTE") {
+            if (timerId.current !== null) {
+              clearTimeout(timerId.current);
+            }
+
+            setAlertState((prev) => ({
+              ...prev,
+              open: true,
+              title: "쪽지가 왔습니다.",
+              content: sseMessage.content,
+              url: sseMessage.url,
+            }));
+            timerId.current = setTimeout(() => {
+              setAlertState({ ...alertState, open: false });
+            }, 2000);
             setUserInfo((prev) => ({
               ...prev,
               noteCount: prev.noteCount + 1,
@@ -164,6 +210,18 @@ const BottomMenu = () => {
 
   return (
     <>
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        key={vertical + horizontal}
+        onClick={handleUrl}
+      >
+        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+          <AlertTitle>{title}</AlertTitle>
+          {content}
+        </Alert>
+      </Snackbar>
       <Box
         sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 100 }}
       >

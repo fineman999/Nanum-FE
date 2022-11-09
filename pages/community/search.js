@@ -85,7 +85,6 @@ const Search = () => {
             />
           </section>
           <BottomMenu />
-          <NotificationAlert />
         </div>
       </Slide>
     </>

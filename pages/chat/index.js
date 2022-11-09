@@ -377,13 +377,20 @@ export default function ChatList() {
           try {
             if (deleteState) {
               setDeleteState(false);
-              await initChat({userId:userData.id,chatRoomId:roomId,userName:userData.nickName,type:"CHATOUT",msg:`${userData.nickName}님이 나갔습니다.`,img:userData.profileImgUrl});
+              await initChat({
+                userId: userData.id,
+                chatRoomId: roomId,
+                userName: userData.nickName,
+                type: "CHATOUT",
+                msg: `${userData.nickName}님이 나갔습니다.`,
+                img: userData.profileImgUrl,
+              });
 
               const chatDeleteResult = await Api.delete(
                 `https://nanum.site/web-flux-service/api/v1/rooms/${roomId}/users/${userId}`,
                 ""
               );
-            
+
               setChatLists(chatLists.filter((item) => item.id !== roomId));
             }
           } catch (e) {
@@ -459,7 +466,7 @@ export default function ChatList() {
         </div>
       </div>
       <BottomMenu />
-      <NotificationAlert />
+
       <style jsx>{style}</style>
     </>
   );

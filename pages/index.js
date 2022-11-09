@@ -53,7 +53,6 @@ export default function Home() {
       <HouseListSwiper title="마이룸(원룸형)" roomList={myRoomList} />
       <MainMap />
       <Footer />
-      <NotificationAlert />
       <BottomMenu />
     </>
   );
