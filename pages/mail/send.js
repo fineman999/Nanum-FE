@@ -143,7 +143,6 @@ export default function Send() {
         />
       </div>
       <style jsx>{style}</style>
-      <NotificationAlert />
     </>
   );
 }

@@ -323,7 +323,6 @@ const House = () => {
           }
         }
       `}</style>
-      <NotificationAlert />
     </>
   );
 };

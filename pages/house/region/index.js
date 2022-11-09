@@ -164,7 +164,6 @@ const Region = () => {
           height: 100%;
         }
       `}</style>{" "}
-      <NotificationAlert />
     </>
   );
 };

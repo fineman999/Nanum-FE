@@ -339,7 +339,7 @@ export default function MailList() {
         )}
       </div>
       <BottomMenu />
-      <NotificationAlert />
+
       <style jsx>{style}</style>
     </>
   );

@@ -53,7 +53,6 @@ const All = () => {
           category={2}
         />
         <BottomMenu />
-        <NotificationAlert />
       </section>
 
       {role.current !== null ? <WriteButton /> : ""}

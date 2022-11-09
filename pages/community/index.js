@@ -80,7 +80,6 @@ const Community = () => {
       </section>
       <Footer />
       <BottomMenu />
-      <NotificationAlert />
     </>
   );
 };

@@ -172,7 +172,7 @@ export default function MyNoteList() {
         )}
       </div>
       <BottomMenu />
-      <NotificationAlert />
+
       <style jsx>{style}</style>
     </>
   );
