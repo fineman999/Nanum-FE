@@ -30,7 +30,6 @@ const Article = () => {
   });
 
   useEffect(() => {
-
     const cancleToken = axios.CancelToken.source();
     async function reactive() {
       try {
@@ -48,14 +47,12 @@ const Article = () => {
         console.log("Error" + e);
       }
     }
-      if(router.query.id!==undefined)
-      reactive();
+    if (router.query.id !== undefined) reactive();
 
-    
     return () => {
       cancleToken.cancel();
-      
-    if (!router.isReady) return;
+
+      if (!router.isReady) return;
     };
   }, [router.isReady]);
   return (
@@ -70,14 +67,14 @@ const Article = () => {
             boardId={router.query.id}
             boardUserId={board.userId}
             nickName={board.nickName}
-            createAt={board.updateAt}
+            createAt={board.createAt}
             viewCount={board.viewCount}
             profileImgUrl={board.profileImgUrl}
             userId={board.userId}
             categoryId={board.categoryId}
           />
           <ContentBody title={board.title} content={board.content} />
-          <PreviewImageScroll imageList={board.imgUrls} date={board.updateAt} />
+          <PreviewImageScroll imageList={board.imgUrls} date={board.createAt} />
           {/* 좋아요, 공유 버튼 */}
           <ContentFooter />
           <Divider />
