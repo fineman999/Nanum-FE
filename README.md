@@ -157,9 +157,9 @@
 
 
 ---
-#### 3. 서비스 소개 영상
+#### 2. 서비스 소개 영상
 [![NANUM 소개 영상](http://img.youtube.com/vi/fQhgvCP8YEs/0.jpg)](https://youtu.be/fQhgvCP8YEs)
-#### 4. 서비스 시연 영상
+#### 3. 서비스 시연 영상
 [![NANUM 시연 영상](http://img.youtube.com/vi/1MCGtIU5ihI/0.jpg)](https://www.youtube.com/watch?v=1MCGtIU5ihI)
 
 
@@ -236,9 +236,6 @@
 
 ---
 
-#### 시작하기
-
----
 
 ```shell
 # /backend/
